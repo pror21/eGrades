@@ -23,7 +23,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UniversitiesParserImpl implements UniversitiesParser{
+public class UniversitiesParserImpl implements UniversitiesParser {
 
     private ExceptionService exceptionService = new ExceptionServiceImpl();
 

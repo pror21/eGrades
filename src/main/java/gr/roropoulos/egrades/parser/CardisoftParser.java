@@ -9,12 +9,13 @@ package gr.roropoulos.egrades.parser;
 
 import gr.roropoulos.egrades.domain.Course;
 import gr.roropoulos.egrades.domain.Student;
-import org.jsoup.nodes.Document;
 
 public interface CardisoftParser {
 
     Student parseStudentInfo(Student student);
+
     Student parseStudentGrades(Student student);
+
     Student parseStudentRegistration(Student student);
 
     Course parseCourse(Course course);

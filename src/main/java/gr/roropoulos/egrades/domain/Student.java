@@ -24,7 +24,9 @@ public class Student implements Serializable {
     private List<Course> studentCourses;
     private List<Course> studentCourseReg;
 
-    public String getStudentUsername() { return studentUsername; }
+    public String getStudentUsername() {
+        return studentUsername;
+    }
 
     public void setStudentUsername(String studentUsername) {
         this.studentUsername = studentUsername;

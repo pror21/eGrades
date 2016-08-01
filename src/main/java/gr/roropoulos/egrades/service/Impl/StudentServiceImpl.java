@@ -8,7 +8,6 @@
 package gr.roropoulos.egrades.service.Impl;
 
 import gr.roropoulos.egrades.domain.Student;
-import gr.roropoulos.egrades.domain.University;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.StudentService;
 
@@ -51,16 +50,16 @@ public class StudentServiceImpl implements StudentService {
 
     public Boolean studentCheckIfExist() {
         File f = new File(path);
-        if(f.exists() && !f.isDirectory()) return true; else return false;
+        return f.exists() && !f.isDirectory();
     }
 
     public void studentDelete() {
-        try{
+        try {
             File file = new File(path);
-            if(file.exists()) {
+            if (file.exists()) {
                 file.delete();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             exceptionService.showException(e, "Η διαγραφή των δεδομένων του φοιτητή απέτυχε.");
         }
     }

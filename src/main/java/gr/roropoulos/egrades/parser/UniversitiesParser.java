@@ -8,7 +8,6 @@
 package gr.roropoulos.egrades.parser;
 
 import gr.roropoulos.egrades.domain.University;
-import org.w3c.dom.Document;
 
 import java.util.List;
 

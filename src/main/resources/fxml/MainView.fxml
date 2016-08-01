@@ -1,264 +1,312 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.CheckMenuItem?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToolBar?>
+<!--
+  ~ Copyright (c) 2016.
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  -->
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-
-<BorderPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.roropoulos.egrades.controller.MainController">
-   <center>
-      <VBox prefHeight="520.0" prefWidth="640.0">
-        <children>
-          <MenuBar VBox.vgrow="NEVER">
-            <menus>
-              <Menu mnemonicParsing="false" text="Αρχείο">
-                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#syncMenuItemAction" text="Συγχρονισμός Βαθμολογιών">
-                           <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@/images/Download.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#changeStudentMenuAction" text="Αλλαγή Χρήστη">
-                           <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@/images/Key.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#preferencesMenuAction" text="Προτιμήσεις">
-                           <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@/images/Controls.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MenuItem>
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#exitMenuAction" text="Έξοδος">
-                           <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@/images/Exit.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </MenuItem>
-                </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="Επιλογές">
-                     <items>
-                        <CheckMenuItem fx:id="settingAutoSyncCheckMenuItem" mnemonicParsing="false" onAction="#settingAutoSyncCheckMenuItemHandle" text="Αυτόματος Συγχρ." />
-                        <CheckMenuItem fx:id="settingNotificationsCheckMenuItem" mnemonicParsing="false" onAction="#settingNotificationsCheckMenuItemHandle" text="Ειδοποιήσεις" />
-                     </items>
-              </Menu>
-            </menus>
-          </MenuBar>
-          <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <TabPane layoutX="220.0" layoutY="88.0" prefHeight="375.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <tabs>
-                      <Tab text="Πρόσφατες Βαθμολογίες">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <TableView fx:id="recentTableView" layoutX="220.0" layoutY="73.0" prefHeight="346.0" prefWidth="640.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <columns>
-                                        <TableColumn prefWidth="70.0" text="Κωδ." />
-                                        <TableColumn prefWidth="410.0" text="Τίτλος" />
-                                          <TableColumn minWidth="0.0" prefWidth="75.0" text="Βαθμός" />
-                                          <TableColumn prefWidth="75.0" text="Τύπος" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="ΔΜ" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="Ώρες" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="ECTS" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="Εξεταστική" visible="false" />
-                                          <TableColumn prefWidth="60.0" text="Εξάμηνο" />
-                                      </columns>
-                                    </TableView>
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </Tab>
-                      <Tab fx:id="lastRegistrationTableView" text="Τελευταία Δήλωση">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <TableView prefHeight="438.0" prefWidth="640.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <columns>
-                                          <TableColumn prefWidth="70.0" text="Κωδ." />
-                                          <TableColumn prefWidth="410.0" text="Τίτλος" />
-                                          <TableColumn minWidth="0.0" prefWidth="75.0" text="Βαθμός" />
-                                          <TableColumn prefWidth="75.0" text="Τύπος" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="ΔΜ" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="Ώρες" visible="false" />
-                                          <TableColumn prefWidth="60.0" text="Εξάμ." />
-                                       </columns>
-                                    </TableView>
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </Tab>
-                        <Tab fx:id="coursesTableView" text="Μαθήματα / Εξάμηνο">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <TableView prefHeight="438.0" prefWidth="640.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <columns>
-                                          <TableColumn prefWidth="70.0" text="Κωδ." />
-                                          <TableColumn prefWidth="410.0" text="Τίτλος" />
-                                          <TableColumn minWidth="0.0" prefWidth="75.0" text="Βαθμός" />
-                                          <TableColumn prefWidth="75.0" text="Τύπος" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="ΔΜ" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="Ώρες" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="ECTS" visible="false" />
-                                          <TableColumn prefWidth="75.0" text="Εξεταστική" visible="false" />
-                                          <TableColumn prefWidth="60.0" text="Εξάμηνο" />
-                                       </columns>
-                                    </TableView>
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </Tab>
-                        <Tab text="Στατιστικά">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <Accordion prefHeight="438.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <panes>
-                                        <TitledPane animated="false" text="Συνολικές Αποδόσεις">
-                                          <content>
-                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                   <children>
-                                                      <VBox layoutX="269.0" layoutY="81.0" prefHeight="362.0" prefWidth="638.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <children>
-                                                            <LineChart prefHeight="215.0" prefWidth="619.0" title="Περασμένα Μαθήματα / Δήλωση">
-                                                              <xAxis>
-                                                                <CategoryAxis autoRanging="false" side="BOTTOM" />
-                                                              </xAxis>
-                                                              <yAxis>
-                                                                <NumberAxis autoRanging="false" label="Σύνολο Περ. Μαθ." minorTickCount="0" minorTickLength="0.0" prefHeight="150.0" prefWidth="43.0" side="LEFT" tickLabelGap="5.0" tickLength="7.0" tickUnit="1.0" upperBound="10.0">
-                                                                     <tickLabelFont>
-                                                                        <Font size="10.0" />
-                                                                     </tickLabelFont>
-                                                                  </NumberAxis>
-                                                              </yAxis>
-                                                            </LineChart>
-                                                            <LineChart prefHeight="215.0" prefWidth="619.0" title="Μέσος Όρος Βαθμολογίας / Δήλωση">
-                                                               <xAxis>
-                                                                  <CategoryAxis autoRanging="false" side="BOTTOM" />
-                                                               </xAxis>
-                                                               <yAxis>
-                                                                  <NumberAxis autoRanging="false" label="Μ.Ο. Δήλωσης" minorTickCount="0" minorTickLength="0.0" prefHeight="150.0" prefWidth="43.0" side="LEFT" tickLabelGap="5.0" tickLength="7.0" tickUnit="1.0" upperBound="10.0">
-                                                                     <tickLabelFont>
-                                                                        <Font size="10.0" />
-                                                                     </tickLabelFont>
-                                                                  </NumberAxis>
-                                                               </yAxis>
-                                                            </LineChart>
-                                                         </children>
-                                                      </VBox>
-                                                   </children>
-                                                </AnchorPane>
-                                          </content>
-                                        </TitledPane>
-                                        <TitledPane animated="false" text="untitled 2">
-                                          <content>
-                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                          </content>
-                                        </TitledPane>
-                                        <TitledPane animated="false" text="untitled 3">
-                                          <content>
-                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                          </content>
-                                        </TitledPane>
-                                      </panes>
-                                    </Accordion>
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </Tab>
-                    </tabs>
-                  </TabPane>
-               </children>
-          </AnchorPane>
-        </children>
-      </VBox>
-   </center>
-   <bottom>
-      <ToolBar BorderPane.alignment="CENTER">
-         <effect>
-            <DropShadow height="9.14" radius="1.7850000000000001" width="0.0" />
-         </effect>
-         <items>
-            <GridPane prefHeight="16.0" prefWidth="612.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="8.0" minWidth="8.0" percentWidth="3.0" prefWidth="8.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="30.0" prefWidth="454.0" />
-                <ColumnConstraints percentWidth="67.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints minHeight="10.0" valignment="CENTER" />
-              </rowConstraints>
-               <children>
-                  <Circle fx:id="statusCircle" fill="WHITE" radius="7.0" stroke="#00000081" strokeType="INSIDE" strokeWidth="0.5" />
-                  <HBox prefHeight="17.0" prefWidth="188.0" GridPane.columnIndex="1">
-                     <children>
-                        <Label prefHeight="17.0" prefWidth="69.0" text="Κατάσταση:" />
-                        <Label fx:id="statusLabel" text="Αναμονή" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="304.0" spacing="5.0" GridPane.columnIndex="2">
-                     <children>
-                        <Label text="Περασμένα Μαθήματα:" />
-                        <Label fx:id="completedCoursesLabel" text="---" />
-                        <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <Label text="ΜΟ:" />
-                        <Label fx:id="averageScoreLabel" text="----" />
-                        <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <Label text="ΔΜ:" />
-                        <Label fx:id="creditsSumLabel" text="---" />
-                        <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <Label text="Ώρες:" />
-                        <Label fx:id="hoursSumLabel" text="---" />
-                        <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <Label text="ECTS:" />
-                        <Label fx:id="ectsSumLabel" text="---" />
-                     </children>
-                  </HBox>
-               </children>
-            </GridPane>
-         </items>
-      </ToolBar>
-   </bottom>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60"
+            fx:controller="gr.roropoulos.egrades.controller.MainController">
+    <center>
+        <VBox prefHeight="520.0" prefWidth="640.0">
+            <children>
+                <MenuBar VBox.vgrow="NEVER">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="Αρχείο">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#syncMenuItemAction"
+                                          text="Συγχρονισμός Βαθμολογιών">
+                                    <graphic>
+                                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                                                   preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/Download.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" onAction="#changeStudentMenuAction"
+                                          text="Αλλαγή Χρήστη">
+                                    <graphic>
+                                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                                                   preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/Key.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                                <MenuItem mnemonicParsing="false" onAction="#preferencesMenuAction" text="Προτιμήσεις">
+                                    <graphic>
+                                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                                                   preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/Controls.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                                <SeparatorMenuItem mnemonicParsing="false"/>
+                                <MenuItem mnemonicParsing="false" onAction="#exitMenuAction" text="Έξοδος">
+                                    <graphic>
+                                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                                                   preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/Exit.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </MenuItem>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Επιλογές">
+                            <items>
+                                <CheckMenuItem fx:id="settingAutoSyncCheckMenuItem" mnemonicParsing="false"
+                                               onAction="#settingAutoSyncCheckMenuItemHandle" text="Αυτόματος Συγχρ."/>
+                                <CheckMenuItem fx:id="settingNotificationsCheckMenuItem" mnemonicParsing="false"
+                                               onAction="#settingNotificationsCheckMenuItemHandle" text="Ειδοποιήσεις"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <TabPane layoutX="220.0" layoutY="88.0" prefHeight="375.0" prefWidth="640.0"
+                                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
+                                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <tabs>
+                                <Tab text="Πρόσφατες Βαθμολογίες">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <TableView fx:id="recentTableView" layoutX="220.0" layoutY="73.0"
+                                                           prefHeight="346.0" prefWidth="640.0"
+                                                           tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
+                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                           AnchorPane.topAnchor="0.0">
+                                                    <columns>
+                                                        <TableColumn prefWidth="70.0" text="Κωδ."/>
+                                                        <TableColumn prefWidth="410.0" text="Τίτλος"/>
+                                                        <TableColumn minWidth="0.0" prefWidth="75.0" text="Βαθμός"/>
+                                                        <TableColumn prefWidth="75.0" text="Τύπος" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="ΔΜ" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="Ώρες" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="ECTS" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="Εξεταστική"
+                                                                     visible="false"/>
+                                                        <TableColumn prefWidth="60.0" text="Εξάμηνο"/>
+                                                    </columns>
+                                                </TableView>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab fx:id="lastRegistrationTableView" text="Τελευταία Δήλωση">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <TableView prefHeight="438.0" prefWidth="640.0"
+                                                           tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
+                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                           AnchorPane.topAnchor="0.0">
+                                                    <columns>
+                                                        <TableColumn prefWidth="70.0" text="Κωδ."/>
+                                                        <TableColumn prefWidth="410.0" text="Τίτλος"/>
+                                                        <TableColumn minWidth="0.0" prefWidth="75.0" text="Βαθμός"/>
+                                                        <TableColumn prefWidth="75.0" text="Τύπος" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="ΔΜ" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="Ώρες" visible="false"/>
+                                                        <TableColumn prefWidth="60.0" text="Εξάμ."/>
+                                                    </columns>
+                                                </TableView>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab fx:id="coursesTableView" text="Μαθήματα / Εξάμηνο">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <TableView prefHeight="438.0" prefWidth="640.0"
+                                                           tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
+                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                           AnchorPane.topAnchor="0.0">
+                                                    <columns>
+                                                        <TableColumn prefWidth="70.0" text="Κωδ."/>
+                                                        <TableColumn prefWidth="410.0" text="Τίτλος"/>
+                                                        <TableColumn minWidth="0.0" prefWidth="75.0" text="Βαθμός"/>
+                                                        <TableColumn prefWidth="75.0" text="Τύπος" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="ΔΜ" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="Ώρες" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="ECTS" visible="false"/>
+                                                        <TableColumn prefWidth="75.0" text="Εξεταστική"
+                                                                     visible="false"/>
+                                                        <TableColumn prefWidth="60.0" text="Εξάμηνο"/>
+                                                    </columns>
+                                                </TableView>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Στατιστικά">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <Accordion prefHeight="438.0" prefWidth="640.0"
+                                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <panes>
+                                                        <TitledPane animated="false" text="Συνολικές Αποδόσεις">
+                                                            <content>
+                                                                <AnchorPane minHeight="0.0" minWidth="0.0"
+                                                                            prefHeight="180.0" prefWidth="200.0">
+                                                                    <children>
+                                                                        <VBox layoutX="269.0" layoutY="81.0"
+                                                                              prefHeight="362.0" prefWidth="638.0"
+                                                                              AnchorPane.bottomAnchor="0.0"
+                                                                              AnchorPane.leftAnchor="0.0"
+                                                                              AnchorPane.rightAnchor="0.0"
+                                                                              AnchorPane.topAnchor="0.0">
+                                                                            <children>
+                                                                                <LineChart prefHeight="215.0"
+                                                                                           prefWidth="619.0"
+                                                                                           title="Περασμένα Μαθήματα / Δήλωση">
+                                                                                    <xAxis>
+                                                                                        <CategoryAxis
+                                                                                                autoRanging="false"
+                                                                                                side="BOTTOM"/>
+                                                                                    </xAxis>
+                                                                                    <yAxis>
+                                                                                        <NumberAxis autoRanging="false"
+                                                                                                    label="Σύνολο Περ. Μαθ."
+                                                                                                    minorTickCount="0"
+                                                                                                    minorTickLength="0.0"
+                                                                                                    prefHeight="150.0"
+                                                                                                    prefWidth="43.0"
+                                                                                                    side="LEFT"
+                                                                                                    tickLabelGap="5.0"
+                                                                                                    tickLength="7.0"
+                                                                                                    tickUnit="1.0"
+                                                                                                    upperBound="10.0">
+                                                                                            <tickLabelFont>
+                                                                                                <Font size="10.0"/>
+                                                                                            </tickLabelFont>
+                                                                                        </NumberAxis>
+                                                                                    </yAxis>
+                                                                                </LineChart>
+                                                                                <LineChart prefHeight="215.0"
+                                                                                           prefWidth="619.0"
+                                                                                           title="Μέσος Όρος Βαθμολογίας / Δήλωση">
+                                                                                    <xAxis>
+                                                                                        <CategoryAxis
+                                                                                                autoRanging="false"
+                                                                                                side="BOTTOM"/>
+                                                                                    </xAxis>
+                                                                                    <yAxis>
+                                                                                        <NumberAxis autoRanging="false"
+                                                                                                    label="Μ.Ο. Δήλωσης"
+                                                                                                    minorTickCount="0"
+                                                                                                    minorTickLength="0.0"
+                                                                                                    prefHeight="150.0"
+                                                                                                    prefWidth="43.0"
+                                                                                                    side="LEFT"
+                                                                                                    tickLabelGap="5.0"
+                                                                                                    tickLength="7.0"
+                                                                                                    tickUnit="1.0"
+                                                                                                    upperBound="10.0">
+                                                                                            <tickLabelFont>
+                                                                                                <Font size="10.0"/>
+                                                                                            </tickLabelFont>
+                                                                                        </NumberAxis>
+                                                                                    </yAxis>
+                                                                                </LineChart>
+                                                                            </children>
+                                                                        </VBox>
+                                                                    </children>
+                                                                </AnchorPane>
+                                                            </content>
+                                                        </TitledPane>
+                                                        <TitledPane animated="false" text="untitled 2">
+                                                            <content>
+                                                                <AnchorPane minHeight="0.0" minWidth="0.0"
+                                                                            prefHeight="180.0" prefWidth="200.0"/>
+                                                            </content>
+                                                        </TitledPane>
+                                                        <TitledPane animated="false" text="untitled 3">
+                                                            <content>
+                                                                <AnchorPane minHeight="0.0" minWidth="0.0"
+                                                                            prefHeight="180.0" prefWidth="200.0"/>
+                                                            </content>
+                                                        </TitledPane>
+                                                    </panes>
+                                                </Accordion>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                            </tabs>
+                        </TabPane>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+    </center>
+    <bottom>
+        <ToolBar BorderPane.alignment="CENTER">
+            <effect>
+                <DropShadow height="9.14" radius="1.7850000000000001" width="0.0"/>
+            </effect>
+            <items>
+                <GridPane prefHeight="16.0" prefWidth="612.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="8.0" minWidth="8.0" percentWidth="3.0"
+                                           prefWidth="8.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0"
+                                           percentWidth="30.0" prefWidth="454.0"/>
+                        <ColumnConstraints percentWidth="67.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" valignment="CENTER"/>
+                    </rowConstraints>
+                    <children>
+                        <Circle fx:id="statusCircle" fill="WHITE" radius="7.0" stroke="#00000081" strokeType="INSIDE"
+                                strokeWidth="0.5"/>
+                        <HBox prefHeight="17.0" prefWidth="188.0" GridPane.columnIndex="1">
+                            <children>
+                                <Label prefHeight="17.0" prefWidth="69.0" text="Κατάσταση:"/>
+                                <Label fx:id="statusLabel" text="Αναμονή"/>
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="304.0" spacing="5.0" GridPane.columnIndex="2">
+                            <children>
+                                <Label text="Περασμένα Μαθήματα:"/>
+                                <Label fx:id="completedCoursesLabel" text="---"/>
+                                <Separator orientation="VERTICAL" prefHeight="200.0"/>
+                                <Label text="ΜΟ:"/>
+                                <Label fx:id="averageScoreLabel" text="----"/>
+                                <Separator orientation="VERTICAL" prefHeight="200.0"/>
+                                <Label text="ΔΜ:"/>
+                                <Label fx:id="creditsSumLabel" text="---"/>
+                                <Separator orientation="VERTICAL" prefHeight="200.0"/>
+                                <Label text="Ώρες:"/>
+                                <Label fx:id="hoursSumLabel" text="---"/>
+                                <Separator orientation="VERTICAL" prefHeight="200.0"/>
+                                <Label text="ECTS:"/>
+                                <Label fx:id="ectsSumLabel" text="---"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </GridPane>
+            </items>
+        </ToolBar>
+    </bottom>
 </BorderPane>

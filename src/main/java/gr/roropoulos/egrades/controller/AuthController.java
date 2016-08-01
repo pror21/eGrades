@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2016.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ */
+
 package gr.roropoulos.egrades.controller;
 
 import gr.roropoulos.egrades.domain.Student;
@@ -23,10 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class AuthController implements Initializable
-{
+public class AuthController implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @FXML
@@ -87,7 +94,7 @@ public class AuthController implements Initializable
     }
 
     private void loadStudentData() {
-        if(studentService.studentCheckIfExist()) {
+        if (studentService.studentCheckIfExist()) {
             University selectedUni = uniList.stream()
                     .filter(item -> item.getUniversityName().equals(studentService.studentDeSerialize().getStudentUniversity().getUniversityName()))
                     .findFirst().get();

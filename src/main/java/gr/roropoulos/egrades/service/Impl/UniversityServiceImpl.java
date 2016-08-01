@@ -16,7 +16,7 @@ import java.util.List;
 
 public class UniversityServiceImpl implements UniversityService {
 
-    public List<University> getUniversitiesList(){
+    public List<University> getUniversitiesList() {
         UniversitiesParser uniParser = new UniversitiesParserImpl();
         return uniParser.parseUniDB();
     }

@@ -56,8 +56,8 @@ public class MainController implements Initializable {
     }
 
     protected void setUISettings(Preference pref) {
-        if(pref.getSettingAutoSync()) settingAutoSyncCheckMenuItem.setSelected(true);
-        if(pref.getSettingNotifications()) settingAutoSyncCheckMenuItem.setSelected(true);
+        if (pref.getSettingAutoSync()) settingAutoSyncCheckMenuItem.setSelected(true);
+        if (pref.getSettingNotifications()) settingAutoSyncCheckMenuItem.setSelected(true);
     }
 
     @FXML
@@ -69,11 +69,11 @@ public class MainController implements Initializable {
     protected void changeStudentMenuAction(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AuthView.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
+            Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.DECORATED);
-            stage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Αλλαγή χρήστη" );
+            stage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Αλλαγή χρήστη");
             stage.setScene(new Scene(root));
             stage.setWidth(450);
             stage.setHeight(220);
@@ -88,11 +88,11 @@ public class MainController implements Initializable {
     protected void preferencesMenuAction(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PrefView.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
+            Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.DECORATED);
-            stage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Προτιμήσεις" );
+            stage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Προτιμήσεις");
             stage.setScene(new Scene(root));
             stage.setWidth(300);
             stage.setHeight(260);
@@ -112,10 +112,9 @@ public class MainController implements Initializable {
     @FXML
     protected void settingAutoSyncCheckMenuItemHandle(ActionEvent event) {
         Preference pref = preferenceService.getPreferences();
-        if(settingAutoSyncCheckMenuItem.isSelected()) {
+        if (settingAutoSyncCheckMenuItem.isSelected()) {
             pref.setSettingAutoSync(true);
-        }
-        else {
+        } else {
             pref.setSettingAutoSync(false);
         }
         preferenceService.setPreferences(pref);
@@ -124,10 +123,9 @@ public class MainController implements Initializable {
     @FXML
     protected void settingNotificationsCheckMenuItemHandle(ActionEvent event) {
         Preference pref = preferenceService.getPreferences();
-        if(settingNotificationsCheckMenuItem.isSelected()) {
+        if (settingNotificationsCheckMenuItem.isSelected()) {
             pref.setSettingNotifications(true);
-        }
-        else {
+        } else {
             pref.setSettingNotifications(false);
         }
         preferenceService.setPreferences(pref);

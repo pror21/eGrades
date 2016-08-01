@@ -41,12 +41,12 @@ public class PrefController implements Initializable {
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         pref = preferenceService.getPreferences();
 
-        TextFormatter<Integer> syncTimeFormatter = new TextFormatter<Integer>( change -> {
+        TextFormatter<Integer> syncTimeFormatter = new TextFormatter<Integer>(change -> {
             change.setText(change.getText().replaceAll("[^0-9]", ""));
             return change;
         });
 
-        TextFormatter<Integer> timeoutFormatter = new TextFormatter<Integer>( change -> {
+        TextFormatter<Integer> timeoutFormatter = new TextFormatter<Integer>(change -> {
             change.setText(change.getText().replaceAll("[^0-9]", ""));
             return change;
         });
@@ -61,26 +61,33 @@ public class PrefController implements Initializable {
     protected void setUIPreferences(Preference pref) {
         syncTimeTextField.setText(pref.getPrefSyncTime().toString());
         timeoutTextField.setText(pref.getPrefTimeout().toString());
-        if(pref.getPrefPopupNotification()) popupCheckBox.setSelected(true);
-        if(pref.getPrefSoundNotification()) soundCheckBox.setSelected(true);
-        if(pref.getPrefShowStatusBar()) statusBarCheckBox.setSelected(true);
-        if(pref.getPrefStartOnBoot()) startUpCheckBox.setSelected(true);
-        if(pref.getPrefCheckForUpdates()) checkUpdateCheckBox.setSelected(true);
-        if(pref.getPrefShowBugAlerts()) showAlertsCheckBox.setSelected(true);
-        if(pref.getPrefLogDebug()) logDebugCheckBox.setSelected(true);
+        if (pref.getPrefPopupNotification()) popupCheckBox.setSelected(true);
+        if (pref.getPrefSoundNotification()) soundCheckBox.setSelected(true);
+        if (pref.getPrefShowStatusBar()) statusBarCheckBox.setSelected(true);
+        if (pref.getPrefStartOnBoot()) startUpCheckBox.setSelected(true);
+        if (pref.getPrefCheckForUpdates()) checkUpdateCheckBox.setSelected(true);
+        if (pref.getPrefShowBugAlerts()) showAlertsCheckBox.setSelected(true);
+        if (pref.getPrefLogDebug()) logDebugCheckBox.setSelected(true);
     }
 
     @FXML
     private void savePrefButtonAction(ActionEvent event) {
         pref.setPrefSyncTime(Integer.parseInt(syncTimeTextField.getText()));
         pref.setPrefTimeout(Integer.parseInt(timeoutTextField.getText()));
-        if(popupCheckBox.isSelected()) pref.setPrefPopupNotification(true); else pref.setPrefPopupNotification(false);
-        if(soundCheckBox.isSelected()) pref.setPrefSoundNotification(true); else pref.setPrefSoundNotification(false);
-        if(statusBarCheckBox.isSelected()) pref.setPrefShowStatusBar(true); else pref.setPrefShowStatusBar(false);
-        if(startUpCheckBox.isSelected()) pref.setPrefStartOnBoot(true); else pref.setPrefStartOnBoot(false);
-        if(checkUpdateCheckBox.isSelected()) pref.setPrefCheckForUpdates(true); else pref.setPrefCheckForUpdates(false);
-        if(showAlertsCheckBox.isSelected()) pref.setPrefShowBugAlerts(true); else pref.setPrefShowBugAlerts(false);
-        if(logDebugCheckBox.isSelected()) pref.setPrefLogDebug(true); else pref.setPrefLogDebug(false);
+        if (popupCheckBox.isSelected()) pref.setPrefPopupNotification(true);
+        else pref.setPrefPopupNotification(false);
+        if (soundCheckBox.isSelected()) pref.setPrefSoundNotification(true);
+        else pref.setPrefSoundNotification(false);
+        if (statusBarCheckBox.isSelected()) pref.setPrefShowStatusBar(true);
+        else pref.setPrefShowStatusBar(false);
+        if (startUpCheckBox.isSelected()) pref.setPrefStartOnBoot(true);
+        else pref.setPrefStartOnBoot(false);
+        if (checkUpdateCheckBox.isSelected()) pref.setPrefCheckForUpdates(true);
+        else pref.setPrefCheckForUpdates(false);
+        if (showAlertsCheckBox.isSelected()) pref.setPrefShowBugAlerts(true);
+        else pref.setPrefShowBugAlerts(false);
+        if (logDebugCheckBox.isSelected()) pref.setPrefLogDebug(true);
+        else pref.setPrefLogDebug(false);
         savePreferences();
     }
 

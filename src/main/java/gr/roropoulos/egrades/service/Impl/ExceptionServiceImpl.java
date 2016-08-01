@@ -23,7 +23,7 @@ public class ExceptionServiceImpl implements ExceptionService {
     PreferenceService preferenceService = new PreferenceServiceImpl();
 
     public void showException(Exception e, String errorMessage) {
-        if(preferenceService.getPreferences().getPrefShowBugAlerts()) {
+        if (preferenceService.getPreferences().getPrefShowBugAlerts()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Σφάλμα");
             alert.setHeaderText("Συνέβει κάποιο σφάλμα (exception).");

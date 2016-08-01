@@ -13,7 +13,6 @@ import java.util.List;
 
 public class Course implements Serializable {
 
-    private enum courseType { SIMPLE, COMPOSITE, PART }
     private String courseId;
     private String courseTitle;
     private String courseSemester;
@@ -86,4 +85,6 @@ public class Course implements Serializable {
     public void setCourseExamDate(String courseExamDate) {
         this.courseExamDate = courseExamDate;
     }
+
+    private enum courseType {SIMPLE, COMPOSITE, PART}
 }

@@ -11,7 +11,8 @@ import gr.roropoulos.egrades.domain.Preference;
 
 public interface PreferenceService {
 
-    void setPreferences(Preference pref);
     Preference getPreferences();
+
+    void setPreferences(Preference pref);
 
 }

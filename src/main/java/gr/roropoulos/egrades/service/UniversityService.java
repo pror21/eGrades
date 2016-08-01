@@ -8,8 +8,6 @@
 package gr.roropoulos.egrades.service;
 
 import gr.roropoulos.egrades.domain.University;
-import gr.roropoulos.egrades.parser.Impl.UniversitiesParserImpl;
-import gr.roropoulos.egrades.parser.UniversitiesParser;
 
 import java.util.List;
 

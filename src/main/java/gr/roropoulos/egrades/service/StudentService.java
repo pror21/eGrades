@@ -12,8 +12,11 @@ import gr.roropoulos.egrades.domain.Student;
 public interface StudentService {
 
     void studentSerialize(Student student);
+
     Student studentDeSerialize();
+
     Boolean studentCheckIfExist();
+
     void studentDelete();
 
 }

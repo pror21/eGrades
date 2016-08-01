@@ -7,24 +7,14 @@
 
 package gr.roropoulos.egrades;
 
-import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
-import com.sun.org.apache.xml.internal.utils.res.StringArrayWrapper;
-import com.sun.xml.internal.fastinfoset.util.StringArray;
-import gr.roropoulos.egrades.domain.Student;
-import gr.roropoulos.egrades.domain.University;
-import gr.roropoulos.egrades.parser.CardisoftParser;
-import gr.roropoulos.egrades.parser.Impl.CardisoftParserImpl;
 import gr.roropoulos.egrades.service.Impl.StudentServiceImpl;
 import gr.roropoulos.egrades.service.StudentService;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +29,7 @@ public class eGrades extends Application {
 
     public static void main(String[] args) throws Exception {
         argsList = new ArrayList<String>(Arrays.asList(args));
-        for (String s: args) {
+        for (String s : args) {
             argsList.add(s);
         }
         launch(args);
@@ -55,17 +45,18 @@ public class eGrades extends Application {
         Integer[] windowSize = new Integer[2];
 
         StudentService studentService = new StudentServiceImpl();
-        if(studentService.studentCheckIfExist()) {
+        if (studentService.studentCheckIfExist()) {
             fxmlFile = "/fxml/MainView.fxml";
-            windowSize[0] = 640; windowSize[1] = 520;
-        }
-        else {
+            windowSize[0] = 640;
+            windowSize[1] = 520;
+        } else {
             fxmlFile = "/fxml/AuthView.fxml";
-            windowSize[0] = 450; windowSize[1] = 220;
+            windowSize[0] = 450;
+            windowSize[1] = 220;
         }
 
         loader = new FXMLLoader();
-        rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
+        rootNode = loader.load(getClass().getResourceAsStream(fxmlFile));
         scene = new Scene(rootNode, windowSize[0], windowSize[1]);
         scene.getStylesheets().add("/styles/styles.css");
         stage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion());
@@ -83,9 +74,9 @@ public class eGrades extends Application {
         stage.setResizable(false);
         System.out.println();
 
-        if(argsList.contains("-s")) {
-            stage.hide();}
-        else
+        if (argsList.contains("-s")) {
+            stage.hide();
+        } else
             stage.show();
     }
 }

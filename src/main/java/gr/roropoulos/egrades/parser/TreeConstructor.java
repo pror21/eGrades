@@ -18,8 +18,11 @@ public interface TreeConstructor {
     Map<String, String> openConnection(University uniConn, String username, String password);
 
     Document getTreeStudentInfo(University uniConn, Map<String, String> cookieJar);
+
     Document getTreeStudentGrades(University uniConn, Map<String, String> cookieJar);
+
     Document getTreeStudentRegistration(University uniConn, Map<String, String> cookieJar);
+
     Document getTreeLogoutStudent(University uniConn, Map<String, String> cookieJar);
 
 }

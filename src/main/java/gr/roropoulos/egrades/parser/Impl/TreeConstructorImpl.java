@@ -42,12 +42,12 @@ public class TreeConstructorImpl implements TreeConstructor {
 
         try {
             Jsoup.connect(uniConn.getUniversityURL())
-                .data(uniConn.getUniversityData()[0], username, uniConn.getUniversityData()[1], password, uniConn.getUniversityData()[2], uniConn.getUniversityData()[3], uniConn.getUniversityData()[4], uniConn.getUniversityData()[5])
-                .cookies(res.cookies())
-                .method(Connection.Method.POST)
-                .timeout(timeout)
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
-                .post();
+                    .data(uniConn.getUniversityData()[0], username, uniConn.getUniversityData()[1], password, uniConn.getUniversityData()[2], uniConn.getUniversityData()[3], uniConn.getUniversityData()[4], uniConn.getUniversityData()[5])
+                    .cookies(res.cookies())
+                    .method(Connection.Method.POST)
+                    .timeout(timeout)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
+                    .post();
         } catch (IOException e) {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
@@ -59,7 +59,7 @@ public class TreeConstructorImpl implements TreeConstructor {
     public Document getTreeStudentInfo(University uniConn, Map<String, String> cookieJar) {
         Document doc = null;
         try {
-            doc  = Jsoup.connect(uniConn.getUniversityURL()+"studentMain.asp")
+            doc = Jsoup.connect(uniConn.getUniversityURL() + "studentMain.asp")
                     .cookies(cookieJar)
                     .method(Connection.Method.GET)
                     .timeout(timeout)
@@ -75,7 +75,7 @@ public class TreeConstructorImpl implements TreeConstructor {
     public Document getTreeStudentGrades(University uniConn, Map<String, String> cookieJar) {
         Document doc = null;
         try {
-            doc  = Jsoup.connect(uniConn.getUniversityURL()+"stud_CResults.asp?studPg=1&mnuid=mnu3&")
+            doc = Jsoup.connect(uniConn.getUniversityURL() + "stud_CResults.asp?studPg=1&mnuid=mnu3&")
                     .cookies(cookieJar)
                     .method(Connection.Method.GET)
                     .timeout(timeout)
@@ -91,7 +91,7 @@ public class TreeConstructorImpl implements TreeConstructor {
     public Document getTreeStudentRegistration(University uniConn, Map<String, String> cookieJar) {
         Document doc = null;
         try {
-            doc  = Jsoup.connect(uniConn.getUniversityURL()+"stud_vClasses.asp?studPg=1&mnuid=diloseis;showDil&")
+            doc = Jsoup.connect(uniConn.getUniversityURL() + "stud_vClasses.asp?studPg=1&mnuid=diloseis;showDil&")
                     .cookies(cookieJar)
                     .method(Connection.Method.GET)
                     .timeout(timeout)
@@ -107,7 +107,7 @@ public class TreeConstructorImpl implements TreeConstructor {
     public Document getTreeLogoutStudent(University uniConn, Map<String, String> cookieJar) {
         Document doc = null;
         try {
-            doc  = Jsoup.connect(uniConn.getUniversityURL()+"disconnect.asp?mnuid=mnu7&")
+            doc = Jsoup.connect(uniConn.getUniversityURL() + "disconnect.asp?mnuid=mnu7&")
                     .cookies(cookieJar)
                     .method(Connection.Method.GET)
                     .timeout(timeout)

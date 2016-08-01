@@ -12,8 +12,6 @@ import gr.roropoulos.egrades.domain.Student;
 import gr.roropoulos.egrades.parser.CardisoftParser;
 import gr.roropoulos.egrades.parser.TreeConstructor;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 
 import java.util.Map;
 
