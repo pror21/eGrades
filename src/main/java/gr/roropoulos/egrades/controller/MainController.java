@@ -8,11 +8,16 @@
 package gr.roropoulos.egrades.controller;
 
 import gr.roropoulos.egrades.domain.Preference;
+import gr.roropoulos.egrades.domain.Student;
 import gr.roropoulos.egrades.eGrades;
+import gr.roropoulos.egrades.parser.CardisoftParser;
+import gr.roropoulos.egrades.parser.Impl.CardisoftParserImpl;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.Impl.ExceptionServiceImpl;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
+import gr.roropoulos.egrades.service.Impl.StudentServiceImpl;
 import gr.roropoulos.egrades.service.PreferenceService;
+import gr.roropoulos.egrades.service.StudentService;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +51,8 @@ public class MainController implements Initializable {
     private Label statusLabel, completedCoursesLabel, averageScoreLabel, creditsSumLabel, hoursSumLabel, ectsSumLabel;
 
 
+    private CardisoftParser cardisoftParser = new CardisoftParserImpl();
+    private StudentService studentService = new StudentServiceImpl();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
     private ExceptionService exceptionService = new ExceptionServiceImpl();
 
@@ -62,7 +69,8 @@ public class MainController implements Initializable {
 
     @FXML
     protected void syncMenuItemAction(ActionEvent event) {
-
+        Student student = studentService.studentDeSerialize();
+        
     }
 
     @FXML

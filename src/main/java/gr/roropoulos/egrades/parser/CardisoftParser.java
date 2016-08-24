@@ -10,13 +10,16 @@ package gr.roropoulos.egrades.parser;
 import gr.roropoulos.egrades.domain.Course;
 import gr.roropoulos.egrades.domain.Student;
 
+import java.util.HashMap;
+import java.util.List;
+
 public interface CardisoftParser {
 
-    Student parseStudentInfo(Student student);
+    HashMap<String, String> parseStudentInfo(Student student);
 
-    Student parseStudentGrades(Student student);
+    HashMap<String, List<Course>> parseStudentGrades(Student student);
 
-    Student parseStudentRegistration(Student student);
+    HashMap<String, String> parseStudentRegistration(Student student);
 
     Course parseCourse(Course course);
 }

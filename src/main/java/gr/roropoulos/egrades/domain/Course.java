@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Course implements Serializable {
+    private courseType cType = courseType.SIMPLE; // Default Type
+
+    public enum courseType {SIMPLE, COMPOSITE, PART}
 
     private String courseId;
     private String courseTitle;
@@ -21,6 +24,7 @@ public class Course implements Serializable {
     private Integer courseECTS;
     private List<Course> courseCompCourse;
     private String courseExamDate;
+    private String courseGrade;
 
     public String getCourseId() {
         return courseId;
@@ -86,5 +90,19 @@ public class Course implements Serializable {
         this.courseExamDate = courseExamDate;
     }
 
-    private enum courseType {SIMPLE, COMPOSITE, PART}
+    public String getCourseGrade() {
+        return courseGrade;
+    }
+
+    public void setCourseGrade(String courseGrade) {
+        this.courseGrade = courseGrade;
+    }
+
+    public void setCourseType(courseType type) {
+        this.cType = type;
+    }
+
+    public courseType getCourseType() {
+        return cType;
+    }
 }

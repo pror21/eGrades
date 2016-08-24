@@ -76,11 +76,12 @@ public class TreeConstructorImpl implements TreeConstructor {
         Document doc = null;
         try {
             doc = Jsoup.connect(uniConn.getUniversityURL() + "stud_CResults.asp?studPg=1&mnuid=mnu3&")
+                    .data("sortBy", "ctypeID")
                     .cookies(cookieJar)
-                    .method(Connection.Method.GET)
+                    .method(Connection.Method.POST)
                     .timeout(timeout)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
-                    .get();
+                    .post();
         } catch (IOException e) {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
