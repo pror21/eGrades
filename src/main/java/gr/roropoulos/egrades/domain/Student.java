@@ -8,6 +8,7 @@
 package gr.roropoulos.egrades.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 public class Student implements Serializable {
@@ -21,7 +22,7 @@ public class Student implements Serializable {
     private Integer studentSemester;
     private University studentUniversity;
     private List<Course> studentCourses;
-    private List<Course> studentCourseReg;
+    private HashMap<String, List<Course>> studentCourseReg;
 
     public String getStudentUsername() {
         return studentUsername;
@@ -95,11 +96,11 @@ public class Student implements Serializable {
         this.studentCourses = studentCourses;
     }
 
-    public List<Course> getStudentCourseReg() {
+    public HashMap<String, List<Course>> getStudentCourseReg() {
         return studentCourseReg;
     }
 
-    public void setStudentCourseReg(List<Course> studentCourseReg) {
+    public void setStudentCourseReg(HashMap<String, List<Course>> studentCourseReg) {
         this.studentCourseReg = studentCourseReg;
     }
 }

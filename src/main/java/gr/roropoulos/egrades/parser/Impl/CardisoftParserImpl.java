@@ -116,26 +116,16 @@ public class CardisoftParserImpl implements CardisoftParser {
         for (Element element : compCourses) {
             Course course = new Course();
 
-            // Get course ID and TITLE
             String courseIdName = element.select("td:eq(1)").text();
-            // Remove brackets for the sake of the world
             courseIdName = courseIdName.replaceAll("\\p{P}", "");
-            // Seperate ID and TITLE
             String courseIdNameArr[] = courseIdName.split(" ", 2);
-            // Get course SEMESTER
             String courseSemester = element.select("td:eq(2)").text();
-            // Get course CREDITS (DM)
             String courseCredits = element.select("td:eq(3)").text();
-            // Get course HOURS
             String courseHours = element.select("td:eq(4)").text();
-            // Get course ECTS
             String courseECTS = element.select("td:eq(5)").text();
-            // Get course GRADE
             String courseGrade = element.select("td:eq(6)").text();
-            // Get course Exam Date
             String courseExamDate = element.select("td:eq(7)").text();
 
-            // Finally set all data to the course entity
             course.setCourseType(Course.courseType.COMPOSITE);
             course.setCourseId(courseIdNameArr[0]);
             course.setCourseTitle(courseIdNameArr[1]);
@@ -146,7 +136,6 @@ public class CardisoftParserImpl implements CardisoftParser {
             course.setCourseGrade(courseGrade);
             course.setCourseExamDate(courseExamDate);
 
-            // Add course into the list
             compCourseList.add(course);
         }
 
@@ -155,24 +144,15 @@ public class CardisoftParserImpl implements CardisoftParser {
         for (Element element : partCourses) {
             Course course = new Course();
 
-            // Get course ID and TITLE
             String courseIdName = element.select("td:eq(1)").text();
-            // Remove brackets for the sake of the world
             courseIdName = courseIdName.replaceAll("\\p{P}", "");
-            // Seperate ID and TITLE
             String courseIdNameArr[] = courseIdName.split(" ", 2);
-            // Get course SEMESTER
             String courseSemester = element.select("td:eq(2)").text();
-            // Get course HOURS
             String courseHours = element.select("td:eq(4)").text();
-            // Get course ECTS
             String courseECTS = element.select("td:eq(5)").text();
-            // Get course GRADE
             String courseGrade = element.select("td:eq(6)").text();
-            // Get course Exam Date
             String courseExamDate = element.select("td:eq(7)").text();
 
-            // Finally set all data to the course entity
             course.setCourseType(Course.courseType.PART);
             course.setCourseId(courseIdNameArr[0]);
             course.setCourseTitle(courseIdNameArr[1]);
@@ -182,7 +162,6 @@ public class CardisoftParserImpl implements CardisoftParser {
             course.setCourseGrade(courseGrade);
             course.setCourseExamDate(courseExamDate);
 
-            // Add course into the list
             partCourseList.add(course);
         }
 
@@ -195,11 +174,32 @@ public class CardisoftParserImpl implements CardisoftParser {
         return allCoursesHashMap;
     }
 
-    public HashMap<String, String> parseStudentRegistration(Student student) {
+    public HashMap<String, List<String>> parseStudentRegistration(Student student) {
         Map<String, String> cookieJar = treeConstructor.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
-        Document doc = treeConstructor.getTreeStudentInfo(student.getStudentUniversity(), cookieJar);
+        Document doc = treeConstructor.getTreeStudentRegistration(student.getStudentUniversity(), cookieJar);
 
-        return new HashMap<>();
+        // Select all registrations
+        Elements allRegistrations = doc.select("tr[bgcolor=#FFFAF0");
+
+        // Iterate all registrations
+        HashMap<String, List<String>> regHashMap = new HashMap<>();
+        String regDate = new String();
+
+        for (Element element : allRegistrations) {
+            Course course = new Course();
+            List<String> regCourseIdList = new ArrayList<>();
+
+            regDate = element.select("span:eq(1)").text();
+            Elements courses = element.select("tr[height=25]");
+            for (Element regCourse : courses) {
+                String courseId = regCourse.select("td:eq(0)").text();
+                courseId = courseId.replaceAll("\\p{P}", "");
+                regCourseIdList.add(courseId);
+            }
+            regHashMap.put(regDate, regCourseIdList);
+        }
+
+        return regHashMap;
     }
 
     public Course parseCourse(Course course) {

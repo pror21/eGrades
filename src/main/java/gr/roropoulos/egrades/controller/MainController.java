@@ -70,7 +70,7 @@ public class MainController implements Initializable {
     @FXML
     protected void syncMenuItemAction(ActionEvent event) {
         Student student = studentService.studentDeSerialize();
-        
+        cardisoftParser.parseStudentRegistration(student);
     }
 
     @FXML

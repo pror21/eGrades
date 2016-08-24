@@ -19,7 +19,7 @@ public interface CardisoftParser {
 
     HashMap<String, List<Course>> parseStudentGrades(Student student);
 
-    HashMap<String, String> parseStudentRegistration(Student student);
+    HashMap<String, List<String>> parseStudentRegistration(Student student);
 
     Course parseCourse(Course course);
 }
