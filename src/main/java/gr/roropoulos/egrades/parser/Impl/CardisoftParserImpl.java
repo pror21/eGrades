@@ -11,6 +11,8 @@ import gr.roropoulos.egrades.domain.Course;
 import gr.roropoulos.egrades.domain.Student;
 import gr.roropoulos.egrades.parser.CardisoftParser;
 import gr.roropoulos.egrades.parser.TreeConstructor;
+import gr.roropoulos.egrades.service.ExceptionService;
+import gr.roropoulos.egrades.service.Impl.ExceptionServiceImpl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -23,6 +25,7 @@ import java.util.Map;
 public class CardisoftParserImpl implements CardisoftParser {
 
     private final TreeConstructor treeConstructor = new TreeConstructorImpl();
+    private ExceptionService exceptionService = new ExceptionServiceImpl();
 
     public HashMap<String, String> parseStudentInfo(Student student) {
         Map<String, String> cookieJar = treeConstructor.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
@@ -184,12 +187,14 @@ public class CardisoftParserImpl implements CardisoftParser {
         // Iterate all registrations
         HashMap<String, List<String>> regHashMap = new HashMap<>();
         String regDate = new String();
-
         for (Element element : allRegistrations) {
             Course course = new Course();
             List<String> regCourseIdList = new ArrayList<>();
 
             regDate = element.select("span:eq(1)").text();
+            // Remove junk and keep the pattern like this: 2015-2016 XEIM
+            regDate = regDate.replaceAll(" [^ ]+$", "").trim();
+
             Elements courses = element.select("tr[height=25]");
             for (Element regCourse : courses) {
                 String courseId = regCourse.select("td:eq(0)").text();
@@ -202,8 +207,4 @@ public class CardisoftParserImpl implements CardisoftParser {
         return regHashMap;
     }
 
-    public Course parseCourse(Course course) {
-
-        return new Course();
-    }
 }
