@@ -17,6 +17,7 @@ import gr.roropoulos.egrades.service.PreferenceService;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,6 +31,7 @@ public class TreeConstructorImpl implements TreeConstructor {
 
     public Map<String, String> openConnection(University uniConn, String username, String password) {
         Connection.Response res = null;
+        Document respDoc = null;
         try {
             res = Jsoup.connect(uniConn.getUniversityURL())
                     .method(Connection.Method.GET)
@@ -39,18 +41,23 @@ public class TreeConstructorImpl implements TreeConstructor {
         } catch (IOException e) {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
-
         try {
-            Jsoup.connect(uniConn.getUniversityURL())
+            respDoc = Jsoup.connect(uniConn.getUniversityURL())
                     .data(uniConn.getUniversityData()[0], username, uniConn.getUniversityData()[1], password, uniConn.getUniversityData()[2], uniConn.getUniversityData()[3], uniConn.getUniversityData()[4], uniConn.getUniversityData()[5])
                     .cookies(res.cookies())
                     .method(Connection.Method.POST)
                     .timeout(timeout)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
+                    .followRedirects(true)
                     .post();
         } catch (IOException e) {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
+
+        // Check if user failed to login
+        Element error = respDoc.select("div.error").first();
+        if (error != null)
+            exceptionService.showException(new Exception(), "Η ταυτοποιήση του χρήστη με τη γραμματεία απέτυχε. Ελέξτε το όνομα χρήστη και τον κωδικό.");
 
         Map<String, String> cookieJar = res.cookies();
         return cookieJar;
