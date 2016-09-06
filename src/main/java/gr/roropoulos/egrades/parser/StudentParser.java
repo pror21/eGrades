@@ -7,19 +7,20 @@
 
 package gr.roropoulos.egrades.parser;
 
-import gr.roropoulos.egrades.domain.Course;
-import gr.roropoulos.egrades.domain.Student;
+import gr.roropoulos.egrades.model.Course;
+import gr.roropoulos.egrades.model.Student;
 
 import java.util.HashMap;
 import java.util.List;
 
-public interface CardisoftParser {
+public interface StudentParser {
 
     HashMap<String, String> parseStudentInfo(Student student);
 
-    HashMap<String, List<Course>> parseStudentGrades(Student student);
+    List<Course> parseStudentGrades(Student student);
 
-    HashMap<String, List<String>> parseStudentRegistration(Student student);
+    HashMap<String, String> parseStudentStats(Student student);
 
-    Course parseCourse(Course course);
+    HashMap<String, String> parseStudentRegistration(Student student);
+
 }

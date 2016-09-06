@@ -7,7 +7,7 @@
 
 package gr.roropoulos.egrades.service.Impl;
 
-import gr.roropoulos.egrades.domain.Preference;
+import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.service.PreferenceService;
 
 import java.util.prefs.Preferences;

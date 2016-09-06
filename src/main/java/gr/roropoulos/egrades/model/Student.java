@@ -4,8 +4,8 @@
  *
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  */
- 
-package gr.roropoulos.egrades.domain;
+
+package gr.roropoulos.egrades.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,10 +19,11 @@ public class Student implements Serializable {
     private String studentSurname;
     private String studentAEM;
     private String studentDepartment;
-    private Integer studentSemester;
+    private String studentSemester;
     private University studentUniversity;
     private List<Course> studentCourses;
-    private HashMap<String, List<Course>> studentCourseReg;
+    private HashMap<String, String> studentLastReg;
+    private HashMap<String, String> studentStats;
 
     public String getStudentUsername() {
         return studentUsername;
@@ -72,11 +73,11 @@ public class Student implements Serializable {
         this.studentDepartment = studentDepartment;
     }
 
-    public Integer getStudentSemester() {
+    public String getStudentSemester() {
         return studentSemester;
     }
 
-    public void setStudentSemester(Integer studentSemester) {
+    public void setStudentSemester(String studentSemester) {
         this.studentSemester = studentSemester;
     }
 
@@ -96,11 +97,19 @@ public class Student implements Serializable {
         this.studentCourses = studentCourses;
     }
 
-    public HashMap<String, List<Course>> getStudentCourseReg() {
-        return studentCourseReg;
+    public HashMap<String, String> getStudentLastReg() {
+        return studentLastReg;
     }
 
-    public void setStudentCourseReg(HashMap<String, List<Course>> studentCourseReg) {
-        this.studentCourseReg = studentCourseReg;
+    public void setStudentLastReg(HashMap<String, String> studentLastReg) {
+        this.studentLastReg = studentLastReg;
+    }
+
+    public HashMap<String, String> getStudentStats() {
+        return studentStats;
+    }
+
+    public void setStudentStats(HashMap<String, String> studentStats) {
+        this.studentStats = studentStats;
     }
 }

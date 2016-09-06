@@ -7,17 +7,26 @@
 
 package gr.roropoulos.egrades;
 
+import gr.roropoulos.egrades.controller.AuthController;
+import gr.roropoulos.egrades.controller.MainController;
+import gr.roropoulos.egrades.controller.PrefController;
+import gr.roropoulos.egrades.service.ExceptionService;
+import gr.roropoulos.egrades.service.Impl.ExceptionServiceImpl;
 import gr.roropoulos.egrades.service.Impl.StudentServiceImpl;
 import gr.roropoulos.egrades.service.StudentService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +35,12 @@ public class eGrades extends Application {
 
     private static final Logger log = LoggerFactory.getLogger(eGrades.class);
     private static List<String> argsList;
+    private Stage primaryStage;
+    private BorderPane rootLayout;
+    private ExceptionService exceptionService = new ExceptionServiceImpl();
+    private StudentService studentService = new StudentServiceImpl();
+
+    private MainController mainController;
 
     public static void main(String[] args) throws Exception {
         argsList = new ArrayList<String>(Arrays.asList(args));
@@ -36,32 +51,9 @@ public class eGrades extends Application {
     }
 
     public void start(Stage stage) throws Exception {
-        String fxmlFile = null;
-        FXMLLoader loader = null;
-        Parent rootNode = null;
-        Scene scene = null;
-
-        // [0] = width, [1] = height
-        Integer[] windowSize = new Integer[2];
-
-        StudentService studentService = new StudentServiceImpl();
-        if (studentService.studentCheckIfExist()) {
-            fxmlFile = "/fxml/MainView.fxml";
-            windowSize[0] = 640;
-            windowSize[1] = 520;
-        } else {
-            fxmlFile = "/fxml/AuthView.fxml";
-            windowSize[0] = 450;
-            windowSize[1] = 220;
-        }
-
-        loader = new FXMLLoader();
-        rootNode = loader.load(getClass().getResourceAsStream(fxmlFile));
-        scene = new Scene(rootNode, windowSize[0], windowSize[1]);
-        scene.getStylesheets().add("/styles/styles.css");
-        stage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion());
-        stage.setScene(scene);
-        stage.getIcons().addAll(
+        this.primaryStage = stage;
+        this.primaryStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion());
+        primaryStage.getIcons().addAll(
                 new Image("/images/icons/Icon_96x96.png"),
                 new Image("/images/icons/Icon_48x48.png"),
                 new Image("/images/icons/Icon_36x36.png"),
@@ -69,14 +61,98 @@ public class eGrades extends Application {
                 new Image("/images/icons/Icon_24x24.png"),
                 new Image("/images/icons/Icon_16x16.png")
         );
-        stage.setWidth(windowSize[0]);
-        stage.setHeight(windowSize[1]);
-        stage.setResizable(false);
-        System.out.println();
 
-        if (argsList.contains("-s")) {
-            stage.hide();
-        } else
-            stage.show();
+        initRootLayout();
+        showMainView();
+        //TODO: START IN STEALTH
+        //if (argsList.contains("-s")){}
+    }
+
+    public void initRootLayout() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(eGrades.class.getResource("/fxml/RootLayout.fxml"));
+            rootLayout = loader.load();
+            Scene scene = new Scene(rootLayout);
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(true);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showMainView() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(eGrades.class.getResource("/fxml/MainView.fxml"));
+            BorderPane mainView = loader.load();
+            rootLayout.setCenter(mainView);
+            mainController = loader.getController();
+            mainController.setMainApp(this);
+        } catch (IOException e) {
+            exceptionService.showException(e, "Δεν βρέθηκε το FXML MainView.");
+        }
+    }
+
+    public void showAuthView() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(eGrades.class.getResource("/fxml/AuthView.fxml"));
+            AnchorPane page = loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initStyle(StageStyle.DECORATED);
+            dialogStage.initOwner(primaryStage);
+            dialogStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Αλλαγή χρήστη");
+            dialogStage.setWidth(450);
+            dialogStage.setHeight(220);
+            dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
+            dialogStage.setResizable(false);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            AuthController authController = loader.getController();
+            authController.setDialogStage(dialogStage);
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            exceptionService.showException(e, "Δεν βρέθηκε το FXML AuthfView.");
+        }
+    }
+
+    public void showPrefView() {
+        try {
+            // Load the fxml file and create a new stage for the popup dialog.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(eGrades.class.getResource("/fxml/PrefView.fxml"));
+            AnchorPane page = loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initStyle(StageStyle.DECORATED);
+            dialogStage.initOwner(primaryStage);
+            dialogStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Προτιμήσεις");
+            dialogStage.setWidth(300);
+            dialogStage.setHeight(290);
+            dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
+            dialogStage.setResizable(false);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            PrefController prefController = loader.getController();
+            prefController.setDialogStage(dialogStage);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }

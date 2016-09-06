@@ -7,8 +7,7 @@
 
 package gr.roropoulos.egrades.service.Impl;
 
-import gr.roropoulos.egrades.domain.University;
-import gr.roropoulos.egrades.parser.Impl.UniversitiesParserImpl;
+import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.parser.UniversitiesParser;
 import gr.roropoulos.egrades.service.UniversityService;
 
@@ -17,7 +16,7 @@ import java.util.List;
 public class UniversityServiceImpl implements UniversityService {
 
     public List<University> getUniversitiesList() {
-        UniversitiesParser uniParser = new UniversitiesParserImpl();
+        UniversitiesParser uniParser = new UniversitiesParser();
         return uniParser.parseUniDB();
     }
 }

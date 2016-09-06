@@ -7,7 +7,7 @@
 
 package gr.roropoulos.egrades.service;
 
-import gr.roropoulos.egrades.domain.University;
+import gr.roropoulos.egrades.model.University;
 
 import java.util.List;
 

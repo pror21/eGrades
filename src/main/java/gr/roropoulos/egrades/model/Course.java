@@ -5,10 +5,9 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  */
 
-package gr.roropoulos.egrades.domain;
+package gr.roropoulos.egrades.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Course implements Serializable {
     private courseType cType = courseType.SIMPLE; // Default Type
@@ -21,7 +20,6 @@ public class Course implements Serializable {
     private Integer courseCredits;
     private Integer courseHours;
     private Integer courseECTS;
-    private List<Course> courseCompCourse;
     private String courseExamDate;
     private String courseGrade;
 
@@ -71,14 +69,6 @@ public class Course implements Serializable {
 
     public void setCourseECTS(Integer courseECTS) {
         this.courseECTS = courseECTS;
-    }
-
-    public List<Course> getCourseCompCourse() {
-        return courseCompCourse;
-    }
-
-    public void setCourseCompCourse(List<Course> courseCompCourse) {
-        this.courseCompCourse = courseCompCourse;
     }
 
     public String getCourseExamDate() {

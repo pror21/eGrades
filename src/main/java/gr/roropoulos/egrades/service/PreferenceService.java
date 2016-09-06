@@ -7,7 +7,7 @@
 
 package gr.roropoulos.egrades.service;
 
-import gr.roropoulos.egrades.domain.Preference;
+import gr.roropoulos.egrades.model.Preference;
 
 public interface PreferenceService {
 

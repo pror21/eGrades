@@ -7,9 +7,9 @@
 
 package gr.roropoulos.egrades.parser.Impl;
 
-import gr.roropoulos.egrades.domain.Course;
-import gr.roropoulos.egrades.domain.Student;
-import gr.roropoulos.egrades.parser.CardisoftParser;
+import gr.roropoulos.egrades.model.Course;
+import gr.roropoulos.egrades.model.Student;
+import gr.roropoulos.egrades.parser.StudentParser;
 import gr.roropoulos.egrades.parser.TreeConstructor;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.Impl.ExceptionServiceImpl;
@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CardisoftParserImpl implements CardisoftParser {
+public class StudentParserImpl implements StudentParser {
 
     private final TreeConstructor treeConstructor = new TreeConstructorImpl();
     private ExceptionService exceptionService = new ExceptionServiceImpl();
@@ -48,7 +48,7 @@ public class CardisoftParserImpl implements CardisoftParser {
         return studentInfoHashMap;
     }
 
-    public HashMap<String, List<Course>> parseStudentGrades(Student student) {
+    public List<Course> parseStudentGrades(Student student) {
         Map<String, String> cookieJar = treeConstructor.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
         Document doc = treeConstructor.getTreeStudentGrades(student.getStudentUniversity(), cookieJar);
 
@@ -56,7 +56,7 @@ public class CardisoftParserImpl implements CardisoftParser {
         Elements simpleAndCompCourses = doc.select("tr[height=25][bgcolor=#fafafa]");
 
         // All SIMPLE,COMP,PART courses seperated
-        Elements partCourses = doc.select("tr[height=15][bgcolor=#fafafa][class=grayfonts]"); // select all PART courses
+        Elements partCourses = doc.select("tr[height=15][bgcolor=#fafafa]"); // select all PART courses
         Elements simpleCourses = new Elements(); // Contains all SIMPLE courses
         Elements compCourses = new Elements(); // Contains all COMP courses
 
@@ -75,15 +75,16 @@ public class CardisoftParserImpl implements CardisoftParser {
             simpleCourses.add(simpleCourse);
         }
 
+        List<Course> courseList = new ArrayList<>();
+
         // Iterate SIMPLE courses and extract data
-        List<Course> simpleCourseList = new ArrayList<>();
         for (Element element : simpleCourses) {
             Course course = new Course();
 
             // Get course ID and TITLE
             String courseIdName = element.select("td:eq(1)").text();
-            // Remove brackets for the sake of the world
-            courseIdName = courseIdName.replaceAll("\\p{P}", "");
+            // Remove parentheses
+            courseIdName = courseIdName.replaceAll("[()]", "");
             // Seperate ID and TITLE
             String courseIdNameArr[] = courseIdName.split(" ", 2);
             // Get course SEMESTER
@@ -101,7 +102,8 @@ public class CardisoftParserImpl implements CardisoftParser {
 
             // Finally set all data to the course entity
             course.setCourseType(Course.courseType.SIMPLE);
-            course.setCourseId(courseIdNameArr[0]);
+            // Also remove any whitespace
+            course.setCourseId(courseIdNameArr[0].replace("\u00A0", ""));
             course.setCourseTitle(courseIdNameArr[1]);
             course.setCourseSemester(courseSemester);
             course.setCourseCredits(Integer.parseInt(courseCredits));
@@ -111,16 +113,15 @@ public class CardisoftParserImpl implements CardisoftParser {
             course.setCourseExamDate(courseExamDate);
 
             // Add course into the list
-            simpleCourseList.add(course);
+            courseList.add(course);
         }
 
         // Iterate COMP courses and extract data
-        List<Course> compCourseList = new ArrayList<>();
         for (Element element : compCourses) {
             Course course = new Course();
 
             String courseIdName = element.select("td:eq(1)").text();
-            courseIdName = courseIdName.replaceAll("\\p{P}", "");
+            courseIdName = courseIdName.replaceAll("[()]", "");
             String courseIdNameArr[] = courseIdName.split(" ", 2);
             String courseSemester = element.select("td:eq(2)").text();
             String courseCredits = element.select("td:eq(3)").text();
@@ -130,7 +131,7 @@ public class CardisoftParserImpl implements CardisoftParser {
             String courseExamDate = element.select("td:eq(7)").text();
 
             course.setCourseType(Course.courseType.COMPOSITE);
-            course.setCourseId(courseIdNameArr[0]);
+            course.setCourseId(courseIdNameArr[0].replace("\u00A0", ""));
             course.setCourseTitle(courseIdNameArr[1]);
             course.setCourseSemester(courseSemester);
             course.setCourseCredits(Integer.parseInt(courseCredits));
@@ -139,72 +140,69 @@ public class CardisoftParserImpl implements CardisoftParser {
             course.setCourseGrade(courseGrade);
             course.setCourseExamDate(courseExamDate);
 
-            compCourseList.add(course);
+            courseList.add(course);
         }
 
-        // Iterate COMP courses and extract data
-        List<Course> partCourseList = new ArrayList<>();
+        // Iterate PART courses and assign them to their COMP courses accordingly
         for (Element element : partCourses) {
             Course course = new Course();
 
             String courseIdName = element.select("td:eq(1)").text();
-            courseIdName = courseIdName.replaceAll("\\p{P}", "");
+            courseIdName = courseIdName.replaceAll("[()]", "");
             String courseIdNameArr[] = courseIdName.split(" ", 2);
-            String courseSemester = element.select("td:eq(2)").text();
-            String courseHours = element.select("td:eq(4)").text();
-            String courseECTS = element.select("td:eq(5)").text();
-            String courseGrade = element.select("td:eq(6)").text();
-            String courseExamDate = element.select("td:eq(7)").text();
+            String courseHours = element.select("td:eq(3)").text();
+            String courseECTS = element.select("td:eq(4)").text();
+            String courseGrade = element.select("td:eq(5)").text();
+            String courseExamDate = element.select("td:eq(6)").text();
 
             course.setCourseType(Course.courseType.PART);
-            course.setCourseId(courseIdNameArr[0]);
+            course.setCourseId(courseIdNameArr[0].replace("\u00A0", ""));
             course.setCourseTitle(courseIdNameArr[1]);
-            course.setCourseSemester(courseSemester);
             course.setCourseHours(Integer.parseInt(courseHours));
             course.setCourseECTS(Integer.parseInt(courseECTS));
             course.setCourseGrade(courseGrade);
             course.setCourseExamDate(courseExamDate);
 
-            partCourseList.add(course);
+            courseList.add(course);
         }
 
-        // Put all lists to a hashmap and return it
-        HashMap<String, List<Course>> allCoursesHashMap = new HashMap<>();
-        allCoursesHashMap.put("simpleCourseList", simpleCourseList);
-        allCoursesHashMap.put("compCourseList", compCourseList);
-        allCoursesHashMap.put("partCourseList", partCourseList);
-
-        return allCoursesHashMap;
+        return courseList;
     }
 
-    public HashMap<String, List<String>> parseStudentRegistration(Student student) {
+    public HashMap<String, String> parseStudentRegistration(Student student) {
         Map<String, String> cookieJar = treeConstructor.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
         Document doc = treeConstructor.getTreeStudentRegistration(student.getStudentUniversity(), cookieJar);
 
-        // Select all registrations
-        Elements allRegistrations = doc.select("tr[bgcolor=#FFFAF0");
-
-        // Iterate all registrations
-        HashMap<String, List<String>> regHashMap = new HashMap<>();
+        Element element = doc.select("tr[bgcolor=#FFFAF0").first();
         String regDate = new String();
-        for (Element element : allRegistrations) {
-            Course course = new Course();
-            List<String> regCourseIdList = new ArrayList<>();
-
-            regDate = element.select("span:eq(1)").text();
-            // Remove junk and keep the pattern like this: 2015-2016 XEIM
-            regDate = regDate.replaceAll(" [^ ]+$", "").trim();
-
-            Elements courses = element.select("tr[height=25]");
-            for (Element regCourse : courses) {
-                String courseId = regCourse.select("td:eq(0)").text();
-                courseId = courseId.replaceAll("\\p{P}", "");
-                regCourseIdList.add(courseId);
-            }
-            regHashMap.put(regDate, regCourseIdList);
+        HashMap<String, String> regCourseMap = new HashMap<>();
+        regDate = element.select("span:eq(1)").text();
+        // Remove junk chars
+        regDate = regDate.replaceAll(" [^ ]+$", "").trim();
+        Elements courses = element.select("tr[height=25]");
+        for (Element regCourse : courses) {
+            String courseId = regCourse.select("td:eq(0)").text();
+            courseId = courseId.replaceAll("[()]", "");
+            courseId = courseId.replace("\u00A0", "");
+            String courseTitle = regCourse.select("td:eq(1) > span").text();
+            regCourseMap.put(courseId, courseTitle);
         }
+        return regCourseMap;
+    }
 
-        return regHashMap;
+    public HashMap<String, String> parseStudentStats(Student student) {
+        Map<String, String> cookieJar = treeConstructor.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
+        Document doc = treeConstructor.getTreeStudentStats(student.getStudentUniversity(), cookieJar);
+
+        Element overallStats = doc.select("tr[height=20][class=subHeaderBack]").last();
+        HashMap<String, String> studentStats = new HashMap<>();
+        studentStats.put("sumCourses", overallStats.select("td:eq(0) > b").text().replaceAll("[^\\d.]", ""));
+        studentStats.put("averageGrade", overallStats.select("span:eq(0)").text());
+        studentStats.put("sumCredits", overallStats.select("span:eq(1)").text());
+        studentStats.put("sumHours", overallStats.select("span:eq(2)").text());
+        studentStats.put("sumECTS", overallStats.select("span:eq(3)").text());
+
+        return studentStats;
     }
 
 }

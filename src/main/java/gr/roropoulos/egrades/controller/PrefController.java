@@ -7,7 +7,7 @@
 
 package gr.roropoulos.egrades.controller;
 
-import gr.roropoulos.egrades.domain.Preference;
+import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.PreferenceService;
 import javafx.event.ActionEvent;
@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 
 public class PrefController implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(PrefController.class);
+    private Stage dialogStage;
 
     @FXML
     private CheckBox popupCheckBox, soundCheckBox, statusBarCheckBox, startUpCheckBox, checkUpdateCheckBox, showAlertsCheckBox, logDebugCheckBox;
@@ -89,15 +90,19 @@ public class PrefController implements Initializable {
         if (logDebugCheckBox.isSelected()) pref.setPrefLogDebug(true);
         else pref.setPrefLogDebug(false);
         savePreferences();
+        dialogStage.close();
     }
 
     @FXML
     private void cancelPrefButtonAction(ActionEvent event) {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+        dialogStage.close();
     }
 
     private void savePreferences() {
         preferenceService.setPreferences(pref);
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
     }
 }

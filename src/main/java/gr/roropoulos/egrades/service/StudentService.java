@@ -7,7 +7,11 @@
 
 package gr.roropoulos.egrades.service;
 
-import gr.roropoulos.egrades.domain.Student;
+import gr.roropoulos.egrades.model.Course;
+import gr.roropoulos.egrades.model.Student;
+
+import java.util.HashMap;
+import java.util.List;
 
 public interface StudentService {
 
@@ -15,7 +19,31 @@ public interface StudentService {
 
     Student studentDeSerialize();
 
+    Boolean studentCheckAuthentication(Student student);
+
     Boolean studentCheckIfExist();
+
+    void studentSetInfo(HashMap<String, String> studentInfo);
+
+    HashMap<String, String> studentGetInfo();
+
+    void studentSetAllCourses(List<Course> courseList);
+
+    List<Course> studentGetAllCourses();
+
+    void studentSetStats(HashMap<String, String> studentStats);
+
+    HashMap<String, String> studentGetStats();
+
+    void studentSetSingleCourse(Course course);
+
+    Course studentGetSingleCourse(String courseId);
+
+    HashMap<String, String> studentGetLastReg();
+
+    List<Course> studentGetLastRegCourseList();
+
+    void studentSetLastReg(HashMap<String, String> regCourseMap);
 
     void studentDelete();
 

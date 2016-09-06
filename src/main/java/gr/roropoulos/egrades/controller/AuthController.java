@@ -7,8 +7,10 @@
 
 package gr.roropoulos.egrades.controller;
 
-import gr.roropoulos.egrades.domain.Student;
-import gr.roropoulos.egrades.domain.University;
+import gr.roropoulos.egrades.model.Student;
+import gr.roropoulos.egrades.model.University;
+import gr.roropoulos.egrades.parser.Impl.StudentParserImpl;
+import gr.roropoulos.egrades.parser.StudentParser;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.Impl.StudentServiceImpl;
 import gr.roropoulos.egrades.service.Impl.UniversityServiceImpl;
@@ -35,6 +37,7 @@ import java.util.ResourceBundle;
 
 public class AuthController implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
+    private Stage dialogStage;
 
     @FXML
     private ChoiceBox uniChoiceBox;
@@ -49,34 +52,39 @@ public class AuthController implements Initializable {
     private UniversityService universityService = new UniversityServiceImpl();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
     private StudentService studentService = new StudentServiceImpl();
+    private StudentParser studentParser = new StudentParserImpl();
+
     private List<University> uniList = universityService.getUniversitiesList();
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        // Sort University List Alphabetically
         uniList.sort((uni1, uni2) -> uni1.getUniversityName().compareTo(uni2.getUniversityName()));
-        // Set ChoiceBox items from List
         uniChoiceBox.getItems().setAll(uniList);
-        // Preselect the first item
         uniChoiceBox.getSelectionModel().select(0);
-        // Initialize all Handlers and bindings
         initializeHandlers();
         loadStudentData();
     }
 
     @FXML
     protected void handleOkButtonAction(ActionEvent event) {
+        MainController.getInstance().clearCourseData();
         student.setStudentUsername(usernameField.getText());
         student.setStudentPassword(passwordField.getText());
         studentService.studentSerialize(student);
 
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
+        Student student = studentService.studentDeSerialize();
+        if (studentService.studentCheckAuthentication(student)) {
+            studentService.studentSetInfo(studentParser.parseStudentInfo(student));
+            studentService.studentSetAllCourses(studentParser.parseStudentGrades(student));
+            studentService.studentSetStats(studentParser.parseStudentStats(student));
+            studentService.studentSetLastReg(studentParser.parseStudentRegistration(student));
+            MainController.getInstance().updateCourseData();
+            dialogStage.close();
+        }
     }
 
     @FXML
     protected void handleCancelButtonAction(ActionEvent event) {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+        dialogStage.close();
     }
 
     private void initializeHandlers() {
@@ -102,5 +110,9 @@ public class AuthController implements Initializable {
             usernameField.setText(studentService.studentDeSerialize().getStudentUsername());
             passwordField.setText(studentService.studentDeSerialize().getStudentPassword());
         }
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
     }
 }
