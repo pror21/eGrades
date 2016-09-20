@@ -22,6 +22,7 @@ public class Student implements Serializable {
     private String studentSemester;
     private University studentUniversity;
     private List<Course> studentCourses;
+    private List<Course> studentRecentCourses;
     private HashMap<String, String> studentLastReg;
     private HashMap<String, String> studentStats;
 
@@ -111,5 +112,13 @@ public class Student implements Serializable {
 
     public void setStudentStats(HashMap<String, String> studentStats) {
         this.studentStats = studentStats;
+    }
+
+    public List<Course> getStudentRecentCourses() {
+        return studentRecentCourses;
+    }
+
+    public void setStudentRecentCourses(List<Course> studentRecentCourses) {
+        this.studentRecentCourses = studentRecentCourses;
     }
 }

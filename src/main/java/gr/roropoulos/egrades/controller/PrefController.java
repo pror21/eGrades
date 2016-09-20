@@ -10,31 +10,30 @@ package gr.roropoulos.egrades.controller;
 import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.PreferenceService;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PrefController implements Initializable {
-    private static final Logger log = LoggerFactory.getLogger(PrefController.class);
     private Stage dialogStage;
 
     @FXML
-    private CheckBox popupCheckBox, soundCheckBox, statusBarCheckBox, startUpCheckBox, checkUpdateCheckBox, showAlertsCheckBox, logDebugCheckBox;
+    private CheckBox autoSyncCheckBox, popupNotificationCheckBox, soundNotificationCheckBox, startOnBootCheckBox,
+            enableMailerCheckBox, sslCheckBox, showErrorsCheckBox, logErrorsCheckBox, keepRunningCheckBox, showCloseAlertCheckBox;
     @FXML
-    private TextField syncTimeTextField, timeoutTextField;
+    private TextField syncRateTextField, hostnameTextField, portTextField, usernameTextField, passwordTextField,
+            fromTextField, toTextField, timeoutTextField;
     @FXML
-    private Button resetButton, saveButton, cancelButton;
-    @FXML
-    private Accordion preferencesAccordion;
-    @FXML
-    private TitledPane generalPrefTitledPane, advancedPrefTitledPane;
+    private ChoiceBox<String> popupEffectChoiceBox, soundChoiceBox;
+
 
     private Preference pref = new Preference();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
@@ -42,59 +41,90 @@ public class PrefController implements Initializable {
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         pref = preferenceService.getPreferences();
 
-        TextFormatter<Integer> syncTimeFormatter = new TextFormatter<Integer>(change -> {
+        TextFormatter<Integer> syncTimeFormatter = new TextFormatter<>(change -> {
             change.setText(change.getText().replaceAll("[^0-9]", ""));
             return change;
         });
 
-        TextFormatter<Integer> timeoutFormatter = new TextFormatter<Integer>(change -> {
+        TextFormatter<Integer> timeoutFormatter = new TextFormatter<>(change -> {
             change.setText(change.getText().replaceAll("[^0-9]", ""));
             return change;
         });
 
-        syncTimeTextField.setTextFormatter(syncTimeFormatter);
+        syncRateTextField.setTextFormatter(syncTimeFormatter);
         timeoutTextField.setTextFormatter(timeoutFormatter);
 
-        preferencesAccordion.setExpandedPane(generalPrefTitledPane);
         setUIPreferences(pref);
     }
 
-    protected void setUIPreferences(Preference pref) {
-        syncTimeTextField.setText(pref.getPrefSyncTime().toString());
-        timeoutTextField.setText(pref.getPrefTimeout().toString());
-        if (pref.getPrefPopupNotification()) popupCheckBox.setSelected(true);
-        if (pref.getPrefSoundNotification()) soundCheckBox.setSelected(true);
-        if (pref.getPrefShowStatusBar()) statusBarCheckBox.setSelected(true);
-        if (pref.getPrefStartOnBoot()) startUpCheckBox.setSelected(true);
-        if (pref.getPrefCheckForUpdates()) checkUpdateCheckBox.setSelected(true);
-        if (pref.getPrefShowBugAlerts()) showAlertsCheckBox.setSelected(true);
-        if (pref.getPrefLogDebug()) logDebugCheckBox.setSelected(true);
+    private void setUIPreferences(Preference pref) {
+        if (pref.getPrefSyncEnabled()) autoSyncCheckBox.setSelected(true);
+        if (pref.getPrefNotificationPopupEnabled()) popupNotificationCheckBox.setSelected(true);
+        if (pref.getPrefNotificationSoundEnabled()) soundNotificationCheckBox.setSelected(true);
+        if (pref.getPrefStartOnBoot()) startOnBootCheckBox.setSelected(true);
+        if (pref.getPrefKeepRunning()) keepRunningCheckBox.setSelected(true);
+        if (pref.getPrefShowCloseAlert()) showCloseAlertCheckBox.setSelected(true);
+        if (pref.getPrefMailerEnabled()) enableMailerCheckBox.setSelected(true);
+        if (pref.getPrefMailerSSL()) sslCheckBox.setSelected(true);
+        if (pref.getPrefAdvancedShowErrors()) showErrorsCheckBox.setSelected(true);
+        if (pref.getPrefAdvancedLogErrors()) logErrorsCheckBox.setSelected(true);
+
+        syncRateTextField.setText(pref.getPrefSyncTime().toString());
+        timeoutTextField.setText(pref.getPrefAdvancedTimeout().toString());
+        hostnameTextField.setText(pref.getPrefMailerHostname());
+        portTextField.setText(pref.getPrefMailerPort().toString());
+        usernameTextField.setText(pref.getPrefMailerUsername());
+        passwordTextField.setText(pref.getPrefMailerPassword());
+        fromTextField.setText(pref.getPrefMailerFrom());
+        toTextField.setText(pref.getPrefMailerTo());
+
+        popupEffectChoiceBox.setItems(FXCollections.observableArrayList("popup", "slide", "fade"));
+        popupEffectChoiceBox.getSelectionModel().select(pref.getPrefNotificationPopupAnimation());
+        soundChoiceBox.setItems(FXCollections.observableArrayList("arpeggio", "attention", "ding", "pluck"));
+        soundChoiceBox.getSelectionModel().select(pref.getPrefNotificationSound());
     }
 
     @FXML
-    private void savePrefButtonAction(ActionEvent event) {
-        pref.setPrefSyncTime(Integer.parseInt(syncTimeTextField.getText()));
-        pref.setPrefTimeout(Integer.parseInt(timeoutTextField.getText()));
-        if (popupCheckBox.isSelected()) pref.setPrefPopupNotification(true);
-        else pref.setPrefPopupNotification(false);
-        if (soundCheckBox.isSelected()) pref.setPrefSoundNotification(true);
-        else pref.setPrefSoundNotification(false);
-        if (statusBarCheckBox.isSelected()) pref.setPrefShowStatusBar(true);
-        else pref.setPrefShowStatusBar(false);
-        if (startUpCheckBox.isSelected()) pref.setPrefStartOnBoot(true);
+    private void savePrefButtonAction() {
+        if (autoSyncCheckBox.isSelected()) pref.setPrefSyncEnabled(true);
+        else pref.setPrefSyncEnabled(false);
+        if (popupNotificationCheckBox.isSelected()) pref.setPrefNotificationPopupEnabled(true);
+        else pref.setPrefNotificationPopupEnabled(false);
+        if (soundNotificationCheckBox.isSelected()) pref.setPrefNotificationSoundEnabled(true);
+        else pref.setPrefNotificationSoundEnabled(false);
+        if (startOnBootCheckBox.isSelected()) pref.setPrefStartOnBoot(true);
         else pref.setPrefStartOnBoot(false);
-        if (checkUpdateCheckBox.isSelected()) pref.setPrefCheckForUpdates(true);
-        else pref.setPrefCheckForUpdates(false);
-        if (showAlertsCheckBox.isSelected()) pref.setPrefShowBugAlerts(true);
-        else pref.setPrefShowBugAlerts(false);
-        if (logDebugCheckBox.isSelected()) pref.setPrefLogDebug(true);
-        else pref.setPrefLogDebug(false);
+        if (keepRunningCheckBox.isSelected()) pref.setPrefKeepRunning(true);
+        else pref.setPrefStartOnBoot(false);
+        if (showCloseAlertCheckBox.isSelected()) pref.setPrefShowCloseAlert(true);
+        else pref.setPrefShowCloseAlert(false);
+        if (enableMailerCheckBox.isSelected()) pref.setPrefMailerEnabled(true);
+        else pref.setPrefMailerEnabled(false);
+        if (sslCheckBox.isSelected()) pref.setPrefMailerSSL(true);
+        else pref.setPrefMailerSSL(false);
+        if (showErrorsCheckBox.isSelected()) pref.setPrefAdvancedShowErrors(true);
+        else pref.setPrefAdvancedShowErrors(false);
+        if (logErrorsCheckBox.isSelected()) pref.setPrefAdvancedLogErrors(true);
+        else pref.setPrefAdvancedLogErrors(false);
+
+        pref.setPrefSyncTime(Integer.parseInt(syncRateTextField.getText()));
+        pref.setPrefAdvancedTimeout(Integer.parseInt(timeoutTextField.getText()));
+        pref.setPrefMailerHostname(hostnameTextField.getText());
+        pref.setPrefMailerPort(Integer.parseInt(portTextField.getText()));
+        pref.setPrefMailerUsername(usernameTextField.getText());
+        pref.setPrefMailerPassword(passwordTextField.getText());
+        pref.setPrefMailerFrom(fromTextField.getText());
+        pref.setPrefMailerTo(toTextField.getText());
+
+        pref.setPrefNotificationPopupAnimation(popupEffectChoiceBox.getValue());
+        pref.setPrefNotificationSound(soundChoiceBox.getValue());
+
         savePreferences();
         dialogStage.close();
     }
 
     @FXML
-    private void cancelPrefButtonAction(ActionEvent event) {
+    private void cancelPrefButtonAction() {
         dialogStage.close();
     }
 

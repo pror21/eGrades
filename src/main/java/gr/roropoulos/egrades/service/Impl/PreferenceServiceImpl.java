@@ -19,33 +19,63 @@ public class PreferenceServiceImpl implements PreferenceService {
     public Preference getPreferences() {
         Preference pref = new Preference();
         prefs = Preferences.userRoot().node("egrades/preferences");
+
+        pref.setPrefSyncEnabled(prefs.getBoolean("prefSyncEnabled", true));
         pref.setPrefSyncTime(prefs.getInt("prefSyncTime", 30));
-        pref.setPrefPopupNotification(prefs.getBoolean("prefPopupNotification", true));
-        pref.setPrefSoundNotification(prefs.getBoolean("prefSoundNotification", false));
-        pref.setPrefShowStatusBar(prefs.getBoolean("prefShowStatusBar", true));
+
+        pref.setPrefNotificationPopupEnabled(prefs.getBoolean("prefNotificationPopupEnabled", true));
+        pref.setPrefNotificationPopupAnimation(prefs.get("prefNotificationPopupAnimation", "popup"));
+        pref.setPrefNotificationSoundEnabled(prefs.getBoolean("prefNotificationSoundEnabled", false));
+        pref.setPrefNotificationSound(prefs.get("prefNotificationSound", "arpeggio"));
+
+        pref.setPrefMailerEnabled(prefs.getBoolean("prefMailerEnabled", false));
+        pref.setPrefMailerHostname(prefs.get("prefMailerHostname", "smtp.gmail.com"));
+        pref.setPrefMailerPort(prefs.getInt("prefMailerPort", 465));
+        pref.setPrefMailerUsername(prefs.get("prefMailerUsername", ""));
+        pref.setPrefMailerPassword(prefs.get("prefMailerPassword", ""));
+        pref.setPrefMailerSSL(prefs.getBoolean("prefMailerSsl", true));
+        pref.setPrefMailerFrom(prefs.get("prefMailerFrom", ""));
+        pref.setPrefMailerTo(prefs.get("prefMailerTo", ""));
+
         pref.setPrefStartOnBoot(prefs.getBoolean("prefStartOnBoot", true));
-        pref.setPrefCheckForUpdates(prefs.getBoolean("prefCheckForUpdates", true));
-        pref.setPrefTimeout(prefs.getInt("prefTimeout", 20000));
-        pref.setPrefShowBugAlerts(prefs.getBoolean("prefShowBugAlerts", false));
-        pref.setPrefLogDebug(prefs.getBoolean("prefLogDebug", false));
-        pref.setSettingAutoSync(prefs.getBoolean("settingAutoSync", true));
-        pref.setSettingNotifications(prefs.getBoolean("settingNotifications", true));
+        pref.setPrefKeepRunning(prefs.getBoolean("prefKeepRunning", true));
+        pref.setPrefShowCloseAlert(prefs.getBoolean("prefShowCloseAlert", false));
+
+        pref.setPrefAdvancedTimeout(prefs.getInt("prefTimeout", 20000));
+        pref.setPrefAdvancedShowErrors(prefs.getBoolean("prefShowBugAlerts", false));
+        pref.setPrefAdvancedLogErrors(prefs.getBoolean("prefLogDebug", false));
+
         return pref;
     }
 
     public void setPreferences(Preference pref) {
         prefs = Preferences.userRoot().node("egrades/preferences");
+
+        prefs.putBoolean("prefSyncEnabled", pref.getPrefSyncEnabled());
         prefs.putInt("prefSyncTime", pref.getPrefSyncTime());
-        prefs.putBoolean("prefPopupNotification", pref.getPrefPopupNotification());
-        prefs.putBoolean("prefSoundNotification", pref.getPrefSoundNotification());
-        prefs.putBoolean("prefShowStatusBar", pref.getPrefShowStatusBar());
+
+        prefs.putBoolean("prefNotificationPopupEnabled", pref.getPrefNotificationPopupEnabled());
+        prefs.put("prefNotificationPopupAnimation", pref.getPrefNotificationPopupAnimation());
+        prefs.putBoolean("prefNotificationSoundEnabled", pref.getPrefNotificationSoundEnabled());
+        prefs.put("prefNotificationSound", pref.getPrefNotificationSound());
+
         prefs.putBoolean("prefStartOnBoot", pref.getPrefStartOnBoot());
-        prefs.putBoolean("prefCheckForUpdates", pref.getPrefCheckForUpdates());
-        prefs.putInt("prefTimeout", pref.getPrefTimeout());
-        prefs.putBoolean("prefShowBugAlerts", pref.getPrefShowBugAlerts());
-        prefs.putBoolean("prefLogDebug", pref.getPrefLogDebug());
-        prefs.putBoolean("settingAutoSync", pref.getSettingAutoSync());
-        prefs.putBoolean("settingNotifications", pref.getSettingNotifications());
+
+        prefs.putBoolean("prefMailerEnabled", pref.getPrefMailerEnabled());
+        prefs.put("prefMailerHostname", pref.getPrefMailerHostname());
+        prefs.putInt("prefMailerPort", pref.getPrefMailerPort());
+        prefs.put("prefMailerUsername", pref.getPrefMailerUsername());
+        prefs.put("prefMailerPassword", pref.getPrefMailerPassword());
+        prefs.putBoolean("prefMailerSsl", pref.getPrefMailerSSL());
+        prefs.put("prefMailerFrom", pref.getPrefMailerFrom());
+        prefs.put("prefMailerTo", pref.getPrefMailerTo());
+
+        prefs.putBoolean("prefKeepRunning", pref.getPrefKeepRunning());
+        prefs.putBoolean("prefShowCloseAlert", pref.getPrefShowCloseAlert());
+
+        prefs.putInt("prefTimeout", pref.getPrefAdvancedTimeout());
+        prefs.putBoolean("prefShowBugAlerts", pref.getPrefAdvancedShowErrors());
+        prefs.putBoolean("prefLogDebug", pref.getPrefAdvancedLogErrors());
     }
 
 }

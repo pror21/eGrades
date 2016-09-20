@@ -9,11 +9,11 @@
 package gr.roropoulos.egrades.parser.Impl;
 
 import gr.roropoulos.egrades.model.University;
-import gr.roropoulos.egrades.parser.TreeConstructor;
+import gr.roropoulos.egrades.parser.DocumentParser;
 import gr.roropoulos.egrades.service.ExceptionService;
-import gr.roropoulos.egrades.service.Impl.ExceptionServiceImpl;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.PreferenceService;
+import javafx.scene.control.Alert;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,11 +22,11 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.util.Map;
 
-public class TreeConstructorImpl implements TreeConstructor {
+public class CardisoftDocumentParserImpl implements DocumentParser {
 
-    private ExceptionService exceptionService = new ExceptionServiceImpl();
+    private ExceptionService exceptionService = new ExceptionService();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
-    private Integer timeout = preferenceService.getPreferences().getPrefTimeout();
+    private Integer timeout = preferenceService.getPreferences().getPrefAdvancedTimeout();
 
     public Map<String, String> openConnection(University uniConn, String username, String password) {
         Connection.Response res = null;
@@ -59,7 +59,12 @@ public class TreeConstructorImpl implements TreeConstructor {
         Element error = respDoc.select("div.error").first();
         if (error != null) {
             cookieJar = null;
-            exceptionService.showException(new Exception(), "Η ταυτοποιήση του χρήστη με τη γραμματεία απέτυχε. Ελέξτε το όνομα χρήστη και τον κωδικό.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Λάθος όνομα ή κωδικός χρήστη");
+            alert.setHeaderText("Η ταυτοποιήση απέτυχε");
+            alert.setContentText("Ελέξτε το όνομα χρήστη και τον κωδικό.!");
+
+            alert.showAndWait();
         } else
             cookieJar = res.cookies();
 

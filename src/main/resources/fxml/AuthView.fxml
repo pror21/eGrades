@@ -26,9 +26,7 @@
                 <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true"
                            GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0"
                            GridPane.valignment="TOP">
-                    <image>
                         <Image url="@/images/Key_48x48.png"/>
-                    </image>
                     <GridPane.margin>
                         <Insets/>
                     </GridPane.margin>

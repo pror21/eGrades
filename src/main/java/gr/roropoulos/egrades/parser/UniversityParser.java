@@ -9,7 +9,6 @@ package gr.roropoulos.egrades.parser;
 
 import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.service.ExceptionService;
-import gr.roropoulos.egrades.service.Impl.ExceptionServiceImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -22,9 +21,9 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UniversitiesParser {
+public class UniversityParser {
 
-    private ExceptionService exceptionService = new ExceptionServiceImpl();
+    private ExceptionService exceptionService = new ExceptionService();
 
     public List<University> parseUniDB() {
 

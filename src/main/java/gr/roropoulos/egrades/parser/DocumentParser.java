@@ -12,7 +12,7 @@ import org.jsoup.nodes.Document;
 
 import java.util.Map;
 
-public interface TreeConstructor {
+public interface DocumentParser {
 
     Map<String, String> openConnection(University uniConn, String username, String password);
 

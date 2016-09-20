@@ -7,20 +7,23 @@
 
 package gr.roropoulos.egrades.controller;
 
+import com.github.plushaze.traynotification.animations.Animations;
+import com.github.plushaze.traynotification.notification.Notifications;
 import gr.roropoulos.egrades.eGrades;
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.model.Student;
-import gr.roropoulos.egrades.parser.Impl.StudentParserImpl;
+import gr.roropoulos.egrades.notifier.GradeNotifier;
+import gr.roropoulos.egrades.parser.Impl.CardisoftStudentParserImpl;
 import gr.roropoulos.egrades.parser.StudentParser;
+import gr.roropoulos.egrades.scheduler.SyncScheduler;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
-import gr.roropoulos.egrades.service.Impl.StudentServiceImpl;
+import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
 import gr.roropoulos.egrades.service.PreferenceService;
-import gr.roropoulos.egrades.service.StudentService;
+import gr.roropoulos.egrades.service.SerializeService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -29,83 +32,82 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import org.controlsfx.control.StatusBar;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
-    private eGrades mainApp;
-    private static MainController instance;
-
     @FXML
     private BorderPane borderPane;
-
     @FXML
-    private CheckMenuItem settingAutoSyncCheckMenuItem, settingNotificationsCheckMenuItem;
-
+    private TableView<Course> coursesTableView, lastRegTableView, recentTableView;
     @FXML
-    private TableView coursesTableView, lastRegTableView;
-
-    @FXML
-    private TableColumn idCoursesTableColumn, titleCoursesTableColumn, gradeCoursesTableColumn, creditsCoursesTableColumn,
+    private TableColumn<Course, String> idCoursesTableColumn, titleCoursesTableColumn, gradeCoursesTableColumn, creditsCoursesTableColumn,
             hoursCoursesTableColumn, ectsCoursesTableColumn, examDateCoursesTableColumn, semesterCoursesTableColumn,
-            regCourseIdTableColumn, regCourseITitleableColumn, regCourseGradeTableColumn, regCourseSemesterTableColumn,
-            regCourseCreditsTableColumn, regCourseHoursTableColumn;
-
-    // StatusBar components
-    private ObservableList dataCourses;
-    private ObservableList dataReg;
+            regCourseIdTableColumn, regCourseTitleTableColumn, regCourseGradeTableColumn, regCourseSemesterTableColumn,
+            regCourseCreditsTableColumn, regCourseHoursTableColumn, recentCourseIdTableColumn, recentCourseTitleTableColumn,
+            recentCourseGradeTableColumn, recentCourseCreditsTableColumn, recentCourseHoursTableColumn, recentCourseEctsTableColumn,
+            recentCourseExamDateTableColumn, recentCourseSemesterTableColumn;
     private StatusBar statusBar;
-    private ProgressIndicator progressIndicator;
     private Label statusLabel, studentNameStatusLabel, studentAEMStatusLabel, coursesStatusLabel, gradeStatusLabel,
             creditsStatusLabel, hoursStatusLabel, ectsStatusLabel;
 
-    // Services & Repos
-    private StudentParser studentParser = new StudentParserImpl();
-    private StudentService studentService = new StudentServiceImpl();
+    private eGrades mainApp;
+    private static MainController instance;
+
+    private SerializeService serializeService = new SerializeServiceImpl();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
+    private SyncScheduler syncScheduler = new SyncScheduler();
+    private StudentParser studentParser = new CardisoftStudentParserImpl();
 
     public MainController() {
         instance = this;
     }
-
     public static MainController getInstance() {
         return instance;
     }
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         Platform.setImplicitExit(false);
+        Preference prefs = preferenceService.getPreferences();
+        createStatusBar();
 
-        Preference pref = preferenceService.getPreferences();
-        setUISettings(pref);
-        setStatusBar();
-        if (studentService.studentCheckIfExist()) {
-            updateCourseData();
+        if (serializeService.checkIfSerializedFileExist()) {
+            updateAllViewComponents();
+            autoSync(prefs);
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("eGrades");
-            alert.setHeaderText("Φαίνεται πως είναι η πρώτη φορά που εκτελείτε την εφαρμογή eGrades!");
+            alert.setHeaderText("Πρώτη εκτέλεση του eGrades!");
             alert.setContentText(
-                    "Για να ξεκινήσετε πλοηγηθήτε στο μενού Αρχείο > Λογαριασμός Φοιτητή και πληκτρολογήστε τα στοιχεία σας " +
+                    "Για να ξεκινήσετε πληκτρολογήστε τα στοιχεία σας στην φόρμα που θα ακολουθήσει μετά απο αυτή " +
                             "ώστε να γίνει η ταυτοποιήση με την γραμματεία σας."
             );
-            alert.show();
+            ButtonType okButton = new ButtonType("OK");
+            alert.getButtonTypes().setAll(okButton);
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == okButton) {
+                Platform.runLater(() -> mainApp.showAuthView());
+            }
+
         }
     }
 
-    public void updateCourseData() {
-        setRegTableView();
-        setCoursesTableView();
-        updateStatusBar();
-        loadTableViewReg();
-        loadTableViewCourses();
+    private void autoSync(Preference prefs) {
+        if (prefs.getPrefSyncEnabled())
+            syncScheduler.startSyncScheduler(prefs.getPrefSyncTime());
     }
 
-    public void clearCourseData() {
+    void updateAllViewComponents() {
+        setColorOnAllGradeCells();
+        updateStatusBar();
+        setTableViewReg();
+        setTableViewCourses();
+        //setTableViewRecent();
+    }
+
+    void clearCourseData() {
         lastRegTableView.getItems().clear();
         coursesTableView.getItems().clear();
         studentNameStatusLabel.setText("---");
@@ -117,69 +119,40 @@ public class MainController implements Initializable {
         ectsStatusLabel.setText("---");
     }
 
-    private void setRegTableView() {
-        regCourseGradeTableColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
-            public TableCell call(TableColumn param) {
-                return new TableCell<String, String>() {
+    private void setColorOnAllGradeCells() {
+        List<TableColumn> tableColumnList = new ArrayList<>();
+        tableColumnList.add(regCourseGradeTableColumn);
+        tableColumnList.add(gradeCoursesTableColumn);
 
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (!empty) {
-                            try {
-                                float val = Float.parseFloat(item.replace(',', '.'));
-                                if (val >= 5)
-                                    this.setTextFill(Color.GREEN);
-                                else if (val < 5)
-                                    this.setTextFill(Color.RED);
-                            } catch (NumberFormatException e) {
-                                // shhhh.. :)
-                            }
+        for (TableColumn tableColumn : tableColumnList) {
+            tableColumn.setCellFactory(column -> new TableCell<Course, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        try {
+                            float val = Float.parseFloat(item.replace(',', '.'));
+                            if (val >= 5)
+                                this.setTextFill(Color.GREEN);
+                            else if (val < 5)
+                                this.setTextFill(Color.RED);
+                        } catch (NumberFormatException e) {
+                            // shhhh.. :)
                         }
-                        setText(item);
                     }
-                };
-            }
-        });
+                    setText(item);
+                }
+            });
+        }
     }
 
-    private void setCoursesTableView() {
-        gradeCoursesTableColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
-            public TableCell call(TableColumn param) {
-                return new TableCell<String, String>() {
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (!empty) {
-                            try {
-                                float val = Float.parseFloat(item.replace(',', '.'));
-                                if (val >= 5)
-                                    this.setTextFill(Color.GREEN);
-                                else if (val < 5)
-                                    this.setTextFill(Color.RED);
-                            } catch (NumberFormatException e) {
-                                // shhhh.. :)
-                            }
-                        }
-                        setText(item);
-                    }
-                };
-            }
-        });
-    }
-
-    private void setStatusBar() {
+    private void createStatusBar() {
         statusBar = new StatusBar();
         statusBar.setText("");
         statusBar.setMaxHeight(20);
-        progressIndicator = new ProgressIndicator();
-        progressIndicator.setVisible(false);
-        statusBar.getLeftItems().add(progressIndicator);
-        statusBar.getLeftItems().add(new Label("Κατάσταση: "));
         statusLabel = new Label("Σε αναμονή");
         statusBar.getLeftItems().add(statusLabel);
 
-        // student overall status stats
         Label courses = new Label(" Περασμένα: ");
         Label mo = new Label(" ΜΟ: ");
         Label cr = new Label(" ΔΜ: ");
@@ -226,8 +199,8 @@ public class MainController implements Initializable {
     }
 
     private void updateStatusBar() {
-        HashMap<String, String> studentInfo = studentService.studentGetInfo();
-        HashMap<String, String> studentStats = studentService.studentGetStats();
+        HashMap<String, String> studentInfo = serializeService.deserializeInfo();
+        HashMap<String, String> studentStats = serializeService.deserializeStats();
 
         studentNameStatusLabel.setText(studentInfo.get("studentName") + " " + studentInfo.get("studentSurname"));
         studentAEMStatusLabel.setText(" " + "(" + studentInfo.get("studentAEM") + ")");
@@ -239,95 +212,173 @@ public class MainController implements Initializable {
         borderPane.setBottom(statusBar);
     }
 
-    private void setUISettings(Preference pref) {
-        if (pref.getSettingAutoSync()) settingAutoSyncCheckMenuItem.setSelected(true);
-        if (pref.getSettingNotifications()) settingAutoSyncCheckMenuItem.setSelected(true);
-    }
-
     private ObservableList getInitialCourseTableData() {
-        List<Course> courseList = studentService.studentGetAllCourses();
-        ObservableList data = FXCollections.observableList(courseList);
-        return data;
+        List<Course> courseList = serializeService.deserializeCourses();
+        return FXCollections.observableList(courseList);
     }
 
     private ObservableList getInitialRegTableData() {
-        List<Course> regList = studentService.studentGetLastRegCourseList();
-        ObservableList dataReg = FXCollections.observableList(regList);
-        return dataReg;
+        List<Course> regList = serializeService.deserializeLastRegisterCourseList();
+        return FXCollections.observableList(regList);
     }
 
-    private void loadTableViewReg() {
-        dataReg = getInitialRegTableData();
+    private ObservableList getInitialRecentTableData() {
+        List<Course> recentList = serializeService.deserializeRecentCourses();
+        return FXCollections.observableList(recentList);
+    }
+
+    private void setTableViewReg() {
+        ObservableList dataReg = getInitialRegTableData();
         lastRegTableView.setItems(dataReg);
-        regCourseIdTableColumn.setCellValueFactory(new PropertyValueFactory("courseId"));
-        regCourseITitleableColumn.setCellValueFactory(new PropertyValueFactory("courseTitle"));
-        regCourseGradeTableColumn.setCellValueFactory(new PropertyValueFactory("courseGrade"));
-        regCourseCreditsTableColumn.setCellValueFactory(new PropertyValueFactory("courseCredits"));
-        regCourseHoursTableColumn.setCellValueFactory(new PropertyValueFactory("courseHours"));
-        regCourseSemesterTableColumn.setCellValueFactory(new PropertyValueFactory("courseSemester"));
+        regCourseIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseId"));
+        regCourseTitleTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseTitle"));
+        regCourseGradeTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseGrade"));
+        regCourseCreditsTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseCredits"));
+        regCourseHoursTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseHours"));
+        regCourseSemesterTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseSemester"));
         lastRegTableView.getSortOrder().add(regCourseIdTableColumn);
     }
 
-    private void loadTableViewCourses() {
-        dataCourses = getInitialCourseTableData();
+    private void setTableViewCourses() {
+        ObservableList dataCourses = getInitialCourseTableData();
         coursesTableView.setItems(dataCourses);
-        idCoursesTableColumn.setCellValueFactory(new PropertyValueFactory("courseId"));
-        titleCoursesTableColumn.setCellValueFactory(new PropertyValueFactory("courseTitle"));
-        gradeCoursesTableColumn.setCellValueFactory(new PropertyValueFactory("courseGrade"));
-        creditsCoursesTableColumn.setCellValueFactory(new PropertyValueFactory("courseCredits"));
-        hoursCoursesTableColumn.setCellValueFactory(new PropertyValueFactory("courseHours"));
-        ectsCoursesTableColumn.setCellValueFactory(new PropertyValueFactory("courseECTS"));
-        examDateCoursesTableColumn.setCellValueFactory(new PropertyValueFactory("courseExamDate"));
-        semesterCoursesTableColumn.setCellValueFactory(new PropertyValueFactory("courseSemester"));
+        idCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseId"));
+        titleCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseTitle"));
+        gradeCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseGrade"));
+        creditsCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseCredits"));
+        hoursCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseHours"));
+        ectsCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseECTS"));
+        examDateCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseExamDate"));
+        semesterCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseSemester"));
         coursesTableView.getSortOrder().add(idCoursesTableColumn);
     }
 
-    @FXML
-    private void syncMenuItemAction(ActionEvent event) {
-        Student student = studentService.studentDeSerialize();
-        studentService.studentSetAllCourses(studentParser.parseStudentGrades(student));
-        studentService.studentSetStats(studentParser.parseStudentStats(student));
+    private void setTableViewRecent() {
+        ObservableList dataCourses = getInitialRecentTableData();
+        recentTableView.setItems(dataCourses);
+        recentCourseIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseId"));
+        recentCourseTitleTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseTitle"));
+        recentCourseGradeTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseGrade"));
+        recentCourseCreditsTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseCredits"));
+        recentCourseHoursTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseHours"));
+        recentCourseEctsTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseECTS"));
+        recentCourseExamDateTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseExamDate"));
+        recentCourseSemesterTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseSemester"));
     }
 
     @FXML
-    private void changeStudentMenuAction(ActionEvent event) {
+    private void syncToolBarButtonAction() {
+        syncCourses();
+        updateAllViewComponents();
+    }
+
+    @FXML
+    private void changeStudentToolBarButton() {
         mainApp.showAuthView();
     }
 
     @FXML
-    private void preferencesMenuAction(ActionEvent event) {
+    private void preferencesToolBarButton() {
         mainApp.showPrefView();
     }
 
     @FXML
-    private void exitMenuAction(ActionEvent event) {
-
-        Platform.exit();
+    private void exitToolBarButton() {
+        showCloseAlert();
     }
 
-    @FXML
-    private void settingAutoSyncCheckMenuItemHandle(ActionEvent event) {
-        Preference pref = preferenceService.getPreferences();
-        if (settingAutoSyncCheckMenuItem.isSelected()) {
-            pref.setSettingAutoSync(true);
-        } else {
-            pref.setSettingAutoSync(false);
+    private void showCloseAlert() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Υπενθύμιση");
+        alert.setHeaderText("Επιβεβαίωση διακοπής.");
+        alert.setContentText("Η εφαρμογή θα συνεχίσει να τρέχει στο παρασκήνιο \r\n" +
+                "και θα λαμβάνετε τυχόν ειδοποιήσεις.\r\n"
+                + "\r\n" +
+                "Για την απενεργοποίηση αυτής της υπενθύμισης ανατρέξτε στις ρυθμίσεις.\r\n");
+        ButtonType stopButton = new ButtonType("Διακοπή");
+        ButtonType cancelButton = new ButtonType("Ακύρωση", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType okButton = new ButtonType("Εντάξει", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(stopButton, cancelButton, okButton);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == okButton)
+            mainApp.getPrimaryStage().hide();
+        else if (result.get() == stopButton)
+            mainApp.stopApplication();
+        else if (result.get() == cancelButton) {
         }
-        preferenceService.setPreferences(pref);
     }
 
-    @FXML
-    private void settingNotificationsCheckMenuItemHandle(ActionEvent event) {
+    public void syncCourses() {
+        GradeNotifier gradeNotifier = new GradeNotifier();
         Preference pref = preferenceService.getPreferences();
-        if (settingNotificationsCheckMenuItem.isSelected()) {
-            pref.setSettingNotifications(true);
-        } else {
-            pref.setSettingNotifications(false);
+
+        HashMap<String, List<Course>> hashMap = getNewlyListedCourses();
+        List<Course> newList = hashMap.get("newList");
+        List<Course> newlyListedGradeList = hashMap.get("newGradeCourseList");
+
+        if (pref.getPrefNotificationPopupEnabled()) {
+            Animations animation;
+            switch (pref.getPrefNotificationPopupAnimation()) {
+                case "popup":
+                    animation = Animations.POPUP;
+                    break;
+                case "slide":
+                    animation = Animations.SLIDE;
+                    break;
+                case "fade":
+                    animation = Animations.FADE;
+                    break;
+                default:
+                    animation = Animations.POPUP;
+            }
+
+            if (!newlyListedGradeList.isEmpty()) {
+                for (Course course : newlyListedGradeList) {
+                    float val = Float.parseFloat(course.getCourseGrade().replace(',', '.'));
+                    if (val >= 5) {
+                        gradeNotifier.showNotification(course.getCourseTitle(),
+                                "Πέρασες το μάθημα με βαθμό " + course.getCourseGrade(), Notifications.SUCCESS, animation);
+                    } else {
+                        gradeNotifier.showNotification(course.getCourseTitle(),
+                                "Κόπηκες με βαθμό " + course.getCourseGrade(), Notifications.ERROR, animation);
+                    }
+                }
+            }
         }
-        preferenceService.setPreferences(pref);
+
+        serializeService.serializeCourses(newList);
+        serializeService.serializeRecentCourses(newlyListedGradeList);
+        serializeService.serializeStats(studentParser.parseStudentStats());
+    }
+
+    public HashMap<String, List<Course>> getNewlyListedCourses() {
+        Student student = serializeService.deserializeStudent();
+
+        List<Course> oldList = serializeService.deserializeCourses();
+        List<Course> newList = studentParser.parseStudentGrades();
+        List<Course> newGradeCourseList = new ArrayList<>();
+
+        for (Course course : oldList) {
+            for (Course courseNew : newList) {
+                if (Objects.equals(course.getCourseId(), courseNew.getCourseId()) && Objects.equals(course.getCourseTitle(), courseNew.getCourseTitle())) {
+                    if (!Objects.equals(course.getCourseExamDate(), courseNew.getCourseExamDate())) {
+                        newGradeCourseList.add(courseNew);
+                    }
+                }
+            }
+        }
+        HashMap<String, List<Course>> hashMap = new HashMap<>();
+        hashMap.put("newList", newList);
+        hashMap.put("newGradeCourseList", newGradeCourseList);
+
+        return hashMap;
     }
 
     public void setMainApp(eGrades mainApp) {
         this.mainApp = mainApp;
+    }
+
+    public void setCountdownTimeLabel(int hours, int minutes, int seconds) {
+        statusLabel.setText("Επόμενος συγχρονισμός σε: " + hours + ":" + minutes + ":" + seconds);
     }
 }

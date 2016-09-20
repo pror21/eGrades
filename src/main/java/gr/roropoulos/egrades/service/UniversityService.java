@@ -8,11 +8,14 @@
 package gr.roropoulos.egrades.service;
 
 import gr.roropoulos.egrades.model.University;
+import gr.roropoulos.egrades.parser.UniversityParser;
 
 import java.util.List;
 
-public interface UniversityService {
+public class UniversityService {
 
-    List<University> getUniversitiesList();
-
+    public List<University> getUniversitiesList() {
+        UniversityParser uniParser = new UniversityParser();
+        return uniParser.parseUniDB();
+    }
 }

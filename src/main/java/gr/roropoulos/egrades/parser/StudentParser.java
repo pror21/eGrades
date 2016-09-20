@@ -17,10 +17,10 @@ public interface StudentParser {
 
     HashMap<String, String> parseStudentInfo(Student student);
 
-    List<Course> parseStudentGrades(Student student);
+    List<Course> parseStudentGrades();
 
-    HashMap<String, String> parseStudentStats(Student student);
+    HashMap<String, String> parseStudentStats();
 
-    HashMap<String, String> parseStudentRegistration(Student student);
+    HashMap<String, String> parseStudentRegistration();
 
 }

@@ -11,10 +11,10 @@ import gr.roropoulos.egrades.controller.AuthController;
 import gr.roropoulos.egrades.controller.MainController;
 import gr.roropoulos.egrades.controller.PrefController;
 import gr.roropoulos.egrades.service.ExceptionService;
-import gr.roropoulos.egrades.service.Impl.ExceptionServiceImpl;
-import gr.roropoulos.egrades.service.Impl.StudentServiceImpl;
-import gr.roropoulos.egrades.service.StudentService;
+import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
+import gr.roropoulos.egrades.service.SerializeService;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -37,8 +37,8 @@ public class eGrades extends Application {
     private static List<String> argsList;
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private ExceptionService exceptionService = new ExceptionServiceImpl();
-    private StudentService studentService = new StudentServiceImpl();
+    private ExceptionService exceptionService = new ExceptionService();
+    private SerializeService serializeService = new SerializeServiceImpl();
 
     private MainController mainController;
 
@@ -97,12 +97,10 @@ public class eGrades extends Application {
 
     public void showAuthView() {
         try {
-            // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(eGrades.class.getResource("/fxml/AuthView.fxml"));
             AnchorPane page = loader.load();
 
-            // Create the dialog Stage.
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initStyle(StageStyle.DECORATED);
@@ -126,19 +124,17 @@ public class eGrades extends Application {
 
     public void showPrefView() {
         try {
-            // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(eGrades.class.getResource("/fxml/PrefView.fxml"));
             AnchorPane page = loader.load();
 
-            // Create the dialog Stage.
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initStyle(StageStyle.DECORATED);
             dialogStage.initOwner(primaryStage);
             dialogStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Προτιμήσεις");
-            dialogStage.setWidth(300);
-            dialogStage.setHeight(290);
+            dialogStage.setWidth(420);
+            dialogStage.setHeight(260);
             dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
             dialogStage.setResizable(false);
             Scene scene = new Scene(page);
@@ -150,6 +146,11 @@ public class eGrades extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void stopApplication() {
+        Platform.exit();
+        System.exit(0);
     }
 
     public Stage getPrimaryStage() {

@@ -7,30 +7,35 @@
   ~ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
   -->
 
-
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0"
+            prefWidth="420.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="gr.roropoulos.egrades.controller.PrefController">
     <children>
-        <BorderPane prefHeight="257.0" prefWidth="300.0">
+        <BorderPane layoutX="193.0" layoutY="89.0" prefHeight="377.0" prefWidth="585.0" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
-                <Accordion fx:id="preferencesAccordion" prefHeight="250.0" prefWidth="352.0"
-                           BorderPane.alignment="CENTER">
-                    <panes>
-                        <TitledPane fx:id="generalPrefTitledPane" text="Γενικές Ρυθμίσεις">
+                <TabPane prefHeight="200.0" prefWidth="524.0" tabClosingPolicy="UNAVAILABLE"
+                         BorderPane.alignment="CENTER">
+                    <tabs>
+                        <Tab text="Επιλογές">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                               <GridPane prefHeight="177.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0"
-                                         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                         AnchorPane.topAnchor="0.0">
+                               <GridPane hgap="10.0" layoutX="142.0" layoutY="129.0" prefHeight="203.0"
+                                         prefWidth="420.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                    <columnConstraints>
-                                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="205.0"
-                                                          minWidth="10.0" prefWidth="159.0"/>
-                                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="210.0"
-                                                          minWidth="10.0" prefWidth="120.0"/>
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.0" minWidth="0.0"
+                                                          prefWidth="153.0"/>
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0"
+                                                          prefWidth="27.0"/>
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0"
+                                                          prefWidth="118.0"/>
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0"
+                                                          prefWidth="98.0"/>
                                    </columnConstraints>
                                    <rowConstraints>
                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
@@ -38,110 +43,170 @@
                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                    </rowConstraints>
                                  <children>
-                                     <Label text="Συγχρονισμό κάθε:"/>
-                                     <Label text="Ειδοποιήσεις Popup:" GridPane.rowIndex="1"/>
-                                     <Label text="Ειδοποιήσεις Ηχητικές:" GridPane.rowIndex="2"/>
-                                     <Label text="Μπάρα Κατάστασης:" GridPane.rowIndex="3"/>
-                                     <CheckBox fx:id="popupCheckBox" mnemonicParsing="false"
-                                               nodeOrientation="RIGHT_TO_LEFT" text="Ενεργοποιημένο"
-                                               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                     <CheckBox fx:id="soundCheckBox" mnemonicParsing="false"
-                                               nodeOrientation="RIGHT_TO_LEFT" text="Ενεργοποιημένο"
-                                               GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                                     <CheckBox fx:id="statusBarCheckBox" mnemonicParsing="false"
-                                               nodeOrientation="RIGHT_TO_LEFT" text="Ενεργοποιημένο"
+                                     <CheckBox fx:id="autoSyncCheckBox" mnemonicParsing="false"
+                                               nodeOrientation="LEFT_TO_RIGHT" GridPane.columnIndex="1"/>
+                                     <Label text="Αυτόματος Συγχρονισμός"/>
+                                     <Label text="Εικονικές Ειδοποιήσεις " GridPane.rowIndex="1"/>
+                                     <CheckBox fx:id="popupNotificationCheckBox" mnemonicParsing="false"
+                                               nodeOrientation="LEFT_TO_RIGHT" GridPane.columnIndex="1"
+                                               GridPane.rowIndex="1"/>
+                                     <Label text="Ηχητικές Ειδοποιήσεις " GridPane.rowIndex="2"/>
+                                     <CheckBox fx:id="soundNotificationCheckBox" mnemonicParsing="false"
+                                               nodeOrientation="LEFT_TO_RIGHT" GridPane.columnIndex="1"
+                                               GridPane.rowIndex="2"/>
+                                     <Label text="Συγχρονισμός κάθε" GridPane.columnIndex="2"/>
+                                     <TextField fx:id="syncRateTextField" alignment="CENTER" promptText="(λεπτά)"
+                                                GridPane.columnIndex="3"/>
+                                     <ChoiceBox fx:id="popupEffectChoiceBox" prefWidth="150.0" GridPane.columnIndex="3"
+                                                GridPane.rowIndex="1"/>
+                                     <Label text="Επιλογή εφέ" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                                     <Label text="Επιλογή ήχου" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                                     <ChoiceBox fx:id="soundChoiceBox" prefWidth="150.0" GridPane.columnIndex="3"
+                                                GridPane.rowIndex="2"/>
+                                     <Label text="Έναρξη κατά την Εκκίνηση" GridPane.rowIndex="3"/>
+                                     <CheckBox fx:id="startOnBootCheckBox" mnemonicParsing="false"
                                                GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                                     <Label text="Έναρξη κατα την εκκίνηση:" GridPane.rowIndex="4"/>
-                                     <CheckBox fx:id="startUpCheckBox" mnemonicParsing="false"
-                                               nodeOrientation="RIGHT_TO_LEFT" text="Ενεργοποιημένο"
+                                     <Label text="Λειτουργία στο προσκήνιο" GridPane.rowIndex="4"/>
+                                     <CheckBox fx:id="keepRunningCheckBox" mnemonicParsing="false"
                                                GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                                     <Label text="Έλεγχος Ενημερώσεων:" GridPane.rowIndex="5"/>
-                                     <CheckBox fx:id="checkUpdateCheckBox" mnemonicParsing="false"
-                                               nodeOrientation="RIGHT_TO_LEFT" text="Ενεργοποιημένο"
-                                               GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="3.0"
-                                           GridPane.columnIndex="1">
-                                         <children>
-                                             <TextField fx:id="syncTimeTextField" alignment="CENTER" prefHeight="25.0"
-                                                        prefWidth="74.0">
-                                                 <opaqueInsets>
-                                                     <Insets/>
-                                                 </opaqueInsets>
-                                             </TextField>
-                                             <Label alignment="CENTER" text="Λεπτά" textFill="#0000009a"/>
-                                         </children>
-                                     </HBox>
+                                     <Label text="Υπενθύμιση" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+                                     <CheckBox fx:id="showCloseAlertCheckBox" mnemonicParsing="false"
+                                               GridPane.columnIndex="3" GridPane.rowIndex="4"/>
                                  </children>
+                                   <padding>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                   </padding>
                                </GridPane>
                            </children>
                                 </AnchorPane>
                             </content>
-                        </TitledPane>
-                        <TitledPane fx:id="advancedPrefTitledPane" text="Προχωρημένες Ρυθμίσεις">
+                        </Tab>
+                        <Tab text="Mailer">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                               <GridPane layoutY="7.0" prefHeight="177.0" prefWidth="350.0"
+                               <GridPane hgap="10.0" layoutX="123.0" layoutY="89.0" prefHeight="203.0" prefWidth="420.0"
                                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                    <columnConstraints>
-                                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="213.0"
-                                                          minWidth="10.0" prefWidth="165.0"/>
-                                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="210.0"
-                                                          minWidth="10.0" prefWidth="120.0"/>
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.0" minWidth="10.0"
+                                                          prefWidth="92.0"/>
+                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="197.0" minWidth="0.0"
+                                                          prefWidth="104.0"/>
+                                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="216.0"
+                                                          minWidth="10.0" prefWidth="62.0"/>
+                                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="202.0"
+                                                          minWidth="10.0" prefWidth="122.0"/>
                                    </columnConstraints>
                                    <rowConstraints>
-                                       <RowConstraints maxHeight="34.0" minHeight="10.0" vgrow="SOMETIMES"/>
-                                       <RowConstraints maxHeight="49.0" minHeight="9.0" vgrow="SOMETIMES"/>
-                                       <RowConstraints maxHeight="75.0" minHeight="10.0" vgrow="SOMETIMES"/>
-                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
-                                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                                    </rowConstraints>
+                                   <padding>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                   </padding>
                                  <children>
-                                     <Label text="Timeout:"/>
-                                     <Label text="Εμφάνιση Λαθών (Debug):" GridPane.rowIndex="1"/>
-                                     <Label text="Διαγραφή Όλων (Reset):" GridPane.rowIndex="3"/>
-                                     <CheckBox fx:id="showAlertsCheckBox" mnemonicParsing="false"
-                                               nodeOrientation="RIGHT_TO_LEFT" text="Ενεργοποιημένο"
-                                               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                     <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="25.0"
-                                             prefWidth="100.0" text="Διαγραφή" textFill="#c60000"
-                                             GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                                     <Label text="Καταγραφή Λαθών (Debug):" GridPane.rowIndex="2"/>
-                                     <CheckBox fx:id="logDebugCheckBox" mnemonicParsing="false"
-                                               nodeOrientation="RIGHT_TO_LEFT" text="Ενεργοποιημένο"
-                                               GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                                     <HBox alignment="CENTER" prefHeight="34.0" prefWidth="129.0" spacing="3.0"
-                                           GridPane.columnIndex="1">
-                                         <children>
-                                             <TextField fx:id="timeoutTextField" alignment="CENTER" prefHeight="25.0"
-                                                        prefWidth="78.0" promptText="Milliseconds"/>
-                                             <Label text="ms" textFill="#00000099"/>
-                                         </children>
-                                     </HBox>
+                                     <Label text="Ενεργοποίηση"/>
+                                     <CheckBox fx:id="enableMailerCheckBox" mnemonicParsing="false"
+                                               GridPane.columnIndex="1"/>
+                                     <Label text="Hostname" GridPane.rowIndex="1"/>
+                                     <Label text="SMTP Port" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                                     <Label text="Username" GridPane.rowIndex="2"/>
+                                     <TextField fx:id="usernameTextField" promptText="username" GridPane.columnIndex="1"
+                                                GridPane.rowIndex="2"/>
+                                     <TextField fx:id="passwordTextField" promptText="password" GridPane.columnIndex="3"
+                                                GridPane.rowIndex="2"/>
+                                     <Label text="SSL" GridPane.rowIndex="3"/>
+                                     <CheckBox fx:id="sslCheckBox" mnemonicParsing="false" GridPane.columnIndex="1"
+                                               GridPane.rowIndex="3"/>
+                                     <Label text="From" GridPane.rowIndex="4"/>
+                                     <TextField fx:id="fromTextField" promptText="user@example.com"
+                                                GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                     <Button fx:id="testEmailButton" alignment="CENTER" mnemonicParsing="false"
+                                             prefHeight="25.0" prefWidth="82.0" text="Test Mail" textAlignment="CENTER"
+                                             GridPane.rowIndex="5"/>
+                                     <TextField fx:id="hostnameTextField" GridPane.columnIndex="1"
+                                                GridPane.rowIndex="1"/>
+                                     <TextField fx:id="portTextField" maxWidth="-Infinity" prefHeight="25.0"
+                                                prefWidth="54.0" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                                     <Label text="To" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+                                     <TextField fx:id="toTextField" promptText="me@example.com" GridPane.columnIndex="3"
+                                                GridPane.rowIndex="4"/>
+                                     <Label text="Password" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
                                  </children>
+                                   <opaqueInsets>
+                                       <Insets/>
+                                   </opaqueInsets>
                                </GridPane>
                            </children>
                                 </AnchorPane>
                             </content>
-                        </TitledPane>
-                    </panes>
-                </Accordion>
+                        </Tab>
+                        <Tab text="Για προχωρημένους">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <GridPane hgap="10.0" prefHeight="165.0" prefWidth="420.0"
+                                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.0" minWidth="0.0"
+                                                                   prefWidth="185.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0"
+                                                                   prefWidth="108.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0"
+                                                                   prefWidth="113.0"/>
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                            </rowConstraints>
+                                            <children>
+                                                <Label text="Timeout Σύνδεσης"/>
+                                                <Label text="Εμφάνιση Λαθών" GridPane.rowIndex="1"/>
+                                                <Label text="Καταγραφή Λαθών" GridPane.rowIndex="2"/>
+                                                <TextField fx:id="timeoutTextField" alignment="CENTER"
+                                                           promptText="(milliseconds)" GridPane.columnIndex="1"/>
+                                                <CheckBox fx:id="showErrorsCheckBox" mnemonicParsing="false"
+                                                          GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                                <CheckBox fx:id="logErrorsCheckBox" mnemonicParsing="false"
+                                                          GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                                <Label text="Διαγραφή Δεδομένων (Reset)" GridPane.rowIndex="3"/>
+                                                <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="25.0"
+                                                        prefWidth="107.0" text="ΔΙΑΓΡΑΦΗ" textFill="#e40000"
+                                                        GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                            </padding>
+                                        </GridPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
             </center>
             <bottom>
-                <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="352.0" spacing="10.0"
+                <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="484.0" spacing="10.0"
                       BorderPane.alignment="CENTER">
                     <children>
-                        <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false"
-                                onAction="#cancelPrefButtonAction" text="Ακύρωση"/>
-                        <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false"
-                                onAction="#savePrefButtonAction" text="Αποθήκευση"/>
+                        <Button mnemonicParsing="false" onAction="#cancelPrefButtonAction" text="Ακύρωση"/>
+                        <Button mnemonicParsing="false" onAction="#savePrefButtonAction" text="Αποθήκευση"/>
                     </children>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
                     <padding>
-                        <Insets right="10.0"/>
+                        <Insets bottom="5.0" right="10.0"/>
                     </padding>
                 </HBox>
             </bottom>

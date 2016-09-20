@@ -88,5 +88,6 @@ crashlytics-build.properties
 fabric.properties
 .gitignore
 src/main/java/gr/roropoulos/egrades/notifier/
-src/main/java/gr/roropoulos/egrades/synchronizer/
+src/main/java/gr/roropoulos/egrades/scheduler/
 src/main/java/gr/roropoulos/egrades/util/
+/.gitignore

@@ -9,21 +9,22 @@ package gr.roropoulos.egrades.service.Impl;
 
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Student;
-import gr.roropoulos.egrades.parser.Impl.TreeConstructorImpl;
-import gr.roropoulos.egrades.parser.TreeConstructor;
+import gr.roropoulos.egrades.parser.DocumentParser;
+import gr.roropoulos.egrades.parser.Impl.CardisoftDocumentParserImpl;
 import gr.roropoulos.egrades.service.ExceptionService;
-import gr.roropoulos.egrades.service.StudentService;
+import gr.roropoulos.egrades.service.SerializeService;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class StudentServiceImpl implements StudentService {
+public class SerializeServiceImpl implements SerializeService {
 
-    private TreeConstructor treeConstructor = new TreeConstructorImpl();
-    private ExceptionService exceptionService = new ExceptionServiceImpl();
+    private DocumentParser documentParser = new CardisoftDocumentParserImpl();
+    private ExceptionService exceptionService = new ExceptionService();
     private String path = System.getProperty("user.home") + File.separator + "eGrades" + File.separator + "stud.ser";
 
-    public void studentSerialize(Student student) {
+    public void serializeStudent(Student student) {
         try {
             FileOutputStream fileOut = new FileOutputStream(path);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -35,7 +36,7 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    public Student studentDeSerialize() {
+    public Student deserializeStudent() {
         Student student = null;
         try {
             FileInputStream fileIn = new FileInputStream(path);
@@ -54,16 +55,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public Boolean studentCheckAuthentication(Student student) {
-        Map<String, String> cookieJar = treeConstructor.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
+        Map<String, String> cookieJar = documentParser.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
         return cookieJar != null;
     }
 
-    public Boolean studentCheckIfExist() {
+    public Boolean checkIfSerializedFileExist() {
         File f = new File(path);
         return f.exists() && !f.isDirectory();
     }
 
-    public void studentDelete() {
+    public void deleteSerializedFile() {
         try {
             File file = new File(path);
             if (file.exists()) {
@@ -74,54 +75,28 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    public void studentSetAllCourses(List<Course> courseList) {
-        Student student = studentDeSerialize();
+    public void serializeCourses(List<Course> courseList) {
+        Student student = deserializeStudent();
         student.setStudentCourses(courseList);
-        studentSerialize(student);
+        serializeStudent(student);
     }
 
-    public List<Course> studentGetAllCourses() {
-        return studentDeSerialize().getStudentCourses();
+    public List<Course> deserializeCourses() {
+        return deserializeStudent().getStudentCourses();
     }
 
-    public void studentSetSingleCourse(Course course) {
-        Student student = studentDeSerialize();
-        List<Course> courseList = student.getStudentCourses();
-        for (Course c : courseList) {
-            if (c.getCourseId() == course.getCourseId()) {
-                c = course;
-                break;
-            } else
-                courseList.add(course);
-        }
-        student.setStudentCourses(courseList);
-        studentSerialize(student);
-    }
-
-    public Course studentGetSingleCourse(String courseId) {
-        Student student = studentDeSerialize();
-        List<Course> courseList = student.getStudentCourses();
-        for (Course c : courseList) {
-            if (c.getCourseId() == courseId) {
-                return c;
-            } else
-                exceptionService.showException(new Exception(), "Το μάθημα δεν βρέθηκε.");
-        }
-        return new Course();
-    }
-
-    public void studentSetLastReg(HashMap<String, String> regCourseMap) {
-        Student student = studentDeSerialize();
+    public void serializeLastRegister(HashMap<String, String> regCourseMap) {
+        Student student = deserializeStudent();
         student.setStudentLastReg(regCourseMap);
-        studentSerialize(student);
+        serializeStudent(student);
     }
 
-    public HashMap<String, String> studentGetLastReg() {
-        return studentDeSerialize().getStudentLastReg();
+    public HashMap<String, String> deserializeLastRegister() {
+        return deserializeStudent().getStudentLastReg();
     }
 
-    public List<Course> studentGetLastRegCourseList() {
-        Student student = studentDeSerialize();
+    public List<Course> deserializeLastRegisterCourseList() {
+        Student student = deserializeStudent();
         List<Course> courseList = student.getStudentCourses();
         HashMap<String, String> courseIdList = student.getStudentLastReg();
 
@@ -130,38 +105,36 @@ public class StudentServiceImpl implements StudentService {
         Iterator it = courseIdList.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            for (Course course : courseList) {
-                if (course.getCourseId().equals(pair.getKey()) && course.getCourseTitle().equals(pair.getValue())) {
-                    courseRegList.add(course);
-                }
-            }
+            courseRegList.addAll(courseList.stream().filter(course ->
+                    course.getCourseId().equals(pair.getKey()) && course.getCourseTitle().equals(pair.getValue()))
+                    .collect(Collectors.toList()));
             it.remove(); // avoids a ConcurrentModificationException
         }
         return courseRegList;
     }
 
-    public void studentSetStats(HashMap<String, String> studentStats) {
-        Student student = studentDeSerialize();
+    public void serializeStats(HashMap<String, String> studentStats) {
+        Student student = deserializeStudent();
         student.setStudentStats(studentStats);
-        studentSerialize(student);
+        serializeStudent(student);
     }
 
-    public HashMap<String, String> studentGetStats() {
-        return studentDeSerialize().getStudentStats();
+    public HashMap<String, String> deserializeStats() {
+        return deserializeStudent().getStudentStats();
     }
 
-    public void studentSetInfo(HashMap<String, String> studentInfo) {
-        Student student = studentDeSerialize();
+    public void serializeInfo(HashMap<String, String> studentInfo) {
+        Student student = deserializeStudent();
         student.setStudentName(studentInfo.get("studentName"));
         student.setStudentSurname(studentInfo.get("studentSurname"));
         student.setStudentAEM(studentInfo.get("studentAEM"));
         student.setStudentDepartment(studentInfo.get("studentDepartment"));
         student.setStudentSemester(studentInfo.get("studentSemester"));
-        studentSerialize(student);
+        serializeStudent(student);
     }
 
-    public HashMap<String, String> studentGetInfo() {
-        Student student = studentDeSerialize();
+    public HashMap<String, String> deserializeInfo() {
+        Student student = deserializeStudent();
         HashMap<String, String> studentInfoHashMap = new HashMap<>();
         studentInfoHashMap.put("studentName", student.getStudentName());
         studentInfoHashMap.put("studentSurname", student.getStudentSurname());
@@ -169,5 +142,15 @@ public class StudentServiceImpl implements StudentService {
         studentInfoHashMap.put("studentDepartment", student.getStudentDepartment());
         studentInfoHashMap.put("studentSemester", student.getStudentSemester());
         return studentInfoHashMap;
+    }
+
+    public void serializeRecentCourses(List<Course> courseList) {
+        Student student = deserializeStudent();
+        student.setStudentRecentCourses(courseList);
+        serializeStudent(student);
+    }
+
+    public List<Course> deserializeRecentCourses() {
+        return deserializeStudent().getStudentRecentCourses();
     }
 }

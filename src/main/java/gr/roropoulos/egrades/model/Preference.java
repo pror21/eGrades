@@ -8,51 +8,35 @@
 package gr.roropoulos.egrades.model;
 
 public class Preference {
-
+    // Auto sync
+    private Boolean prefSyncEnabled;
     private Integer prefSyncTime;
-    private Boolean prefPopupNotification;
-    private Boolean prefSoundNotification;
-    private Boolean prefShowStatusBar;
+
+    // Notifications
+    private Boolean prefNotificationPopupEnabled;
+    private String prefNotificationPopupAnimation;
+    private Boolean prefNotificationSoundEnabled;
+    private String prefNotificationSound;
+
+    // Mailer
+    private Boolean prefMailerEnabled;
+    private String prefMailerHostname;
+    private Integer prefMailerPort;
+    private String prefMailerUsername;
+    private String prefMailerPassword;
+    private Boolean prefMailerSSL;
+    private String prefMailerFrom;
+    private String prefMailerTo;
+
+    // Misc
     private Boolean prefStartOnBoot;
-    private Boolean prefCheckForUpdates;
-    private Integer prefTimeout;
-    private Boolean prefShowBugAlerts;
-    private Boolean prefLogDebug;
+    private Boolean prefKeepRunning;
+    private Boolean prefShowCloseAlert;
 
-    private Boolean settingAutoSync;
-    private Boolean settingNotifications;
-
-    public Integer getPrefSyncTime() {
-        return prefSyncTime;
-    }
-
-    public void setPrefSyncTime(Integer prefSyncTime) {
-        this.prefSyncTime = prefSyncTime;
-    }
-
-    public Boolean getPrefPopupNotification() {
-        return prefPopupNotification;
-    }
-
-    public void setPrefPopupNotification(Boolean prefPopupNotification) {
-        this.prefPopupNotification = prefPopupNotification;
-    }
-
-    public Boolean getPrefSoundNotification() {
-        return prefSoundNotification;
-    }
-
-    public void setPrefSoundNotification(Boolean prefSoundNotification) {
-        this.prefSoundNotification = prefSoundNotification;
-    }
-
-    public Boolean getPrefShowStatusBar() {
-        return prefShowStatusBar;
-    }
-
-    public void setPrefShowStatusBar(Boolean prefShowStatusBar) {
-        this.prefShowStatusBar = prefShowStatusBar;
-    }
+    // Advanced
+    private Integer prefAdvancedTimeout;
+    private Boolean prefAdvancedShowErrors;
+    private Boolean prefAdvancedLogErrors;
 
     public Boolean getPrefStartOnBoot() {
         return prefStartOnBoot;
@@ -62,51 +46,155 @@ public class Preference {
         this.prefStartOnBoot = prefStartOnBoot;
     }
 
-    public Boolean getPrefCheckForUpdates() {
-        return prefCheckForUpdates;
+    public Boolean getPrefSyncEnabled() {
+        return prefSyncEnabled;
     }
 
-    public void setPrefCheckForUpdates(Boolean prefCheckForUpdates) {
-        this.prefCheckForUpdates = prefCheckForUpdates;
+    public void setPrefSyncEnabled(Boolean prefSyncEnabled) {
+        this.prefSyncEnabled = prefSyncEnabled;
     }
 
-    public Integer getPrefTimeout() {
-        return prefTimeout;
+    public Integer getPrefSyncTime() {
+        return prefSyncTime;
     }
 
-    public void setPrefTimeout(Integer prefTimeout) {
-        this.prefTimeout = prefTimeout;
+    public void setPrefSyncTime(Integer prefSyncTime) {
+        this.prefSyncTime = prefSyncTime;
     }
 
-    public Boolean getPrefShowBugAlerts() {
-        return prefShowBugAlerts;
+    public Boolean getPrefNotificationPopupEnabled() {
+        return prefNotificationPopupEnabled;
     }
 
-    public void setPrefShowBugAlerts(Boolean prefShowBugAlerts) {
-        this.prefShowBugAlerts = prefShowBugAlerts;
+    public void setPrefNotificationPopupEnabled(Boolean prefNotificationPopupEnabled) {
+        this.prefNotificationPopupEnabled = prefNotificationPopupEnabled;
     }
 
-    public Boolean getPrefLogDebug() {
-        return prefLogDebug;
+    public String getPrefNotificationPopupAnimation() {
+        return prefNotificationPopupAnimation;
     }
 
-    public void setPrefLogDebug(Boolean prefLogDebug) {
-        this.prefLogDebug = prefLogDebug;
+    public void setPrefNotificationPopupAnimation(String prefNotificationPopupAnimation) {
+        this.prefNotificationPopupAnimation = prefNotificationPopupAnimation;
     }
 
-    public Boolean getSettingAutoSync() {
-        return settingAutoSync;
+    public Boolean getPrefNotificationSoundEnabled() {
+        return prefNotificationSoundEnabled;
     }
 
-    public void setSettingAutoSync(Boolean settingAutoSync) {
-        this.settingAutoSync = settingAutoSync;
+    public void setPrefNotificationSoundEnabled(Boolean prefNotificationSoundEnabled) {
+        this.prefNotificationSoundEnabled = prefNotificationSoundEnabled;
     }
 
-    public Boolean getSettingNotifications() {
-        return settingNotifications;
+    public String getPrefNotificationSound() {
+        return prefNotificationSound;
     }
 
-    public void setSettingNotifications(Boolean settingNotifications) {
-        this.settingNotifications = settingNotifications;
+    public void setPrefNotificationSound(String prefNotificationSound) {
+        this.prefNotificationSound = prefNotificationSound;
+    }
+
+    public Boolean getPrefMailerEnabled() {
+        return prefMailerEnabled;
+    }
+
+    public void setPrefMailerEnabled(Boolean prefMailerEnabled) {
+        this.prefMailerEnabled = prefMailerEnabled;
+    }
+
+    public String getPrefMailerHostname() {
+        return prefMailerHostname;
+    }
+
+    public void setPrefMailerHostname(String prefMailerHostname) {
+        this.prefMailerHostname = prefMailerHostname;
+    }
+
+    public Integer getPrefMailerPort() {
+        return prefMailerPort;
+    }
+
+    public void setPrefMailerPort(Integer prefMailerPort) {
+        this.prefMailerPort = prefMailerPort;
+    }
+
+    public String getPrefMailerUsername() {
+        return prefMailerUsername;
+    }
+
+    public void setPrefMailerUsername(String prefMailerUsername) {
+        this.prefMailerUsername = prefMailerUsername;
+    }
+
+    public String getPrefMailerPassword() {
+        return prefMailerPassword;
+    }
+
+    public void setPrefMailerPassword(String prefMailerPassword) {
+        this.prefMailerPassword = prefMailerPassword;
+    }
+
+    public Boolean getPrefMailerSSL() {
+        return prefMailerSSL;
+    }
+
+    public void setPrefMailerSSL(Boolean prefMailerSSL) {
+        this.prefMailerSSL = prefMailerSSL;
+    }
+
+    public String getPrefMailerFrom() {
+        return prefMailerFrom;
+    }
+
+    public void setPrefMailerFrom(String prefMailerFrom) {
+        this.prefMailerFrom = prefMailerFrom;
+    }
+
+    public String getPrefMailerTo() {
+        return prefMailerTo;
+    }
+
+    public void setPrefMailerTo(String prefMailerTo) {
+        this.prefMailerTo = prefMailerTo;
+    }
+
+    public Integer getPrefAdvancedTimeout() {
+        return prefAdvancedTimeout;
+    }
+
+    public void setPrefAdvancedTimeout(Integer prefAdvancedTimeout) {
+        this.prefAdvancedTimeout = prefAdvancedTimeout;
+    }
+
+    public Boolean getPrefAdvancedShowErrors() {
+        return prefAdvancedShowErrors;
+    }
+
+    public void setPrefAdvancedShowErrors(Boolean prefAdvancedShowErrors) {
+        this.prefAdvancedShowErrors = prefAdvancedShowErrors;
+    }
+
+    public Boolean getPrefAdvancedLogErrors() {
+        return prefAdvancedLogErrors;
+    }
+
+    public void setPrefAdvancedLogErrors(Boolean prefAdvancedLogErrors) {
+        this.prefAdvancedLogErrors = prefAdvancedLogErrors;
+    }
+
+    public Boolean getPrefKeepRunning() {
+        return prefKeepRunning;
+    }
+
+    public void setPrefKeepRunning(Boolean prefKeepRunning) {
+        this.prefKeepRunning = prefKeepRunning;
+    }
+
+    public Boolean getPrefShowCloseAlert() {
+        return prefShowCloseAlert;
+    }
+
+    public void setPrefShowCloseAlert(Boolean prefShowCloseAlert) {
+        this.prefShowCloseAlert = prefShowCloseAlert;
     }
 }
