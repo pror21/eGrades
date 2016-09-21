@@ -138,6 +138,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                            <tooltip>
+                                <Tooltip text="Συγχρονισμός Βαθμολογιών"/>
+                            </tooltip>
                         </Button>
                         <Separator orientation="VERTICAL"/>
                         <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
@@ -149,6 +152,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                            <tooltip>
+                                <Tooltip text="Αλλαγή Χρήστη"/>
+                            </tooltip>
                         </Button>
                         <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
                                 onAction="#preferencesToolBarButton" text="Settings" textAlignment="CENTER">
@@ -159,6 +165,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                            <tooltip>
+                                <Tooltip text="Ρυθμίσεις"/>
+                            </tooltip>
                         </Button>
                     </items>
                 </ToolBar>
@@ -166,6 +175,19 @@
             <right>
                 <ToolBar BorderPane.alignment="CENTER">
                     <items>
+                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                                onAction="#githubToolBarButton" text="Github" textAlignment="CENTER">
+                            <graphic>
+                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@/images/love.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="Υποστηρίξτε το eGrades!"/>
+                            </tooltip>
+                        </Button>
                         <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
                                 onAction="#exitToolBarButton" text="Exit" textAlignment="CENTER">
                             <graphic>
@@ -175,6 +197,9 @@
                                     </image>
                                 </ImageView>
                             </graphic>
+                            <tooltip>
+                                <Tooltip text="Έξοδος Εφαρμογής"/>
+                            </tooltip>
                         </Button>
                     </items>
                 </ToolBar>

@@ -59,8 +59,6 @@ public class PreferenceServiceImpl implements PreferenceService {
         prefs.putBoolean("prefNotificationSoundEnabled", pref.getPrefNotificationSoundEnabled());
         prefs.put("prefNotificationSound", pref.getPrefNotificationSound());
 
-        prefs.putBoolean("prefStartOnBoot", pref.getPrefStartOnBoot());
-
         prefs.putBoolean("prefMailerEnabled", pref.getPrefMailerEnabled());
         prefs.put("prefMailerHostname", pref.getPrefMailerHostname());
         prefs.putInt("prefMailerPort", pref.getPrefMailerPort());
@@ -70,6 +68,7 @@ public class PreferenceServiceImpl implements PreferenceService {
         prefs.put("prefMailerFrom", pref.getPrefMailerFrom());
         prefs.put("prefMailerTo", pref.getPrefMailerTo());
 
+        prefs.putBoolean("prefStartOnBoot", pref.getPrefStartOnBoot());
         prefs.putBoolean("prefKeepRunning", pref.getPrefKeepRunning());
         prefs.putBoolean("prefShowCloseAlert", pref.getPrefShowCloseAlert());
 

@@ -146,7 +146,9 @@ public class SerializeServiceImpl implements SerializeService {
 
     public void serializeRecentCourses(List<Course> courseList) {
         Student student = deserializeStudent();
-        student.setStudentRecentCourses(courseList);
+        List<Course> recentCourseList = student.getStudentRecentCourses();
+        recentCourseList.addAll(courseList);
+        student.setStudentRecentCourses(recentCourseList);
         serializeStudent(student);
     }
 

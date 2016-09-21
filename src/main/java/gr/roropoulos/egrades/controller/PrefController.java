@@ -7,7 +7,11 @@
 
 package gr.roropoulos.egrades.controller;
 
+import com.github.plushaze.traynotification.animations.Animations;
+import com.github.plushaze.traynotification.notification.Notifications;
 import gr.roropoulos.egrades.model.Preference;
+import gr.roropoulos.egrades.notifier.GradeNotifier;
+import gr.roropoulos.egrades.scheduler.SyncScheduler;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.PreferenceService;
 import javafx.collections.FXCollections;
@@ -20,6 +24,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class PrefController implements Initializable {
@@ -37,6 +42,7 @@ public class PrefController implements Initializable {
 
     private Preference pref = new Preference();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
+    private GradeNotifier gradeNotifier = new GradeNotifier();
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         pref = preferenceService.getPreferences();
@@ -79,8 +85,31 @@ public class PrefController implements Initializable {
         toTextField.setText(pref.getPrefMailerTo());
 
         popupEffectChoiceBox.setItems(FXCollections.observableArrayList("popup", "slide", "fade"));
+        popupEffectChoiceBox.valueProperty().addListener((ov, t, t1) -> {
+            if (t != null) {
+                if (Objects.equals(t1, "popup"))
+                    gradeNotifier.showNotification("Υπόδειγμα Ειδοποίησης", "Αυτό είναι ένα υπόδειγμα ειδοποίησης.", Notifications.INFORMATION, Animations.POPUP);
+                else if (Objects.equals(t1, "slide"))
+                    gradeNotifier.showNotification("Υπόδειγμα Ειδοποίησης", "Αυτό είναι ένα υπόδειγμα ειδοποίησης.", Notifications.INFORMATION, Animations.SLIDE);
+                else if (Objects.equals(t1, "fade"))
+                    gradeNotifier.showNotification("Υπόδειγμα Ειδοποίησης", "Αυτό είναι ένα υπόδειγμα ειδοποίησης.", Notifications.INFORMATION, Animations.FADE);
+            }
+        });
+
         popupEffectChoiceBox.getSelectionModel().select(pref.getPrefNotificationPopupAnimation());
         soundChoiceBox.setItems(FXCollections.observableArrayList("arpeggio", "attention", "ding", "pluck"));
+        soundChoiceBox.valueProperty().addListener((ov, t, t1) -> {
+            if (t != null) {
+                if (Objects.equals(t1, "arpeggio"))
+                    gradeNotifier.playSoundNotification("arpeggio");
+                else if (Objects.equals(t1, "attention"))
+                    gradeNotifier.playSoundNotification("attention");
+                else if (Objects.equals(t1, "ding"))
+                    gradeNotifier.playSoundNotification("ding");
+                else if (Objects.equals(t1, "pluck"))
+                    gradeNotifier.playSoundNotification("pluck");
+            }
+        });
         soundChoiceBox.getSelectionModel().select(pref.getPrefNotificationSound());
     }
 
@@ -129,6 +158,11 @@ public class PrefController implements Initializable {
     }
 
     private void savePreferences() {
+
+        SyncScheduler.getInstance().stopScheduler();
+        if (pref.getPrefSyncEnabled())
+            SyncScheduler.getInstance().startSyncScheduler(pref.getPrefSyncTime());
+
         preferenceService.setPreferences(pref);
     }
 
