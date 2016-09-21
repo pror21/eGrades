@@ -318,12 +318,8 @@ public class MainController implements Initializable {
     private void exitToolBarButton() {
         if (preferenceService.getPreferences().getPrefShowCloseAlert())
             showCloseAlert();
-
-        if (preferenceService.getPreferences().getPrefKeepRunning())
-            mainApp.getPrimaryStage().hide();
         else
-            mainApp.stopApplication();
-
+            mainApp.getPrimaryStage().hide();
     }
 
     private void showCloseAlert() {
@@ -335,16 +331,13 @@ public class MainController implements Initializable {
                 + "\r\n" +
                 "Για την απενεργοποίηση αυτής της υπενθύμισης ανατρέξτε στις ρυθμίσεις.\r\n");
         ButtonType stopButton = new ButtonType("Διακοπή");
-        ButtonType cancelButton = new ButtonType("Ακύρωση", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType okButton = new ButtonType("Εντάξει", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().setAll(stopButton, cancelButton, okButton);
+        alert.getButtonTypes().setAll(stopButton, okButton);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == okButton)
             mainApp.getPrimaryStage().hide();
         else if (result.get() == stopButton)
             mainApp.stopApplication();
-        else if (result.get() == cancelButton) {
-        }
     }
 
     public void syncCourses() {

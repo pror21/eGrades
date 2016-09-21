@@ -8,7 +8,6 @@
 package gr.roropoulos.egrades.controller;
 
 import com.github.plushaze.traynotification.animations.Animations;
-import com.github.plushaze.traynotification.notification.Notifications;
 import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.notifier.GradeNotifier;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
@@ -68,7 +67,6 @@ public class PrefController implements Initializable {
         if (pref.getPrefNotificationPopupEnabled()) popupNotificationCheckBox.setSelected(true);
         if (pref.getPrefNotificationSoundEnabled()) soundNotificationCheckBox.setSelected(true);
         if (pref.getPrefStartOnBoot()) startOnBootCheckBox.setSelected(true);
-        if (pref.getPrefKeepRunning()) keepRunningCheckBox.setSelected(true);
         if (pref.getPrefShowCloseAlert()) showCloseAlertCheckBox.setSelected(true);
         if (pref.getPrefMailerEnabled()) enableMailerCheckBox.setSelected(true);
         if (pref.getPrefMailerSSL()) sslCheckBox.setSelected(true);
@@ -88,11 +86,11 @@ public class PrefController implements Initializable {
         popupEffectChoiceBox.valueProperty().addListener((ov, t, t1) -> {
             if (t != null) {
                 if (Objects.equals(t1, "popup"))
-                    gradeNotifier.showNotification("Υπόδειγμα Ειδοποίησης", "Αυτό είναι ένα υπόδειγμα ειδοποίησης.", Notifications.INFORMATION, Animations.POPUP);
+                    gradeNotifier.showSampleNotification(Animations.POPUP);
                 else if (Objects.equals(t1, "slide"))
-                    gradeNotifier.showNotification("Υπόδειγμα Ειδοποίησης", "Αυτό είναι ένα υπόδειγμα ειδοποίησης.", Notifications.INFORMATION, Animations.SLIDE);
+                    gradeNotifier.showSampleNotification(Animations.SLIDE);
                 else if (Objects.equals(t1, "fade"))
-                    gradeNotifier.showNotification("Υπόδειγμα Ειδοποίησης", "Αυτό είναι ένα υπόδειγμα ειδοποίησης.", Notifications.INFORMATION, Animations.FADE);
+                    gradeNotifier.showSampleNotification(Animations.FADE);
             }
         });
 
@@ -122,8 +120,6 @@ public class PrefController implements Initializable {
         if (soundNotificationCheckBox.isSelected()) pref.setPrefNotificationSoundEnabled(true);
         else pref.setPrefNotificationSoundEnabled(false);
         if (startOnBootCheckBox.isSelected()) pref.setPrefStartOnBoot(true);
-        else pref.setPrefStartOnBoot(false);
-        if (keepRunningCheckBox.isSelected()) pref.setPrefKeepRunning(true);
         else pref.setPrefStartOnBoot(false);
         if (showCloseAlertCheckBox.isSelected()) pref.setPrefShowCloseAlert(true);
         else pref.setPrefShowCloseAlert(false);

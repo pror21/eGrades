@@ -30,7 +30,6 @@ public class Preference {
 
     // Misc
     private Boolean prefStartOnBoot;
-    private Boolean prefKeepRunning;
     private Boolean prefShowCloseAlert;
 
     // Advanced
@@ -180,14 +179,6 @@ public class Preference {
 
     public void setPrefAdvancedLogErrors(Boolean prefAdvancedLogErrors) {
         this.prefAdvancedLogErrors = prefAdvancedLogErrors;
-    }
-
-    public Boolean getPrefKeepRunning() {
-        return prefKeepRunning;
-    }
-
-    public void setPrefKeepRunning(Boolean prefKeepRunning) {
-        this.prefKeepRunning = prefKeepRunning;
     }
 
     public Boolean getPrefShowCloseAlert() {

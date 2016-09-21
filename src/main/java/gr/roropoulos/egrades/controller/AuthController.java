@@ -11,7 +11,10 @@ import gr.roropoulos.egrades.model.Student;
 import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.parser.Impl.CardisoftStudentParserImpl;
 import gr.roropoulos.egrades.parser.StudentParser;
+import gr.roropoulos.egrades.scheduler.SyncScheduler;
+import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
+import gr.roropoulos.egrades.service.PreferenceService;
 import gr.roropoulos.egrades.service.SerializeService;
 import gr.roropoulos.egrades.service.UniversityService;
 import javafx.beans.binding.BooleanBinding;
@@ -45,6 +48,7 @@ public class AuthController implements Initializable {
     private UniversityService universityService = new UniversityService();
     private SerializeService serializeService = new SerializeServiceImpl();
     private StudentParser studentParser = new CardisoftStudentParserImpl();
+    private PreferenceService preferenceService = new PreferenceServiceImpl();
 
     private List<University> uniList = universityService.getUniversitiesList();
 
@@ -70,6 +74,8 @@ public class AuthController implements Initializable {
             serializeService.serializeStats(studentParser.parseStudentStats());
             serializeService.serializeLastRegister(studentParser.parseStudentRegistration());
             MainController.getInstance().updateAllViewComponents();
+            if (preferenceService.getPreferences().getPrefSyncEnabled())
+                SyncScheduler.getInstance().startSyncScheduler(preferenceService.getPreferences().getPrefSyncTime());
             dialogStage.close();
         } else
             serializeService.deleteSerializedFile();
