@@ -30,8 +30,8 @@ public class PrefController implements Initializable {
     private Stage dialogStage;
 
     @FXML
-    private CheckBox autoSyncCheckBox, popupNotificationCheckBox, soundNotificationCheckBox, startOnBootCheckBox,
-            enableMailerCheckBox, sslCheckBox, showErrorsCheckBox, logErrorsCheckBox, keepRunningCheckBox, showCloseAlertCheckBox;
+    private CheckBox autoSyncCheckBox, popupNotificationCheckBox, soundNotificationCheckBox,
+            enableMailerCheckBox, sslCheckBox, showErrorsCheckBox, logErrorsCheckBox, showCloseAlertCheckBox;
     @FXML
     private TextField syncRateTextField, hostnameTextField, portTextField, usernameTextField, passwordTextField,
             fromTextField, toTextField, timeoutTextField;
@@ -66,7 +66,6 @@ public class PrefController implements Initializable {
         if (pref.getPrefSyncEnabled()) autoSyncCheckBox.setSelected(true);
         if (pref.getPrefNotificationPopupEnabled()) popupNotificationCheckBox.setSelected(true);
         if (pref.getPrefNotificationSoundEnabled()) soundNotificationCheckBox.setSelected(true);
-        if (pref.getPrefStartOnBoot()) startOnBootCheckBox.setSelected(true);
         if (pref.getPrefShowCloseAlert()) showCloseAlertCheckBox.setSelected(true);
         if (pref.getPrefMailerEnabled()) enableMailerCheckBox.setSelected(true);
         if (pref.getPrefMailerSSL()) sslCheckBox.setSelected(true);
@@ -119,8 +118,6 @@ public class PrefController implements Initializable {
         else pref.setPrefNotificationPopupEnabled(false);
         if (soundNotificationCheckBox.isSelected()) pref.setPrefNotificationSoundEnabled(true);
         else pref.setPrefNotificationSoundEnabled(false);
-        if (startOnBootCheckBox.isSelected()) pref.setPrefStartOnBoot(true);
-        else pref.setPrefStartOnBoot(false);
         if (showCloseAlertCheckBox.isSelected()) pref.setPrefShowCloseAlert(true);
         else pref.setPrefShowCloseAlert(false);
         if (enableMailerCheckBox.isSelected()) pref.setPrefMailerEnabled(true);

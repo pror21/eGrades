@@ -62,7 +62,7 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Λάθος όνομα ή κωδικός χρήστη");
             alert.setHeaderText("Η ταυτοποιήση απέτυχε");
-            alert.setContentText("Ελέξτε το όνομα χρήστη και τον κωδικό.!");
+            alert.setContentText("Ελέξτε το όνομα χρήστη και τον κωδικό.");
 
             alert.showAndWait();
         } else

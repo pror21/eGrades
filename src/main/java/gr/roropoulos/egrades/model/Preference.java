@@ -29,21 +29,12 @@ public class Preference {
     private String prefMailerTo;
 
     // Misc
-    private Boolean prefStartOnBoot;
     private Boolean prefShowCloseAlert;
 
     // Advanced
     private Integer prefAdvancedTimeout;
     private Boolean prefAdvancedShowErrors;
     private Boolean prefAdvancedLogErrors;
-
-    public Boolean getPrefStartOnBoot() {
-        return prefStartOnBoot;
-    }
-
-    public void setPrefStartOnBoot(Boolean prefStartOnBoot) {
-        this.prefStartOnBoot = prefStartOnBoot;
-    }
 
     public Boolean getPrefSyncEnabled() {
         return prefSyncEnabled;

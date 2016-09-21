@@ -37,7 +37,6 @@ public class PreferenceServiceImpl implements PreferenceService {
         pref.setPrefMailerFrom(prefs.get("prefMailerFrom", ""));
         pref.setPrefMailerTo(prefs.get("prefMailerTo", ""));
 
-        pref.setPrefStartOnBoot(prefs.getBoolean("prefStartOnBoot", true));
         pref.setPrefShowCloseAlert(prefs.getBoolean("prefShowCloseAlert", false));
 
         pref.setPrefAdvancedTimeout(prefs.getInt("prefTimeout", 20000));
@@ -67,7 +66,6 @@ public class PreferenceServiceImpl implements PreferenceService {
         prefs.put("prefMailerFrom", pref.getPrefMailerFrom());
         prefs.put("prefMailerTo", pref.getPrefMailerTo());
 
-        prefs.putBoolean("prefStartOnBoot", pref.getPrefStartOnBoot());
         prefs.putBoolean("prefShowCloseAlert", pref.getPrefShowCloseAlert());
 
         prefs.putInt("prefTimeout", pref.getPrefAdvancedTimeout());
