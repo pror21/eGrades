@@ -45,7 +45,7 @@
                             <children>
                                 <HBox prefHeight="100.0" prefWidth="336.0">
                                     <children>
-                                        <Label fx:id="messageLabel" text="ΤΑΥΤΟΠΟΙΗΣΗ ΧΡΗΣΤΗ:" textAlignment="LEFT"
+                                        <Label text="ΤΑΥΤΟΠΟΙΗΣΗ ΧΡΗΣΤΗ:" textAlignment="LEFT"
                                                wrapText="true">
                                             <font>
                                                 <Font name="Open Sans Bold" size="13.0"/>
@@ -123,7 +123,7 @@
                                 <Insets/>
                             </HBox.margin>
                         </Button>
-                        <HBox fx:id="okParent" alignment="CENTER" prefHeight="25.0" prefWidth="45.0">
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="45.0">
                             <children>
                                 <Button fx:id="okButton" defaultButton="true" disable="true" minWidth="80.0"
                                         mnemonicParsing="false" onAction="#handleOkButtonAction" text="Είσοδος"
@@ -139,7 +139,6 @@
                         <Insets right="20.0"/>
                     </padding>
                 </HBox>
-                <ProgressIndicator fx:id="loginProgress" progress="0.0" visible="false" GridPane.rowIndex="1"/>
             </children>
             <columnConstraints>
                 <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity"/>

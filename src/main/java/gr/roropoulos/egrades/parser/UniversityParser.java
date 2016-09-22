@@ -27,8 +27,7 @@ public class UniversityParser {
 
     public List<University> parseUniDB() {
 
-        List<University> universitiesList = new ArrayList<University>();
-        ClassLoader classLoader = getClass().getClassLoader();
+        List<University> universitiesList = new ArrayList<>();
 
         try {
             FileInputStream xml = new FileInputStream(System.getProperty("user.home") + File.separator + "eGrades" + File.separator + "unidb.xml");

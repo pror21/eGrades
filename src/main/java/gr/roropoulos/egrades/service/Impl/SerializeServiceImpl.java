@@ -91,10 +91,6 @@ public class SerializeServiceImpl implements SerializeService {
         serializeStudent(student);
     }
 
-    public HashMap<String, String> deserializeLastRegister() {
-        return deserializeStudent().getStudentLastReg();
-    }
-
     public List<Course> deserializeLastRegisterCourseList() {
         Student student = deserializeStudent();
         List<Course> courseList = student.getStudentCourses();
