@@ -13,6 +13,7 @@ import gr.roropoulos.egrades.parser.DocumentParser;
 import gr.roropoulos.egrades.parser.Impl.CardisoftDocumentParserImpl;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.SerializeService;
+import org.jsoup.Connection;
 
 import java.io.*;
 import java.util.*;
@@ -55,8 +56,8 @@ public class SerializeServiceImpl implements SerializeService {
     }
 
     public Boolean studentCheckAuthentication(Student student) {
-        Map<String, String> cookieJar = documentParser.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
-        return cookieJar != null;
+        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
+        return documentParser.checkAuthentication(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
     }
 
     public Boolean checkIfSerializedFileExist() {
@@ -165,5 +166,4 @@ public class SerializeServiceImpl implements SerializeService {
             }
         }
     }
-
 }

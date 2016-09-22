@@ -8,13 +8,18 @@
 package gr.roropoulos.egrades.parser;
 
 import gr.roropoulos.egrades.model.University;
+import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 
 import java.util.Map;
 
 public interface DocumentParser {
 
-    Map<String, String> openConnection(University uniConn, String username, String password);
+    Connection.Response getConnection(University uniConn);
+
+    Map<String, String> getCookies(Connection.Response res, University uniConn, String username, String password);
+
+    Boolean checkAuthentication(Connection.Response res, University uniConn, String username, String password);
 
     Document getTreeStudentInfo(University uniConn, Map<String, String> cookieJar);
 

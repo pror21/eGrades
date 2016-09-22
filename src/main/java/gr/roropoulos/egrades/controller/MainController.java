@@ -99,7 +99,6 @@ public class MainController implements Initializable {
             if (result.get() == okButton) {
                 Platform.runLater(() -> mainApp.showAuthView());
             }
-
         }
     }
 
@@ -212,15 +211,16 @@ public class MainController implements Initializable {
     private void updateStatusBar() {
         HashMap<String, String> studentInfo = serializeService.deserializeInfo();
         HashMap<String, String> studentStats = serializeService.deserializeStats();
-
-        studentNameStatusLabel.setText(studentInfo.get("studentName") + " " + studentInfo.get("studentSurname"));
-        studentAEMStatusLabel.setText(" " + "(" + studentInfo.get("studentAEM") + ")");
-        coursesStatusLabel.setText(studentStats.get("sumCourses"));
-        gradeStatusLabel.setText(studentStats.get("averageGrade"));
-        creditsStatusLabel.setText(studentStats.get("sumCredits"));
-        hoursStatusLabel.setText(studentStats.get("sumHours"));
-        ectsStatusLabel.setText(studentStats.get("sumECTS"));
-        borderPane.setBottom(statusBar);
+        if (studentInfo != null && studentStats != null) {
+            studentNameStatusLabel.setText(studentInfo.get("studentName") + " " + studentInfo.get("studentSurname"));
+            studentAEMStatusLabel.setText(" " + "(" + studentInfo.get("studentAEM") + ")");
+            coursesStatusLabel.setText(studentStats.get("sumCourses"));
+            gradeStatusLabel.setText(studentStats.get("averageGrade"));
+            creditsStatusLabel.setText(studentStats.get("sumCredits"));
+            hoursStatusLabel.setText(studentStats.get("sumHours"));
+            ectsStatusLabel.setText(studentStats.get("sumECTS"));
+            borderPane.setBottom(statusBar);
+        }
     }
 
     private ObservableList getInitialCourseTableData() {

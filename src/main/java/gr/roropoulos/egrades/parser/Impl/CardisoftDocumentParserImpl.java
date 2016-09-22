@@ -13,7 +13,6 @@ import gr.roropoulos.egrades.parser.DocumentParser;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.PreferenceService;
-import javafx.scene.control.Alert;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,9 +27,8 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
     private PreferenceService preferenceService = new PreferenceServiceImpl();
     private Integer timeout = preferenceService.getPreferences().getPrefAdvancedTimeout();
 
-    public Map<String, String> openConnection(University uniConn, String username, String password) {
+    public Connection.Response getConnection(University uniConn) {
         Connection.Response res = null;
-        Document respDoc = null;
         try {
             res = Jsoup.connect(uniConn.getUniversityURL())
                     .method(Connection.Method.GET)
@@ -40,8 +38,13 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         } catch (IOException e) {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
+        return res;
+    }
+
+    public Boolean checkAuthentication(Connection.Response res, University uniConn, String username, String password) {
+        Document respDoc = null;
         try {
-            respDoc = Jsoup.connect(uniConn.getUniversityURL())
+            respDoc = Jsoup.connect(uniConn.getUniversityURL() + "login.asp")
                     .data(uniConn.getUniversityData()[0], username, uniConn.getUniversityData()[1], password, uniConn.getUniversityData()[2], uniConn.getUniversityData()[3], uniConn.getUniversityData()[4], uniConn.getUniversityData()[5])
                     .cookies(res.cookies())
                     .method(Connection.Method.POST)
@@ -53,22 +56,24 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
 
-        Map<String, String> cookieJar;
-
-        // Check if user failed to login
         Element error = respDoc.select("div.error").first();
-        if (error != null) {
-            cookieJar = null;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Λάθος όνομα ή κωδικός χρήστη");
-            alert.setHeaderText("Η ταυτοποιήση απέτυχε");
-            alert.setContentText("Ελέξτε το όνομα χρήστη και τον κωδικό.");
+        return error == null;
+    }
 
-            alert.showAndWait();
-        } else
-            cookieJar = res.cookies();
-
-        return cookieJar;
+    public Map<String, String> getCookies(Connection.Response res, University uniConn, String username, String password) {
+        try {
+            Jsoup.connect(uniConn.getUniversityURL())
+                    .data(uniConn.getUniversityData()[0], username, uniConn.getUniversityData()[1], password, uniConn.getUniversityData()[2], uniConn.getUniversityData()[3], uniConn.getUniversityData()[4], uniConn.getUniversityData()[5])
+                    .cookies(res.cookies())
+                    .method(Connection.Method.POST)
+                    .timeout(timeout)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
+                    .followRedirects(true)
+                    .post();
+        } catch (IOException e) {
+            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
+        }
+        return res.cookies();
     }
 
     public Document getTreeStudentInfo(University uniConn, Map<String, String> cookieJar) {

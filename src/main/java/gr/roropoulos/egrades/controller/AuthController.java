@@ -22,10 +22,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -53,10 +50,11 @@ public class AuthController implements Initializable {
     private List<University> uniList = universityService.getUniversitiesList();
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+        initializeHandlers();
         uniList.sort((uni1, uni2) -> uni1.getUniversityName().compareTo(uni2.getUniversityName()));
         uniChoiceBox.getItems().setAll(uniList);
         uniChoiceBox.getSelectionModel().select(0);
-        initializeHandlers();
+
         loadStudentData();
     }
 
@@ -65,20 +63,30 @@ public class AuthController implements Initializable {
         MainController.getInstance().clearCourseData();
         student.setStudentUsername(usernameField.getText());
         student.setStudentPassword(passwordField.getText());
-        serializeService.serializeStudent(student);
 
-        Student student = serializeService.deserializeStudent();
         if (serializeService.studentCheckAuthentication(student)) {
+            serializeService.serializeStudent(student);
             serializeService.serializeInfo(studentParser.parseStudentInfo(student));
             serializeService.serializeCourses(studentParser.parseStudentGrades());
             serializeService.serializeStats(studentParser.parseStudentStats());
             serializeService.serializeLastRegister(studentParser.parseStudentRegistration());
+
             MainController.getInstance().updateAllViewComponents();
+
             if (preferenceService.getPreferences().getPrefSyncEnabled())
                 SyncScheduler.getInstance().startSyncScheduler(preferenceService.getPreferences().getPrefSyncTime());
+
             dialogStage.close();
-        } else
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Αποτυχία ταυτοποίησης");
+            alert.setHeaderText("Λάθος όνομα χρήστη ή κωδικός");
+            alert.setContentText("Παρακαλώ ελέγξτε τα στοιχεία και δοκιμάστε ξανά.");
+
+            alert.showAndWait();
             serializeService.deleteSerializedFile();
+        }
+
     }
 
     @FXML

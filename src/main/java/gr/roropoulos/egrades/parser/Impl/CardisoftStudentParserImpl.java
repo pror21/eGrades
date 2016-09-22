@@ -13,6 +13,7 @@ import gr.roropoulos.egrades.parser.DocumentParser;
 import gr.roropoulos.egrades.parser.StudentParser;
 import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
 import gr.roropoulos.egrades.service.SerializeService;
+import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -28,7 +29,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
     private SerializeService serializeService = new SerializeServiceImpl();
 
     public HashMap<String, String> parseStudentInfo(Student student) {
-        Map<String, String> cookieJar = documentParser.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
+        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
+        Map<String, String> cookieJar = documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
         Document doc = documentParser.getTreeStudentInfo(student.getStudentUniversity(), cookieJar);
 
         String studentName = doc.select("#main > div:nth-child(4) > table > tbody > tr:nth-child(3) > td:nth-child(2)").text();
@@ -50,7 +52,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
 
     public List<Course> parseStudentGrades() {
         Student student = serializeService.deserializeStudent();
-        Map<String, String> cookieJar = documentParser.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
+        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
+        Map<String, String> cookieJar = documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
         Document doc = documentParser.getTreeStudentGrades(student.getStudentUniversity(), cookieJar);
 
         // Select all SIMPLE and COMP courses (they have the same attributes so we'r selecting both of them for now)
@@ -172,7 +175,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
 
     public HashMap<String, String> parseStudentRegistration() {
         Student student = serializeService.deserializeStudent();
-        Map<String, String> cookieJar = documentParser.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
+        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
+        Map<String, String> cookieJar = documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
         Document doc = documentParser.getTreeStudentRegistration(student.getStudentUniversity(), cookieJar);
 
         Element element = doc.select("tr[bgcolor=#FFFAF0").first();
@@ -194,7 +198,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
 
     public HashMap<String, String> parseStudentStats() {
         Student student = serializeService.deserializeStudent();
-        Map<String, String> cookieJar = documentParser.openConnection(student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
+        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
+        Map<String, String> cookieJar = documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
         Document doc = documentParser.getTreeStudentStats(student.getStudentUniversity(), cookieJar);
 
         Element overallStats = doc.select("tr[height=20][class=subHeaderBack]").last();
