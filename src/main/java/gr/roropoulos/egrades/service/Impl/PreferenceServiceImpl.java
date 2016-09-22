@@ -25,7 +25,7 @@ public class PreferenceServiceImpl implements PreferenceService {
 
         pref.setPrefNotificationPopupEnabled(prefs.getBoolean("prefNotificationPopupEnabled", true));
         pref.setPrefNotificationPopupAnimation(prefs.get("prefNotificationPopupAnimation", "popup"));
-        pref.setPrefNotificationSoundEnabled(prefs.getBoolean("prefNotificationSoundEnabled", false));
+        pref.setPrefNotificationSoundEnabled(prefs.getBoolean("prefNotificationSoundEnabled", true));
         pref.setPrefNotificationSound(prefs.get("prefNotificationSound", "arpeggio"));
 
         pref.setPrefMailerEnabled(prefs.getBoolean("prefMailerEnabled", false));
@@ -37,11 +37,11 @@ public class PreferenceServiceImpl implements PreferenceService {
         pref.setPrefMailerFrom(prefs.get("prefMailerFrom", ""));
         pref.setPrefMailerTo(prefs.get("prefMailerTo", ""));
 
-        pref.setPrefShowCloseAlert(prefs.getBoolean("prefShowCloseAlert", false));
+        pref.setPrefShowCloseAlert(prefs.getBoolean("prefShowCloseAlert", true));
 
         pref.setPrefAdvancedTimeout(prefs.getInt("prefTimeout", 20000));
         pref.setPrefAdvancedShowErrors(prefs.getBoolean("prefShowBugAlerts", false));
-        pref.setPrefAdvancedLogErrors(prefs.getBoolean("prefLogDebug", false));
+        pref.setPrefAdvancedLogErrors(prefs.getBoolean("prefLogDebug", true));
 
         return pref;
     }
