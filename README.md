@@ -45,4 +45,4 @@ What you mainly want to know is that:
 
 # License
 
-See [LICENSE](LICENSE.txt)
+See [LICENSE](LICENSE.md)
