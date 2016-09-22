@@ -1,5 +1,5 @@
 # ![](src/main/resources/images/icons/Icon_48x48.png) eGrades
-[![JSoup Library](https://img.shields.io/badge/jsoup-v1.9.2-green.svg)](https://jsoup.org/)  [![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000)]() [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)]()
+ ![](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000) ![](https://img.shields.io/badge/license-GPLv3-blue.svg)]
 
 eGrades is a **Simple**, grade notifier for the Greek University Students.  There is **Zero** installation required.  Just extract the ZIP archive, execute the JAR and follow the instructions.
 
