@@ -7,6 +7,7 @@
 
 package gr.roropoulos.egrades;
 
+import com.sun.imageio.plugins.common.ImageUtil;
 import gr.roropoulos.egrades.controller.AuthController;
 import gr.roropoulos.egrades.controller.MainController;
 import gr.roropoulos.egrades.controller.PrefController;
@@ -22,7 +23,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,8 +61,8 @@ public class eGrades extends Application {
 
         initRootLayout();
         showMainView();
-        //TODO: START IN STEALTH
-        //if (argsList.contains("-s")){}
+        setTray();
+
     }
 
     public void initRootLayout() {
@@ -144,6 +148,36 @@ public class eGrades extends Application {
     public void stopApplication() {
         Platform.exit();
         System.exit(0);
+    }
+
+    private void showStage() {
+        if (primaryStage != null) {
+            primaryStage.show();
+            primaryStage.toFront();
+        }
+    }
+
+    private void setTray() {
+        try {
+            if (SystemTray.isSupported()) {
+                SystemTray tray = SystemTray.getSystemTray();
+                PopupMenu popup = new PopupMenu();
+                URL url = ImageUtil.class.getResource("/images/icons/Icon_16x16.png");
+                java.awt.Image image = ImageIO.read(url);
+                TrayIcon trayIcon = new TrayIcon(image, "eGrades", popup);
+                trayIcon.addActionListener(event -> Platform.runLater(this::showStage));
+                MenuItem exitItem = new MenuItem("Exit");
+                exitItem.addActionListener(event -> {
+                    tray.remove(trayIcon);
+                    stopApplication();
+                });
+                popup.add(exitItem);
+                tray.add(trayIcon);
+            }
+        } catch (java.awt.AWTException | IOException e) {
+            System.out.println("Unable to init system tray");
+            e.printStackTrace();
+        }
     }
 
     public Stage getPrimaryStage() {
