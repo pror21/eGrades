@@ -34,8 +34,6 @@ You can download a **ready-built** package from the [GitHub page on https://pror
 # Contributing
 We appreciate any contribution to eGrades, whether it is related to bugs, grammar, or simply a suggestion or improvement.
 
-You will probably want to get started by installing [this very good collection of git extensions][gitflow-extensions].
-
 What you mainly want to know is that:
 
 - All the main activity happens in the `develop` branch. Any pull request should be addressed only to that branch. We will not consider pull requests made to the `master`.
