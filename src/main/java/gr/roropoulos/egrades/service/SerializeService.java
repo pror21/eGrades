@@ -48,4 +48,6 @@ public interface SerializeService {
 
     void deleteSerializedFile();
 
+    void clearRecentCourses();
+
 }

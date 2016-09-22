@@ -76,6 +76,8 @@ public class MainController implements Initializable {
     }
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+
+
         Platform.setImplicitExit(false);
         Preference prefs = preferenceService.getPreferences();
         createStatusBar();
@@ -322,6 +324,24 @@ public class MainController implements Initializable {
             showCloseAlert();
         else
             mainApp.getPrimaryStage().hide();
+    }
+
+    @FXML
+    private void deleteRecentToolBarButton() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("eGrades");
+        alert.setHeaderText("Διαγραφή πρόσφατων βαθμολογιών!");
+        alert.setContentText(
+                "Επιβεβαίωση διαγραφής όλων των πρόσφατων βαθμολογιών."
+        );
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            recentTableView.getItems().clear();
+            serializeService.clearRecentCourses();
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
     }
 
     private void showCloseAlert() {

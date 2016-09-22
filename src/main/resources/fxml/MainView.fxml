@@ -169,6 +169,20 @@
                                 <Tooltip text="Ρυθμίσεις"/>
                             </tooltip>
                         </Button>
+                        <Separator orientation="VERTICAL"/>
+                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                                onAction="#deleteRecentToolBarButton" text="Delete" textAlignment="CENTER">
+                            <graphic>
+                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@/images/delete.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <tooltip>
+                                <Tooltip text="Ρυθμίσεις"/>
+                            </tooltip>
+                        </Button>
                     </items>
                 </ToolBar>
             </center>

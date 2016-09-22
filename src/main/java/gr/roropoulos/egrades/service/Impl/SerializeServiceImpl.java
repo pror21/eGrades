@@ -143,6 +143,8 @@ public class SerializeServiceImpl implements SerializeService {
     public void serializeRecentCourses(List<Course> courseList) {
         Student student = deserializeStudent();
         List<Course> recentCourseList = student.getStudentRecentCourses();
+        if (recentCourseList == null)
+            recentCourseList = new ArrayList<>();
         recentCourseList.addAll(courseList);
         student.setStudentRecentCourses(recentCourseList);
         serializeStudent(student);
@@ -151,4 +153,17 @@ public class SerializeServiceImpl implements SerializeService {
     public List<Course> deserializeRecentCourses() {
         return deserializeStudent().getStudentRecentCourses();
     }
+
+    public void clearRecentCourses() {
+        Student student = deserializeStudent();
+        List<Course> recentList = student.getStudentRecentCourses();
+        if (recentList != null) {
+            if (!recentList.isEmpty()) {
+                recentList.clear();
+                student.setStudentRecentCourses(recentList);
+                serializeStudent(student);
+            }
+        }
+    }
+
 }
