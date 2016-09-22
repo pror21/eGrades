@@ -122,9 +122,9 @@
                                      <Label text="From" GridPane.rowIndex="4"/>
                                      <TextField fx:id="fromTextField" promptText="user@example.com"
                                                 GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                                     <Button fx:id="testEmailButton" alignment="CENTER" mnemonicParsing="false"
-                                             prefHeight="25.0" prefWidth="82.0" text="Test Mail" textAlignment="CENTER"
-                                             GridPane.rowIndex="5"/>
+                                     <Button alignment="CENTER" mnemonicParsing="false"
+                                             onAction="#sendSampleEmailButtonAction" prefHeight="25.0" prefWidth="82.0"
+                                             text="Test Mail" textAlignment="CENTER" GridPane.rowIndex="5"/>
                                      <TextField fx:id="hostnameTextField" GridPane.columnIndex="1"
                                                 GridPane.rowIndex="1"/>
                                      <TextField fx:id="portTextField" maxWidth="-Infinity" prefHeight="25.0"

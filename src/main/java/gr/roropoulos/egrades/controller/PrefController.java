@@ -150,6 +150,20 @@ public class PrefController implements Initializable {
         dialogStage.close();
     }
 
+    @FXML
+    private void sendSampleEmailButtonAction() {
+        NotifyService notifyService = new NotifyService();
+        notifyService.sendSampleMail(
+                hostnameTextField.getText(),
+                portTextField.getText(),
+                usernameTextField.getText(),
+                passwordTextField.getText(),
+                sslCheckBox.isSelected(),
+                fromTextField.getText(),
+                toTextField.getText()
+        );
+    }
+
     private void savePreferences() {
 
         SyncScheduler.getInstance().stopScheduler();

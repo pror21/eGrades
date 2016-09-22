@@ -72,4 +72,20 @@ public class NotifyService {
         }
     }
 
+    public void sendSampleMail(String hostname, String port, String username, String password, Boolean ssl, String fromMail, String toMail) {
+        try {
+            Email email = new SimpleEmail();
+            email.setHostName(hostname);
+            email.setSmtpPort(Integer.parseInt(port));
+            email.setAuthenticator(new DefaultAuthenticator(username, password));
+            email.setSSLOnConnect(ssl);
+            email.setFrom(fromMail);
+            email.setSubject("eGrades: Email Test!");
+            email.setMsg("Αυτό είναι ένα δοκιμαστικό email. Εάν έχετε ενεργοποιημένο τον Mailer θα λαμβάνετε τις βαθμολογίες σας και αυτή τη διεύθυνση.");
+            email.addTo(toMail);
+            email.send();
+        } catch (EmailException e) {
+            exceptionService.showException(e, "Αποτυχία αποστολής δοκιμαστικού email.");
+        }
+    }
 }
