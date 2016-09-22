@@ -17,7 +17,6 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,8 @@ public class UniversityParser {
         List<University> universitiesList = new ArrayList<>();
 
         try {
-            FileInputStream xml = new FileInputStream(System.getProperty("user.home") + File.separator + "eGrades" + File.separator + "unidb.xml");
+            ClassLoader classLoader = getClass().getClassLoader();
+            File xml = new File(classLoader.getResource("unidb.xml").getFile());
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xml);

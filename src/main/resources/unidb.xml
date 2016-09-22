@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2016.
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  -->
+
+<universities ver="2">
+    <university>
+        <universityName>Πανεπιστήμιο Πειραιώς</universityName>
+        <universityURL>https://students.unipi.gr/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>Δημοκρίτειο Πανεπιστήμιο Θράκης</universityName>
+        <universityURL>https://unistudent.duth.gr/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>Ιόνιο Πανεπιστήμιο</universityName>
+        <universityURL>http://gram-web.ionio.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>Πανεπιστήμιο Αιγαίου</universityName>
+        <universityURL>https://studentweb.aegean.gr/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>Πανεπιστήμιο Μακεδονίας</universityName>
+        <universityURL>https://services.uom.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>Πανεπιστήμιο Πελοποννήσου</universityName>
+        <universityURL>https://e-secretary.uop.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>Πολυτεχνείο Κρήτης</universityName>
+        <universityURL>https://websrv.stdnet.tuc.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Κεντρικής Μακεδονίας</universityName>
+        <universityURL>http://egram.teicm.gr/unistudent/</universityURL>
+        <universityData>userName1 pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Αθήνας</universityName>
+        <universityURL>https://estudy.teiath.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Ανατολικής Μακεδονίας και Θράκης</universityName>
+        <universityURL>https://e-secretariat.teiemt.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Δυτικής Ελλάδας</universityName>
+        <universityURL>https://studentsweb.teimes.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Δυτικής Μακεδονίας - Παράρτημα Καστοριάς</universityName>
+        <universityURL>http://195.130.87.7/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Θεσσαλίας</universityName>
+        <universityURL>https://dionysos.teilar.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Ιονίων Νήσων</universityName>
+        <universityURL>http://omiros.teiion.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Θεσσαλονίκης</universityName>
+        <universityURL>http://pithia.teithe.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Καλαμάτας</universityName>
+        <universityURL>http://pithia.teithe.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Κρήτης</universityName>
+        <universityURL>https://student.teicrete.gr/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Στερεάς Ελλάδας</universityName>
+        <universityURL>https://e-gram.teilam.gr/unistudent/</universityURL>
+        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+    </university>
+</universities>
+		
