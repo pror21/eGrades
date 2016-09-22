@@ -7,6 +7,7 @@
 
 package gr.roropoulos.egrades.parser;
 
+import gr.roropoulos.egrades.eGrades;
 import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.service.ExceptionService;
 import org.w3c.dom.Document;
@@ -16,7 +17,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +30,7 @@ public class UniversityParser {
         List<University> universitiesList = new ArrayList<>();
 
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File xml = new File(classLoader.getResource("unidb.xml").getFile());
+            InputStream xml = eGrades.class.getResourceAsStream("/unidb.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xml);
