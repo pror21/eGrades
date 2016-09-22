@@ -10,6 +10,21 @@ The underlying architecture of eGrades is designed to use well-established and _
 * [Apache Commons-Email](https://commons.apache.org/proper/commons-email/): for sending email notifications
 * [Apache Maven](https://maven.apache.org/): for building and managing eGrades project
 
+# Supported Universities
+| AEI        | TEI           |
+| ------------- |:-------------:|
+| Δημοκρίτειο Πανεπιστήμιο Θράκης | ΤΕΙ Αθήνας |
+| Ιόνιο Πανεπιστήμιο | ΤΕΙ Ανατολικής Μακεδονίας και Θράκης |
+| Πανεπιστήμιο Αιγαίου | ΤΕΙ Δυτικής Ελλάδας |
+| Πανεπιστήμιο Μακεδονίας | ΤΕΙ Δυτικής Μακεδονίας - Παράρτημα Καστοριάς |
+| Πανεπιστήμιο Πειραιώς | ΤΕΙ Θεσσαλίας |
+| Πανεπιστήμιο Πελοποννήσου | ΤΕΙ Θεσσαλονίκης |
+| Πολυτεχνείο Κρήτης | ΤΕΙ Ιονίων Νήσων |
+| Πανεπιστήμιο Αιγαίου | ΤΕΙ Καλαμάτας |
+| | ΤΕΙ Κεντρικής Μακεδονίας |
+| | ΤΕΙ Κρήτης |
+| | ΤΕΙ Στερεάς Ελλάδας |
+
 # Requirements
 - JRE 1.8u40 or higher. It's recommended to always use the [latest JRE](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 - ..thats all!
