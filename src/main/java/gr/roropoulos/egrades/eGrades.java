@@ -11,8 +11,6 @@ import gr.roropoulos.egrades.controller.AuthController;
 import gr.roropoulos.egrades.controller.MainController;
 import gr.roropoulos.egrades.controller.PrefController;
 import gr.roropoulos.egrades.service.ExceptionService;
-import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
-import gr.roropoulos.egrades.service.SerializeService;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +21,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,17 +29,14 @@ import java.util.List;
 
 public class eGrades extends Application {
 
-    private static final Logger log = LoggerFactory.getLogger(eGrades.class);
     private static List<String> argsList;
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ExceptionService exceptionService = new ExceptionService();
-    private SerializeService serializeService = new SerializeServiceImpl();
-
     private MainController mainController;
 
     public static void main(String[] args) throws Exception {
-        argsList = new ArrayList<String>(Arrays.asList(args));
+        argsList = new ArrayList<>(Arrays.asList(args));
         for (String s : args) {
             argsList.add(s);
         }
@@ -78,7 +71,7 @@ public class eGrades extends Application {
             primaryStage.setResizable(true);
             primaryStage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            exceptionService.showException(e, "Δεν βρέθηκε το Root Layout.");
         }
     }
 

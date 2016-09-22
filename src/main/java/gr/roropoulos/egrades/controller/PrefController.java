@@ -9,9 +9,9 @@ package gr.roropoulos.egrades.controller;
 
 import com.github.plushaze.traynotification.animations.Animations;
 import gr.roropoulos.egrades.model.Preference;
-import gr.roropoulos.egrades.notifier.GradeNotifier;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
+import gr.roropoulos.egrades.service.NotifyService;
 import gr.roropoulos.egrades.service.PreferenceService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -41,7 +41,7 @@ public class PrefController implements Initializable {
 
     private Preference pref = new Preference();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
-    private GradeNotifier gradeNotifier = new GradeNotifier();
+    private NotifyService notifyService = new NotifyService();
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         pref = preferenceService.getPreferences();
@@ -85,11 +85,11 @@ public class PrefController implements Initializable {
         popupEffectChoiceBox.valueProperty().addListener((ov, t, t1) -> {
             if (t != null) {
                 if (Objects.equals(t1, "popup"))
-                    gradeNotifier.showSampleNotification(Animations.POPUP);
+                    notifyService.showSampleNotification(Animations.POPUP);
                 else if (Objects.equals(t1, "slide"))
-                    gradeNotifier.showSampleNotification(Animations.SLIDE);
+                    notifyService.showSampleNotification(Animations.SLIDE);
                 else if (Objects.equals(t1, "fade"))
-                    gradeNotifier.showSampleNotification(Animations.FADE);
+                    notifyService.showSampleNotification(Animations.FADE);
             }
         });
 
@@ -98,13 +98,13 @@ public class PrefController implements Initializable {
         soundChoiceBox.valueProperty().addListener((ov, t, t1) -> {
             if (t != null) {
                 if (Objects.equals(t1, "arpeggio"))
-                    gradeNotifier.playSoundNotification("arpeggio");
+                    notifyService.playSoundNotification("arpeggio");
                 else if (Objects.equals(t1, "attention"))
-                    gradeNotifier.playSoundNotification("attention");
+                    notifyService.playSoundNotification("attention");
                 else if (Objects.equals(t1, "ding"))
-                    gradeNotifier.playSoundNotification("ding");
+                    notifyService.playSoundNotification("ding");
                 else if (Objects.equals(t1, "pluck"))
-                    gradeNotifier.playSoundNotification("pluck");
+                    notifyService.playSoundNotification("pluck");
             }
         });
         soundChoiceBox.getSelectionModel().select(pref.getPrefNotificationSound());

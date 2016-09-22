@@ -12,13 +12,13 @@ import com.github.plushaze.traynotification.notification.Notifications;
 import gr.roropoulos.egrades.eGrades;
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Preference;
-import gr.roropoulos.egrades.notifier.GradeNotifier;
 import gr.roropoulos.egrades.parser.Impl.CardisoftStudentParserImpl;
 import gr.roropoulos.egrades.parser.StudentParser;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
+import gr.roropoulos.egrades.service.NotifyService;
 import gr.roropoulos.egrades.service.PreferenceService;
 import gr.roropoulos.egrades.service.SerializeService;
 import javafx.application.Platform;
@@ -289,8 +289,10 @@ public class MainController implements Initializable {
 
     @FXML
     private void syncToolBarButtonAction() {
-        syncCourses();
-        updateAllViewComponents();
+        if (serializeService.checkIfSerializedFileExist()) {
+            syncCourses();
+            updateAllViewComponents();
+        }
     }
 
     @FXML
@@ -341,7 +343,7 @@ public class MainController implements Initializable {
     }
 
     public void syncCourses() {
-        GradeNotifier gradeNotifier = new GradeNotifier();
+        NotifyService notifyService = new NotifyService();
         Preference pref = preferenceService.getPreferences();
 
         HashMap<String, List<Course>> hashMap = getNewlyListedCourses();
@@ -350,10 +352,10 @@ public class MainController implements Initializable {
 
         // If new announced grades exist
         if (!newlyListedGradeList.isEmpty()) {
-
+            serializeService.serializeRecentCourses(newlyListedGradeList);
             // Play notification sound if enabled
             if (pref.getPrefNotificationSoundEnabled())
-                gradeNotifier.playSoundNotification(pref.getPrefNotificationSound());
+                notifyService.playSoundNotification(pref.getPrefNotificationSound());
 
             // Show notification if enabled
             if (pref.getPrefNotificationPopupEnabled()) {
@@ -375,18 +377,22 @@ public class MainController implements Initializable {
                 for (Course course : newlyListedGradeList) {
                     float val = Float.parseFloat(course.getCourseGrade().replace(',', '.'));
                     if (val >= 5) {
-                        gradeNotifier.showNotification(course.getCourseTitle(),
+                        notifyService.showNotification(course.getCourseTitle(),
                                 "Πέρασες το μάθημα με βαθμό " + course.getCourseGrade(), Notifications.SUCCESS, animation);
                     } else {
-                        gradeNotifier.showNotification(course.getCourseTitle(),
+                        notifyService.showNotification(course.getCourseTitle(),
                                 "Κόπηκες με βαθμό " + course.getCourseGrade(), Notifications.ERROR, animation);
                     }
                 }
             }
+
+            // Send email if enabled
+            if (pref.getPrefMailerEnabled()) {
+                newlyListedGradeList.forEach(notifyService::sendMail);
+            }
         }
 
         serializeService.serializeCourses(newList);
-        serializeService.serializeRecentCourses(newlyListedGradeList);
         serializeService.serializeStats(studentParser.parseStudentStats());
         updateAllViewComponents();
     }
