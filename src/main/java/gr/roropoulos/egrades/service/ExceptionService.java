@@ -14,14 +14,23 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 
 public class ExceptionService {
 
-    PreferenceService preferenceService = new PreferenceServiceImpl();
+    private PreferenceService preferenceService = new PreferenceServiceImpl();
 
     public void showException(Exception e, String errorMessage) {
+        if (preferenceService.getPreferences().getPrefAdvancedLogErrors()) {
+            try {
+                FileOutputStream fos = new FileOutputStream(new File(System.getProperty("user.home") + File.separator + "eGrades" + File.separator + "logs.txt"), true);
+                PrintStream ps = new PrintStream(fos);
+                e.printStackTrace(ps);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        }
+
         if (preferenceService.getPreferences().getPrefAdvancedShowErrors()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Σφάλμα");
