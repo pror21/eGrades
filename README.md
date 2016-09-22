@@ -11,7 +11,7 @@ The underlying architecture of eGrades is designed to use well-established and _
 * [Apache Maven](https://maven.apache.org/): for building and managing eGrades project
 
 # Requirements
-- JRE 1.8u40 or higher. Download the: [latest JRE](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+- JRE 1.8u40 or higher. It's recommended to always use the: [latest JRE](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 - ..thats all!
 
 # QuickStart
