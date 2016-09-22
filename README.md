@@ -3,7 +3,7 @@
 
 eGrades is a **Simple**, grade notifier for the Greek University Students.  There is **Zero** installation required.  Just extract the ZIP archive, execute the JAR and follow the instructions.
 
-The underlying architecture of eGrades is designed to use well-established and _best-in-class_ technologies. Some of these key technologies include:
+eGrades is using some well known libraries, such as:
 
 * [JavaFX](http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm): for the user interface
 * [JSoup](https://jsoup.org/): for extracting and manipulating data
