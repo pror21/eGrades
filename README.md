@@ -1,5 +1,5 @@
 # ![](src/main/resources/images/icons/Icon_48x48.png) eGrades
- ![](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000) ![](https://img.shields.io/badge/license-GPLv3-blue.svg)
+ ![](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000) ![](https://img.shields.io/badge/license-GPLv3-blue.svg) ![](https://img.shields.io/badge/status-alpha-red.svg)
 
 eGrades is a **Simple**, grade notifier for the Greek University Students.  There is **Zero** installation required.  Just extract the ZIP archive, execute the JAR and follow the instructions.
 
