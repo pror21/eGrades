@@ -180,7 +180,7 @@
                                 </ImageView>
                             </graphic>
                             <tooltip>
-                                <Tooltip text="Ρυθμίσεις"/>
+                                <Tooltip text="Διαγραφή πρόσφατων βαθμολογιών"/>
                             </tooltip>
                         </Button>
                     </items>
