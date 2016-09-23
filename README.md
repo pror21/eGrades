@@ -35,7 +35,7 @@ These are the options to get eGrades:
 
 ### Downloading an eGrades Package
 
-You can download a **ready-built** package from the [GitHub page on https://pror21.github.io/eGrades/](https://pror21.github.io/eGrades/)
+You can download a **ready-built** package from the GitHub page on https://pror21.github.io/eGrades/ (Available soon...)
 
 ### From GitHub
 
