@@ -27,6 +27,11 @@ public class SerializeServiceImpl implements SerializeService {
 
     public void serializeStudent(Student student) {
         try {
+            File directory = new File(String.valueOf(System.getProperty("user.home") + File.separator + "eGrades"));
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+
             FileOutputStream fileOut = new FileOutputStream(path);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(student);
