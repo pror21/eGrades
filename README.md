@@ -1,9 +1,9 @@
 # ![](src/main/resources/images/icons/Icon_48x48.png) eGrades
-[![JSoup Library](https://img.shields.io/badge/jsoup-v1.9.2-green.svg)](https://jsoup.org/)  [![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000)]() [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)]()
+ ![](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000) ![](https://img.shields.io/badge/license-GPLv3-blue.svg) ![](https://img.shields.io/badge/status-alpha-red.svg)
 
 eGrades is a **Simple**, grade notifier for the Greek University Students.  There is **Zero** installation required.  Just extract the ZIP archive, execute the JAR and follow the instructions.
 
-The underlying architecture of eGrades is designed to use well-established and _best-in-class_ technologies. Some of these key technologies include:
+eGrades is using some well known libraries, such as:
 
 * [JavaFX](http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm): for the user interface
 * [JSoup](https://jsoup.org/): for extracting and manipulating data
@@ -35,7 +35,7 @@ These are the options to get eGrades:
 
 ### Downloading an eGrades Package
 
-You can download a **ready-built** package from the [GitHub page on https://pror21.github.io/eGrades/](https://pror21.github.io/eGrades/)
+You can download a **ready-built** package from the GitHub page on https://pror21.github.io/eGrades/ (Available soon...)
 
 ### From GitHub
 
