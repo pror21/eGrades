@@ -74,6 +74,7 @@ public class AuthController implements Initializable {
             MainController.getInstance().updateAllViewComponents();
 
             if (preferenceService.getPreferences().getPrefSyncEnabled())
+                SyncScheduler.getInstance().stopScheduler();
                 SyncScheduler.getInstance().startSyncScheduler(preferenceService.getPreferences().getPrefSyncTime());
 
             dialogStage.close();
