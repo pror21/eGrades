@@ -180,11 +180,11 @@ public class CardisoftStudentParserImpl implements StudentParser {
         Document doc = documentParser.getTreeStudentRegistration(student.getStudentUniversity(), cookieJar);
 
         Element element = doc.select("tr[bgcolor=#FFFAF0").first();
-        String regDate = new String();
+        //String regDate;
         HashMap<String, String> regCourseMap = new HashMap<>();
-        regDate = element.select("span:eq(1)").text();
+        //regDate = element.select("span:eq(1)").text();
         // Remove junk chars
-        regDate = regDate.replaceAll(" [^ ]+$", "").trim();
+        //regDate = regDate.replaceAll(" [^ ]+$", "").trim();
         Elements courses = element.select("tr[height=25]");
         for (Element regCourse : courses) {
             String courseId = regCourse.select("td:eq(0)").text();

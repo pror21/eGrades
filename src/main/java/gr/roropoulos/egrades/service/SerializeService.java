@@ -35,8 +35,6 @@ public interface SerializeService {
 
     HashMap<String, String> deserializeStats();
 
-    List<Course> fetchRegisterCourseList(HashMap<String, String> courseIdList);
-
     HashMap<String, String> deserializeInfo();
 
     List<Course> deserializeRecentCourses();
@@ -44,6 +42,11 @@ public interface SerializeService {
     List<Course> deserializeRegister();
 
     // Misc Methods
+
+    List<Course> fetchRegisterCourseList(HashMap<String, String> courseIdList);
+
+    List<Course> getNewlyListedCourses(List<Course> newList);
+
     Boolean checkIfSerializedFileExist();
 
     Boolean studentCheckAuthentication(Student student);

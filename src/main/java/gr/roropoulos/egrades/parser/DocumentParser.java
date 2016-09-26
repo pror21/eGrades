@@ -29,6 +29,4 @@ public interface DocumentParser {
 
     Document getTreeStudentStats(University uniConn, Map<String, String> cookieJar);
 
-    Document getTreeLogoutStudent(University uniConn, Map<String, String> cookieJar);
-
 }

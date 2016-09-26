@@ -165,12 +165,17 @@ public class PrefController implements Initializable {
     }
 
     private void savePreferences() {
-
-        SyncScheduler.getInstance().stopScheduler();
-        if (pref.getPrefSyncEnabled())
-            SyncScheduler.getInstance().startSyncScheduler(pref.getPrefSyncTime());
-
+        if (!Objects.equals(syncRateTextField.getText(), preferenceService.getPreferences().getPrefSyncTime().toString())) {
+            SyncScheduler.getInstance().stopScheduler();
+            if (pref.getPrefSyncEnabled())
+                SyncScheduler.getInstance().startSyncScheduler(pref.getPrefSyncTime());
+        }
         preferenceService.setPreferences(pref);
+    }
+
+    @FXML
+    private void resetButtonActionHandler() {
+
     }
 
     public void setDialogStage(Stage dialogStage) {

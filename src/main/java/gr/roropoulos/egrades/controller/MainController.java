@@ -128,6 +128,7 @@ public class MainController implements Initializable {
     }
 
     void clearCourseData() {
+        recentTableView.getItems().clear();
         lastRegTableView.getItems().clear();
         coursesTableView.getItems().clear();
         studentNameStatusLabel.setText("---");
@@ -301,7 +302,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void syncToolBarButtonAction() {
+    public void syncToolBarButtonAction() {
         if (serializeService.checkIfSerializedFileExist()) {
             syncButton.setDisable(true);
             rt = new RotateTransition(Duration.millis(3000), syncImageView);
@@ -421,7 +422,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void syncCourses() {
+    private void syncCourses() {
         Task<List<Course>> parseGradesTask = new Task<List<Course>>() {
             @Override
             public List<Course> call() {
@@ -449,7 +450,7 @@ public class MainController implements Initializable {
         };
 
         parseGradesTask.setOnSucceeded(e -> {
-            List<Course> newlyListedGradeList = getNewlyListedCourses(parseGradesTask.getValue());
+            List<Course> newlyListedGradeList = serializeService.getNewlyListedCourses(parseGradesTask.getValue());
             if (!newlyListedGradeList.isEmpty()) {
                 notifyGrade(newlyListedGradeList);
                 serializeService.serializeRecentCourses(newlyListedGradeList);
@@ -458,9 +459,13 @@ public class MainController implements Initializable {
         });
 
         parseRegTask.setOnSucceeded(e -> {
-            rt.stop();
-            syncImageView.setRotate(0);
-            syncButton.setDisable(false);
+            if (rt != null) {
+                if (rt.getStatus() == Animation.Status.RUNNING) {
+                    rt.stop();
+                    syncImageView.setRotate(0);
+                    syncButton.setDisable(false);
+                }
+            }
             updateAllViewComponents();
         });
 
@@ -469,22 +474,6 @@ public class MainController implements Initializable {
         es.submit(parseStatsTask);
         es.submit(parseRegTask);
         es.shutdown();
-    }
-
-    private List<Course> getNewlyListedCourses(List<Course> newList) {
-        List<Course> oldList = serializeService.deserializeCourses();
-        List<Course> newGradeCourseList = new ArrayList<>();
-
-        for (Course course : oldList) {
-            for (Course courseNew : newList) {
-                if (Objects.equals(course.getCourseId(), courseNew.getCourseId()) && Objects.equals(course.getCourseTitle(), courseNew.getCourseTitle())) {
-                    if (!Objects.equals(course.getCourseExamDate(), courseNew.getCourseExamDate())) {
-                        newGradeCourseList.add(courseNew);
-                    }
-                }
-            }
-        }
-        return newGradeCourseList;
     }
 
     public void setCountdownTimeLabel(int hours, int minutes, int seconds) {

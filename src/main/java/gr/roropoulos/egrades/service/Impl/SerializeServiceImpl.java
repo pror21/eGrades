@@ -28,9 +28,7 @@ public class SerializeServiceImpl implements SerializeService {
     public void serializeStudent(Student student) {
         try {
             File directory = new File(String.valueOf(System.getProperty("user.home") + File.separator + "eGrades"));
-            if (!directory.exists()) {
-                directory.mkdir();
-            }
+            if (!directory.exists()) directory.mkdir();
 
             FileOutputStream fileOut = new FileOutputStream(path);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -43,7 +41,7 @@ public class SerializeServiceImpl implements SerializeService {
     }
 
     public Student deserializeStudent() {
-        Student student = null;
+        Student student;
         try {
             FileInputStream fileIn = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -73,9 +71,7 @@ public class SerializeServiceImpl implements SerializeService {
     public void deleteSerializedFile() {
         try {
             File file = new File(path);
-            if (file.exists()) {
-                file.delete();
-            }
+            if (file.exists()) file.delete();
         } catch (Exception e) {
             exceptionService.showException(e, "Η διαγραφή των δεδομένων του φοιτητή απέτυχε.");
         }
@@ -104,6 +100,22 @@ public class SerializeServiceImpl implements SerializeService {
             it.remove(); // avoids a ConcurrentModificationException
         }
         return courseRegList;
+    }
+
+    public List<Course> getNewlyListedCourses(List<Course> newList) {
+        List<Course> oldList = deserializeCourses();
+        List<Course> newGradeCourseList = new ArrayList<>();
+
+        for (Course course : oldList) {
+            for (Course courseNew : newList) {
+                if (Objects.equals(course.getCourseId(), courseNew.getCourseId()) && Objects.equals(course.getCourseTitle(), courseNew.getCourseTitle())) {
+                    if (!Objects.equals(course.getCourseExamDate(), courseNew.getCourseExamDate())) {
+                        newGradeCourseList.add(courseNew);
+                    }
+                }
+            }
+        }
+        return newGradeCourseList;
     }
 
     public void serializeRegister(List<Course> registerCourses) {

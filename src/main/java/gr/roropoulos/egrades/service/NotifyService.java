@@ -15,10 +15,7 @@ import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
+import org.apache.commons.mail.*;
 
 import java.net.URL;
 
@@ -58,6 +55,7 @@ public class NotifyService {
 
         try {
             Email email = new SimpleEmail();
+            email.setCharset(EmailConstants.UTF_8);
             email.setHostName(pref.getPrefMailerHostname());
             email.setSmtpPort(pref.getPrefMailerPort());
             email.setAuthenticator(new DefaultAuthenticator(pref.getPrefMailerUsername(), pref.getPrefMailerPassword()));
@@ -75,6 +73,7 @@ public class NotifyService {
     public void sendSampleMail(String hostname, String port, String username, String password, Boolean ssl, String fromMail, String toMail) {
         try {
             Email email = new SimpleEmail();
+            email.setCharset(EmailConstants.UTF_8);
             email.setHostName(hostname);
             email.setSmtpPort(Integer.parseInt(port));
             email.setAuthenticator(new DefaultAuthenticator(username, password));

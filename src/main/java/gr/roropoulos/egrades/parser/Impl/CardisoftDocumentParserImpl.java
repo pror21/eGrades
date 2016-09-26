@@ -56,7 +56,7 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
 
-        Element error = respDoc.select("div.error").first();
+        Element error = respDoc != null ? respDoc.select("div.error").first() : null;
         return error == null;
     }
 
@@ -137,18 +137,4 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         return doc;
     }
 
-    public Document getTreeLogoutStudent(University uniConn, Map<String, String> cookieJar) {
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(uniConn.getUniversityURL() + "disconnect.asp?mnuid=mnu7&")
-                    .cookies(cookieJar)
-                    .method(Connection.Method.GET)
-                    .timeout(timeout)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
-        }
-        return doc;
-    }
 }

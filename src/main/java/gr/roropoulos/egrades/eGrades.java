@@ -29,21 +29,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class eGrades extends Application {
 
-    private static List<String> argsList;
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ExceptionService exceptionService = new ExceptionService();
-    private MainController mainController;
 
     public static void main(String[] args) throws Exception {
-        argsList = new ArrayList<>(Arrays.asList(args));
-        for (String s : args) {
-            argsList.add(s);
-        }
+        List<String> argsList = new ArrayList<>(Arrays.asList(args));
+        Collections.addAll(argsList, args);
         launch(args);
     }
 
@@ -65,7 +62,7 @@ public class eGrades extends Application {
 
     }
 
-    public void initRootLayout() {
+    private void initRootLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(eGrades.class.getResource("/fxml/RootLayout.fxml"));
@@ -79,13 +76,13 @@ public class eGrades extends Application {
         }
     }
 
-    public void showMainView() {
+    private void showMainView() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(eGrades.class.getResource("/fxml/MainView.fxml"));
             BorderPane mainView = loader.load();
             rootLayout.setCenter(mainView);
-            mainController = loader.getController();
+            MainController mainController = loader.getController();
             mainController.setMainApp(this);
         } catch (IOException e) {
             exceptionService.showException(e, "Δεν βρέθηκε το FXML MainView.");
