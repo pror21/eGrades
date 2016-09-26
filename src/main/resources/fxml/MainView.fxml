@@ -129,10 +129,12 @@
             <center>
                 <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <items>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                                onAction="#syncToolBarButtonAction" text="Synchronize" textAlignment="CENTER">
+                        <Button fx:id="syncButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0"
+                                mnemonicParsing="false" onAction="#syncToolBarButtonAction" text="Synchronize"
+                                textAlignment="CENTER">
                             <graphic>
-                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fx:id="syncImageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                           preserveRatio="true">
                                     <image>
                                         <Image url="@/images/sync.png"/>
                                     </image>

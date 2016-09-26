@@ -21,18 +21,25 @@ import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
 import gr.roropoulos.egrades.service.NotifyService;
 import gr.roropoulos.egrades.service.PreferenceService;
 import gr.roropoulos.egrades.service.SerializeService;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.controlsfx.control.StatusBar;
 
 import java.awt.*;
@@ -42,6 +49,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainController implements Initializable {
     @FXML
@@ -58,10 +67,13 @@ public class MainController implements Initializable {
     private StatusBar statusBar;
     private Label statusLabel, studentNameStatusLabel, studentAEMStatusLabel, coursesStatusLabel, gradeStatusLabel,
             creditsStatusLabel, hoursStatusLabel, ectsStatusLabel;
-
+    @FXML
+    private Button syncButton;
+    @FXML
+    private ImageView syncImageView;
     private eGrades mainApp;
     private static MainController instance;
-
+    private RotateTransition rt;
     private SerializeService serializeService = new SerializeServiceImpl();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
     private StudentParser studentParser = new CardisoftStudentParserImpl();
@@ -76,11 +88,10 @@ public class MainController implements Initializable {
     }
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-
-
         Platform.setImplicitExit(false);
         Preference prefs = preferenceService.getPreferences();
         createStatusBar();
+        setColorOnAllGradeCells();
 
         if (serializeService.checkIfSerializedFileExist()) {
             updateAllViewComponents();
@@ -231,7 +242,7 @@ public class MainController implements Initializable {
     }
 
     private ObservableList getInitialRegTableData() {
-        List<Course> regList = serializeService.deserializeLastRegisterCourseList();
+        List<Course> regList = serializeService.deserializeRegister();
         if (regList == null) {
             return FXCollections.observableList(new ArrayList<>());
         } else return FXCollections.observableList(regList);
@@ -292,8 +303,13 @@ public class MainController implements Initializable {
     @FXML
     private void syncToolBarButtonAction() {
         if (serializeService.checkIfSerializedFileExist()) {
+            syncButton.setDisable(true);
+            rt = new RotateTransition(Duration.millis(3000), syncImageView);
+            rt.setByAngle(360);
+            rt.setCycleCount(Animation.INDEFINITE);
+            rt.setInterpolator(Interpolator.LINEAR);
+            rt.play();
             syncCourses();
-            updateAllViewComponents();
         }
     }
 
@@ -362,64 +378,101 @@ public class MainController implements Initializable {
             mainApp.stopApplication();
     }
 
-    public void syncCourses() {
+    private void notifyGrade(List<Course> newCourses) {
         NotifyService notifyService = new NotifyService();
         Preference pref = preferenceService.getPreferences();
 
-        HashMap<String, List<Course>> hashMap = getNewlyListedCourses();
-        List<Course> newList = hashMap.get("newList");
-        List<Course> newlyListedGradeList = hashMap.get("newGradeCourseList");
+        // Play notification sound if enabled
+        if (pref.getPrefNotificationSoundEnabled())
+            notifyService.playSoundNotification(pref.getPrefNotificationSound());
 
-        // If new announced grades exist
-        if (!newlyListedGradeList.isEmpty()) {
-            serializeService.serializeRecentCourses(newlyListedGradeList);
-            // Play notification sound if enabled
-            if (pref.getPrefNotificationSoundEnabled())
-                notifyService.playSoundNotification(pref.getPrefNotificationSound());
-
-            // Show notification if enabled
-            if (pref.getPrefNotificationPopupEnabled()) {
-                Animations animation;
-                switch (pref.getPrefNotificationPopupAnimation()) {
-                    case "popup":
-                        animation = Animations.POPUP;
-                        break;
-                    case "slide":
-                        animation = Animations.SLIDE;
-                        break;
-                    case "fade":
-                        animation = Animations.FADE;
-                        break;
-                    default:
-                        animation = Animations.POPUP;
-                }
-
-                for (Course course : newlyListedGradeList) {
-                    float val = Float.parseFloat(course.getCourseGrade().replace(',', '.'));
-                    if (val >= 5) {
-                        notifyService.showNotification(course.getCourseTitle(),
-                                "Πέρασες το μάθημα με βαθμό " + course.getCourseGrade(), Notifications.SUCCESS, animation);
-                    } else {
-                        notifyService.showNotification(course.getCourseTitle(),
-                                "Κόπηκες με βαθμό " + course.getCourseGrade(), Notifications.ERROR, animation);
-                    }
-                }
+        // Show notification if enabled
+        if (pref.getPrefNotificationPopupEnabled()) {
+            Animations animation;
+            switch (pref.getPrefNotificationPopupAnimation()) {
+                case "popup":
+                    animation = Animations.POPUP;
+                    break;
+                case "slide":
+                    animation = Animations.SLIDE;
+                    break;
+                case "fade":
+                    animation = Animations.FADE;
+                    break;
+                default:
+                    animation = Animations.POPUP;
             }
 
-            // Send email if enabled
-            if (pref.getPrefMailerEnabled()) {
-                newlyListedGradeList.forEach(notifyService::sendMail);
+            for (Course course : newCourses) {
+                float val = Float.parseFloat(course.getCourseGrade().replace(',', '.'));
+                if (val >= 5) {
+                    notifyService.showNotification(course.getCourseTitle(),
+                            "Πέρασες το μάθημα με βαθμό " + course.getCourseGrade(), Notifications.SUCCESS, animation);
+                } else {
+                    notifyService.showNotification(course.getCourseTitle(),
+                            "Κόπηκες με βαθμό " + course.getCourseGrade(), Notifications.ERROR, animation);
+                }
             }
         }
 
-        serializeService.serializeCourses(newList);
-        serializeService.serializeStats(studentParser.parseStudentStats());
-        updateAllViewComponents();
+        // Send email if enabled
+        if (pref.getPrefMailerEnabled()) {
+            newCourses.forEach(notifyService::sendMail);
+        }
     }
 
-    private HashMap<String, List<Course>> getNewlyListedCourses() {
+    public void syncCourses() {
+        Task<List<Course>> parseGradesTask = new Task<List<Course>>() {
+            @Override
+            public List<Course> call() {
+                return studentParser.parseStudentGrades();
+            }
+        };
+
+        Task parseStatsTask = new Task<Void>() {
+            @Override
+            public Void call() {
+                HashMap<String, String> statsMap = studentParser.parseStudentStats();
+                serializeService.serializeStats(statsMap);
+                return null;
+            }
+        };
+
+        Task parseRegTask = new Task<Void>() {
+            @Override
+            public Void call() {
+                HashMap<String, String> regMap = studentParser.parseStudentRegistration();
+                List<Course> regList = serializeService.fetchRegisterCourseList(regMap);
+                serializeService.serializeRegister(regList);
+                return null;
+            }
+        };
+
+        parseGradesTask.setOnSucceeded(e -> {
+            List<Course> newlyListedGradeList = getNewlyListedCourses(parseGradesTask.getValue());
+            if (!newlyListedGradeList.isEmpty()) {
+                notifyGrade(newlyListedGradeList);
+                serializeService.serializeRecentCourses(newlyListedGradeList);
+            }
+            serializeService.serializeCourses(parseGradesTask.getValue());
+        });
+
+        parseRegTask.setOnSucceeded(e -> {
+            rt.stop();
+            syncImageView.setRotate(0);
+            syncButton.setDisable(false);
+            updateAllViewComponents();
+        });
+
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        es.submit(parseGradesTask);
+        es.submit(parseStatsTask);
+        es.submit(parseRegTask);
+        es.shutdown();
+    }
+
+    private List<Course> getNewlyListedCourses(List<Course> newList) {
         List<Course> oldList = serializeService.deserializeCourses();
-        List<Course> newList = studentParser.parseStudentGrades();
         List<Course> newGradeCourseList = new ArrayList<>();
 
         for (Course course : oldList) {
@@ -431,15 +484,7 @@ public class MainController implements Initializable {
                 }
             }
         }
-        HashMap<String, List<Course>> hashMap = new HashMap<>();
-        hashMap.put("newList", newList);
-        hashMap.put("newGradeCourseList", newGradeCourseList);
-
-        return hashMap;
-    }
-
-    public void setMainApp(eGrades mainApp) {
-        this.mainApp = mainApp;
+        return newGradeCourseList;
     }
 
     public void setCountdownTimeLabel(int hours, int minutes, int seconds) {
@@ -448,5 +493,9 @@ public class MainController implements Initializable {
 
     public void stopCountdownTimeLabel() {
         statusLabel.setText("Σε αναμονή");
+    }
+
+    public void setMainApp(eGrades mainApp) {
+        this.mainApp = mainApp;
     }
 }
