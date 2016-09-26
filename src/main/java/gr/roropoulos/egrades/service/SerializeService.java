@@ -22,11 +22,11 @@ public interface SerializeService {
 
     void serializeStats(HashMap<String, String> studentStats);
 
-    void serializeLastRegister(HashMap<String, String> regCourseMap);
-
     void serializeInfo(HashMap<String, String> studentInfo);
 
     void serializeRecentCourses(List<Course> courseList);
+
+    void serializeRegister(List<Course> registerCourses);
 
     // De-Serialize Student Methods
     Student deserializeStudent();
@@ -35,11 +35,13 @@ public interface SerializeService {
 
     HashMap<String, String> deserializeStats();
 
-    List<Course> deserializeLastRegisterCourseList();
+    List<Course> fetchRegisterCourseList(HashMap<String, String> courseIdList);
 
     HashMap<String, String> deserializeInfo();
 
     List<Course> deserializeRecentCourses();
+
+    List<Course> deserializeRegister();
 
     // Misc Methods
     Boolean checkIfSerializedFileExist();

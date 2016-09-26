@@ -91,17 +91,8 @@ public class SerializeServiceImpl implements SerializeService {
         return deserializeStudent().getStudentCourses();
     }
 
-    public void serializeLastRegister(HashMap<String, String> regCourseMap) {
-        Student student = deserializeStudent();
-        student.setStudentLastReg(regCourseMap);
-        serializeStudent(student);
-    }
-
-    public List<Course> deserializeLastRegisterCourseList() {
-        Student student = deserializeStudent();
-        List<Course> courseList = student.getStudentCourses();
-        HashMap<String, String> courseIdList = student.getStudentLastReg();
-
+    public List<Course> fetchRegisterCourseList(HashMap<String, String> courseIdList) {
+        List<Course> courseList = deserializeCourses();
         List<Course> courseRegList = new ArrayList<>();
 
         Iterator it = courseIdList.entrySet().iterator();
@@ -113,6 +104,16 @@ public class SerializeServiceImpl implements SerializeService {
             it.remove(); // avoids a ConcurrentModificationException
         }
         return courseRegList;
+    }
+
+    public void serializeRegister(List<Course> registerCourses) {
+        Student student = deserializeStudent();
+        student.setStudentRegister(registerCourses);
+        serializeStudent(student);
+    }
+
+    public List<Course> deserializeRegister() {
+        return deserializeStudent().getStudentRegister();
     }
 
     public void serializeStats(HashMap<String, String> studentStats) {

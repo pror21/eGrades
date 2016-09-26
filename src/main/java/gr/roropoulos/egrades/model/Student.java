@@ -23,8 +23,16 @@ public class Student implements Serializable {
     private University studentUniversity;
     private List<Course> studentCourses;
     private List<Course> studentRecentCourses;
-    private HashMap<String, String> studentLastReg;
+    private List<Course> studentRegister;
     private HashMap<String, String> studentStats;
+
+    public List<Course> getStudentRegister() {
+        return studentRegister;
+    }
+
+    public void setStudentRegister(List<Course> studentRegister) {
+        this.studentRegister = studentRegister;
+    }
 
     public String getStudentUsername() {
         return studentUsername;
@@ -96,14 +104,6 @@ public class Student implements Serializable {
 
     public void setStudentCourses(List<Course> studentCourses) {
         this.studentCourses = studentCourses;
-    }
-
-    public HashMap<String, String> getStudentLastReg() {
-        return studentLastReg;
-    }
-
-    public void setStudentLastReg(HashMap<String, String> studentLastReg) {
-        this.studentLastReg = studentLastReg;
     }
 
     public HashMap<String, String> getStudentStats() {
