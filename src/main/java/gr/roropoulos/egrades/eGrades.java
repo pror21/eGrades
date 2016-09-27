@@ -27,15 +27,14 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 public class eGrades extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ExceptionService exceptionService = new ExceptionService();
+    private Properties properties = new Properties();
 
     public static void main(String[] args) throws Exception {
         List<String> argsList = new ArrayList<>(Arrays.asList(args));
@@ -44,8 +43,10 @@ public class eGrades extends Application {
     }
 
     public void start(Stage stage) throws Exception {
+        properties.load(this.getClass().getClassLoader().getResourceAsStream("project.properties"));
+
         this.primaryStage = stage;
-        this.primaryStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion());
+        this.primaryStage.setTitle(properties.getProperty("artifactId") + " " + properties.getProperty("version"));
         primaryStage.getIcons().addAll(
                 new Image("/images/icons/Icon_96x96.png"),
                 new Image("/images/icons/Icon_48x48.png"),
@@ -98,7 +99,7 @@ public class eGrades extends Application {
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initStyle(StageStyle.DECORATED);
             dialogStage.initOwner(primaryStage);
-            dialogStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Είσοδος χρήστη");
+            dialogStage.setTitle(properties.getProperty("artifactId") + " " + properties.getProperty("version") + " - Είσοδος χρήστη");
             dialogStage.setWidth(450);
             dialogStage.setHeight(220);
             dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
@@ -125,7 +126,7 @@ public class eGrades extends Application {
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initStyle(StageStyle.DECORATED);
             dialogStage.initOwner(primaryStage);
-            dialogStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Προτιμήσεις");
+            dialogStage.setTitle(properties.getProperty("artifactId") + " " + properties.getProperty("version") + " - Προτιμήσεις");
             dialogStage.setWidth(420);
             dialogStage.setHeight(260);
             dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
