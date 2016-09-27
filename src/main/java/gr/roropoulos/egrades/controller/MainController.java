@@ -235,21 +235,21 @@ public class MainController implements Initializable {
         }
     }
 
-    private ObservableList getInitialCourseTableData() {
+    private ObservableList<Course> getInitialCourseTableData() {
         List<Course> courseList = serializeService.deserializeCourses();
         if (courseList == null) {
             return FXCollections.observableList(new ArrayList<>());
         } else return FXCollections.observableList(courseList);
     }
 
-    private ObservableList getInitialRegTableData() {
+    private ObservableList<Course> getInitialRegTableData() {
         List<Course> regList = serializeService.deserializeRegister();
         if (regList == null) {
             return FXCollections.observableList(new ArrayList<>());
         } else return FXCollections.observableList(regList);
     }
 
-    private ObservableList getInitialRecentTableData() {
+    private ObservableList<Course> getInitialRecentTableData() {
         List<Course> recentList = serializeService.deserializeRecentCourses();
         if (recentList == null) {
             return FXCollections.observableList(new ArrayList<>());
@@ -257,7 +257,7 @@ public class MainController implements Initializable {
     }
 
     private void setTableViewReg() {
-        ObservableList dataReg = getInitialRegTableData();
+        ObservableList<Course> dataReg = getInitialRegTableData();
         if (!dataReg.isEmpty()) {
             lastRegTableView.setItems(dataReg);
             regCourseIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseId"));
@@ -271,7 +271,7 @@ public class MainController implements Initializable {
     }
 
     private void setTableViewCourses() {
-        ObservableList dataCourses = getInitialCourseTableData();
+        ObservableList<Course> dataCourses = getInitialCourseTableData();
         if (!dataCourses.isEmpty()) {
             coursesTableView.setItems(dataCourses);
             idCoursesTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseId"));
@@ -287,7 +287,7 @@ public class MainController implements Initializable {
     }
 
     private void setTableViewRecent() {
-        ObservableList dataRecent = getInitialRecentTableData();
+        ObservableList<Course> dataRecent = getInitialRecentTableData();
         if (!dataRecent.isEmpty()) {
             recentTableView.setItems(dataRecent);
             recentCourseIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseId"));
@@ -438,6 +438,7 @@ public class MainController implements Initializable {
                 return null;
             }
         };
+
 
         Task parseRegTask = new Task<Void>() {
             @Override
