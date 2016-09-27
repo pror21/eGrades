@@ -112,15 +112,13 @@
                                      <Label text="Hostname" GridPane.rowIndex="1"/>
                                      <Label text="SMTP Port" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
                                      <Label text="Username" GridPane.rowIndex="2"/>
-                                     <TextField fx:id="usernameTextField" promptText="username" GridPane.columnIndex="1"
-                                                GridPane.rowIndex="2"/>
-                                     <TextField fx:id="passwordTextField" promptText="password" GridPane.columnIndex="3"
-                                                GridPane.rowIndex="2"/>
+                                     <TextField fx:id="usernameTextField" promptText="username@gmail.com"
+                                                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                                      <Label text="SSL" GridPane.rowIndex="3"/>
                                      <CheckBox fx:id="sslCheckBox" mnemonicParsing="false" GridPane.columnIndex="1"
                                                GridPane.rowIndex="3"/>
                                      <Label text="From" GridPane.rowIndex="4"/>
-                                     <TextField fx:id="fromTextField" promptText="user@example.com"
+                                     <TextField fx:id="fromTextField" promptText="user@gmail.com"
                                                 GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                                      <Button alignment="CENTER" mnemonicParsing="false"
                                              onAction="#sendSampleEmailButtonAction" prefHeight="25.0" prefWidth="82.0"
@@ -133,6 +131,8 @@
                                      <TextField fx:id="toTextField" promptText="me@example.com" GridPane.columnIndex="3"
                                                 GridPane.rowIndex="4"/>
                                      <Label text="Password" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                                     <PasswordField fx:id="passwordTextField" promptText="password"
+                                                    GridPane.columnIndex="3" GridPane.rowIndex="2"/>
                                  </children>
                                    <opaqueInsets>
                                        <Insets/>
