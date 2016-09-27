@@ -155,7 +155,7 @@
                                 </ImageView>
                             </graphic>
                             <tooltip>
-                                <Tooltip text="Αλλαγή Χρήστη"/>
+                                <Tooltip text="Είσοδος Χρήστη"/>
                             </tooltip>
                         </Button>
                         <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"

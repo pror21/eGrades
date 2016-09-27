@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class eGrades extends Application {
-
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ExceptionService exceptionService = new ExceptionService();
@@ -99,7 +98,7 @@ public class eGrades extends Application {
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initStyle(StageStyle.DECORATED);
             dialogStage.initOwner(primaryStage);
-            dialogStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Αλλαγή χρήστη");
+            dialogStage.setTitle("eGrades " + eGrades.class.getPackage().getImplementationVersion() + " - Είσοδος χρήστη");
             dialogStage.setWidth(450);
             dialogStage.setHeight(220);
             dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
