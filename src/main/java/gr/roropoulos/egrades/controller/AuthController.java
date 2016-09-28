@@ -21,8 +21,6 @@ import gr.roropoulos.egrades.service.PreferenceService;
 import gr.roropoulos.egrades.service.SerializeService;
 import gr.roropoulos.egrades.service.UniversityService;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -44,7 +42,7 @@ public class AuthController implements Initializable {
     private Stage dialogStage;
 
     @FXML
-    private ChoiceBox uniChoiceBox;
+    private ChoiceBox<University> uniChoiceBox;
     @FXML
     private Button okButton;
     @FXML
@@ -69,6 +67,7 @@ public class AuthController implements Initializable {
 
     private List<University> uniList = universityService.getUniversitiesList();
     private Connection.Response res;
+
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         initializeHandlers();
         uniList.sort((uni1, uni2) -> uni1.getUniversityName().compareTo(uni2.getUniversityName()));
@@ -217,12 +216,7 @@ public class AuthController implements Initializable {
 
     private void initializeHandlers() {
         // Set Student university selection
-        uniChoiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<University>() {
-            @Override
-            public void changed(ObservableValue<? extends University> observable, University oldValue, University newValue) {
-                student.setStudentUniversity(newValue);
-            }
-        });
+        uniChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> student.setStudentUniversity(newValue));
 
         // Require Username and Password for enabling OK Button
         BooleanBinding okButtonBooleanBind = usernameField.textProperty().isEmpty().or(passwordField.textProperty().isEmpty());

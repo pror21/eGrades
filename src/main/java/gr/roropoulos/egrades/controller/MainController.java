@@ -146,12 +146,12 @@ public class MainController implements Initializable {
     }
 
     private void setColorOnAllGradeCells() {
-        List<TableColumn> tableColumnList = new ArrayList<>();
+        List<TableColumn<Course, String>> tableColumnList = new ArrayList<>();
         tableColumnList.add(regCourseGradeTableColumn);
         tableColumnList.add(gradeCoursesTableColumn);
         tableColumnList.add(recentCourseGradeTableColumn);
 
-        for (TableColumn tableColumn : tableColumnList) {
+        for (TableColumn<Course, String> tableColumn : tableColumnList) {
             tableColumn.setCellFactory(column -> new TableCell<Course, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
@@ -326,9 +326,7 @@ public class MainController implements Initializable {
                 }
             };
 
-            getCookieTask.setOnSucceeded(e -> {
-                syncCourses(getCookieTask.getValue());
-            });
+            getCookieTask.setOnSucceeded(e -> syncCourses(getCookieTask.getValue()));
 
             Thread t = new Thread(getCookieTask);
             t.setDaemon(true);
@@ -379,8 +377,6 @@ public class MainController implements Initializable {
         if (result.get() == ButtonType.OK) {
             recentTableView.getItems().clear();
             serializeService.clearRecentCourses();
-        } else {
-            // ... user chose CANCEL or closed the dialog
         }
     }
 
