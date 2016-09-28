@@ -19,8 +19,6 @@ public interface DocumentParser {
 
     Map<String, String> getCookies(Connection.Response res, University uniConn, String username, String password);
 
-    Boolean checkAuthentication(Connection.Response res, University uniConn, String username, String password);
-
     Document getTreeStudentInfo(University uniConn, Map<String, String> cookieJar);
 
     Document getTreeStudentGrades(University uniConn, Map<String, String> cookieJar);
