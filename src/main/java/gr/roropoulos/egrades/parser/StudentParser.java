@@ -8,19 +8,20 @@
 package gr.roropoulos.egrades.parser;
 
 import gr.roropoulos.egrades.model.Course;
-import gr.roropoulos.egrades.model.Student;
+import gr.roropoulos.egrades.model.University;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface StudentParser {
 
-    HashMap<String, String> parseStudentInfo(Student student);
+    HashMap<String, String> parseStudentInfo(University studentUniversity, Map<String, String> cookieJar);
 
-    List<Course> parseStudentGrades();
+    List<Course> parseStudentGrades(University studentUniversity, Map<String, String> cookieJar);
 
-    HashMap<String, String> parseStudentStats();
+    HashMap<String, String> parseStudentStats(University studentUniversity, Map<String, String> cookieJar);
 
-    HashMap<String, String> parseStudentRegistration();
+    HashMap<String, String> parseStudentRegistration(University studentUniversity, Map<String, String> cookieJar);
 
 }

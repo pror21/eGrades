@@ -41,10 +41,10 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         return res;
     }
 
-    public Boolean checkAuthentication(Connection.Response res, University uniConn, String username, String password) {
-        Document respDoc = null;
+    public Map<String, String> getCookies(Connection.Response res, University uniConn, String username, String password) {
+        Document responseDoc = null;
         try {
-            respDoc = Jsoup.connect(uniConn.getUniversityURL() + "login.asp")
+            responseDoc = Jsoup.connect(uniConn.getUniversityURL() + "login.asp")
                     .data(uniConn.getUniversityData()[0], username, uniConn.getUniversityData()[1], password, uniConn.getUniversityData()[2], uniConn.getUniversityData()[3], uniConn.getUniversityData()[4], uniConn.getUniversityData()[5])
                     .cookies(res.cookies())
                     .method(Connection.Method.POST)
@@ -56,22 +56,9 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
 
-        Element error = respDoc != null ? respDoc.select("div.error").first() : null;
-        return error == null;
-    }
-
-    public Map<String, String> getCookies(Connection.Response res, University uniConn, String username, String password) {
-        try {
-            Jsoup.connect(uniConn.getUniversityURL())
-                    .data(uniConn.getUniversityData()[0], username, uniConn.getUniversityData()[1], password, uniConn.getUniversityData()[2], uniConn.getUniversityData()[3], uniConn.getUniversityData()[4], uniConn.getUniversityData()[5])
-                    .cookies(res.cookies())
-                    .method(Connection.Method.POST)
-                    .timeout(timeout)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
-                    .followRedirects(true)
-                    .post();
-        } catch (IOException e) {
-            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
+        Element errorElement = responseDoc.select("div.error").first();
+        if (errorElement != null) {
+            return null;
         }
         return res.cookies();
     }

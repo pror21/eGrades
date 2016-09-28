@@ -10,6 +10,8 @@ package gr.roropoulos.egrades.controller;
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Student;
 import gr.roropoulos.egrades.model.University;
+import gr.roropoulos.egrades.parser.DocumentParser;
+import gr.roropoulos.egrades.parser.Impl.CardisoftDocumentParserImpl;
 import gr.roropoulos.egrades.parser.Impl.CardisoftStudentParserImpl;
 import gr.roropoulos.egrades.parser.StudentParser;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
@@ -28,10 +30,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.jsoup.Connection;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,9 +65,10 @@ public class AuthController implements Initializable {
     private SerializeService serializeService = new SerializeServiceImpl();
     private StudentParser studentParser = new CardisoftStudentParserImpl();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
+    private DocumentParser documentParser = new CardisoftDocumentParserImpl();
 
     private List<University> uniList = universityService.getUniversitiesList();
-
+    private Connection.Response res;
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         initializeHandlers();
         uniList.sort((uni1, uni2) -> uni1.getUniversityName().compareTo(uni2.getUniversityName()));
@@ -92,109 +97,107 @@ public class AuthController implements Initializable {
         showLoadingScreen(true);
         progressLabel.setText("Γίνεται ταυτοποίηση...");
 
-        Task<Boolean> checkAuthTask = new Task<Boolean>() {
+        Task<Map<String, String>> getCookieTask = new Task<Map<String, String>>() {
             @Override
-            public Boolean call() {
-                return serializeService.studentCheckAuthentication(student);
+            public Map<String, String> call() {
+                res = documentParser.getConnection(student.getStudentUniversity());
+                return documentParser.getCookies(res, student.getStudentUniversity(), usernameField.getText(), passwordField.getText());
             }
         };
 
-        checkAuthTask.setOnSucceeded(e -> {
-            if (checkAuthTask.getValue()) {
+        getCookieTask.setOnSucceeded(e -> {
+            if (getCookieTask.getValue() != null) {
                 progressIndicator.setProgress(0.2);
                 progressLabel.setText("Γίνεται συγχρονισμός των στοιχείων...");
-                syncStudent(true);
+                syncStudent(getCookieTask.getValue());
             } else {
-                syncStudent(false);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Αποτυχία ταυτοποίησης");
+                alert.setHeaderText("Λάθος όνομα χρήστη ή κωδικός");
+                alert.setContentText("Παρακαλώ ελέγξτε τα στοιχεία και δοκιμάστε ξανά.");
+                serializeService.deleteSerializedFile();
+                alert.showAndWait();
                 showLoadingScreen(false);
             }
         });
 
-        Thread t = new Thread(checkAuthTask);
+        Thread t = new Thread(getCookieTask);
         t.setDaemon(true);
         t.start();
     }
 
-    private void syncStudent(Boolean isAuthenticated) {
-        if (isAuthenticated) {
-            MainController.getInstance().clearCourseData();
-            serializeService.serializeStudent(student);
-            Task parseInfoTask = new Task<Void>() {
-                @Override
-                public Void call() {
-                    HashMap<String, String> infoMap = studentParser.parseStudentInfo(student);
-                    serializeService.serializeInfo(infoMap);
-                    return null;
-                }
-            };
+    private void syncStudent(Map<String, String> cookierJar) {
+        MainController.getInstance().clearCourseData();
+        serializeService.serializeStudent(student);
 
-            Task parseGradesTask = new Task<Void>() {
-                @Override
-                public Void call() {
-                    List<Course> courseList = studentParser.parseStudentGrades();
-                    serializeService.serializeCourses(courseList);
-                    return null;
-                }
-            };
+        Task parseInfoTask = new Task<Void>() {
+            @Override
+            public Void call() {
+                HashMap<String, String> infoMap = studentParser.parseStudentInfo(student.getStudentUniversity(), cookierJar);
+                serializeService.serializeInfo(infoMap);
+                return null;
+            }
+        };
 
-            Task parseStatsTask = new Task<Void>() {
-                @Override
-                public Void call() {
-                    HashMap<String, String> statsMap = studentParser.parseStudentStats();
-                    serializeService.serializeStats(statsMap);
-                    return null;
-                }
-            };
+        Task parseGradesTask = new Task<Void>() {
+            @Override
+            public Void call() {
+                List<Course> courseList = studentParser.parseStudentGrades(student.getStudentUniversity(), cookierJar);
+                serializeService.serializeCourses(courseList);
+                return null;
+            }
+        };
 
-            Task parseRegTask = new Task<Void>() {
-                @Override
-                public Void call() {
-                    HashMap<String, String> regMap = studentParser.parseStudentRegistration();
-                    List<Course> regList = serializeService.fetchRegisterCourseList(regMap);
-                    serializeService.serializeRegister(regList);
-                    return null;
-                }
-            };
+        Task parseStatsTask = new Task<Void>() {
+            @Override
+            public Void call() {
+                HashMap<String, String> statsMap = studentParser.parseStudentStats(student.getStudentUniversity(), cookierJar);
+                serializeService.serializeStats(statsMap);
+                return null;
+            }
+        };
 
-            parseInfoTask.setOnSucceeded(e -> {
-                progressIndicator.setProgress(0.4);
-                progressLabel.setText("Γίνεται συγχρονισμός των μαθημάτων...");
+        Task parseRegTask = new Task<Void>() {
+            @Override
+            public Void call() {
+                HashMap<String, String> regMap = studentParser.parseStudentRegistration(student.getStudentUniversity(), cookierJar);
+                List<Course> regList = serializeService.fetchRegisterCourseList(regMap);
+                serializeService.serializeRegister(regList);
+                return null;
+            }
+        };
 
-            });
+        parseInfoTask.setOnSucceeded(e -> {
+            progressIndicator.setProgress(0.4);
+            progressLabel.setText("Γίνεται συγχρονισμός των μαθημάτων...");
 
-            parseGradesTask.setOnSucceeded(e -> {
-                progressIndicator.setProgress(0.6);
-                progressLabel.setText("Γίνεται συγχρονισμός των συνόλων...");
+        });
 
-            });
+        parseGradesTask.setOnSucceeded(e -> {
+            progressIndicator.setProgress(0.6);
+            progressLabel.setText("Γίνεται συγχρονισμός των συνόλων...");
 
-            parseStatsTask.setOnSucceeded(e -> {
-                progressIndicator.setProgress(0.8);
-                progressLabel.setText("Γίνεται συγχρονισμός της δήλωσης...");
+        });
 
-            });
+        parseStatsTask.setOnSucceeded(e -> {
+            progressIndicator.setProgress(0.8);
+            progressLabel.setText("Γίνεται συγχρονισμός της δήλωσης...");
 
-            parseRegTask.setOnSucceeded(e -> {
-                progressIndicator.setProgress(1);
-                progressLabel.setText("Επιτυχής συγχρονισμός!");
-                updateMainComponents();
-            });
+        });
 
-            ExecutorService es = Executors.newSingleThreadExecutor();
-            es.submit(parseInfoTask);
-            es.submit(parseGradesTask);
-            es.submit(parseStatsTask);
-            es.submit(parseRegTask);
-            es.shutdown();
+        parseRegTask.setOnSucceeded(e -> {
+            progressIndicator.setProgress(1);
+            progressLabel.setText("Επιτυχής συγχρονισμός!");
+            updateMainComponents();
+        });
 
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Αποτυχία ταυτοποίησης");
-            alert.setHeaderText("Λάθος όνομα χρήστη ή κωδικός");
-            alert.setContentText("Παρακαλώ ελέγξτε τα στοιχεία και δοκιμάστε ξανά.");
-            serializeService.deleteSerializedFile();
-            alert.showAndWait();
-        }
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        es.submit(parseInfoTask);
+        es.submit(parseGradesTask);
+        es.submit(parseStatsTask);
+        es.submit(parseRegTask);
+        es.shutdown();
+
     }
 
     private void updateMainComponents() {

@@ -12,6 +12,9 @@ import com.github.plushaze.traynotification.notification.Notifications;
 import gr.roropoulos.egrades.eGrades;
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Preference;
+import gr.roropoulos.egrades.model.Student;
+import gr.roropoulos.egrades.parser.DocumentParser;
+import gr.roropoulos.egrades.parser.Impl.CardisoftDocumentParserImpl;
 import gr.roropoulos.egrades.parser.Impl.CardisoftStudentParserImpl;
 import gr.roropoulos.egrades.parser.StudentParser;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
@@ -41,6 +44,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.controlsfx.control.StatusBar;
+import org.jsoup.Connection;
 
 import java.awt.*;
 import java.io.IOException;
@@ -76,6 +80,7 @@ public class MainController implements Initializable {
     private RotateTransition rt;
     private SerializeService serializeService = new SerializeServiceImpl();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
+    private DocumentParser documentParser = new CardisoftDocumentParserImpl();
     private StudentParser studentParser = new CardisoftStudentParserImpl();
     private ExceptionService exceptionService = new ExceptionService();
 
@@ -310,8 +315,26 @@ public class MainController implements Initializable {
             rt.setCycleCount(Animation.INDEFINITE);
             rt.setInterpolator(Interpolator.LINEAR);
             rt.play();
-            syncCourses();
+
+            Task<Map<String, String>> getCookieTask = new Task<Map<String, String>>() {
+                @Override
+                public Map<String, String> call() {
+                    Connection.Response res;
+                    Student student = serializeService.deserializeStudent();
+                    res = documentParser.getConnection(student.getStudentUniversity());
+                    return documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
+                }
+            };
+
+            getCookieTask.setOnSucceeded(e -> {
+                syncCourses(getCookieTask.getValue());
+            });
+
+            Thread t = new Thread(getCookieTask);
+            t.setDaemon(true);
+            t.start();
         }
+
     }
 
     @FXML
@@ -422,28 +445,29 @@ public class MainController implements Initializable {
         }
     }
 
-    private void syncCourses() {
+    private void syncCourses(Map<String, String> cookierJar) {
+        Student student = serializeService.deserializeStudent();
+
         Task<List<Course>> parseGradesTask = new Task<List<Course>>() {
             @Override
             public List<Course> call() {
-                return studentParser.parseStudentGrades();
+                return studentParser.parseStudentGrades(student.getStudentUniversity(), cookierJar);
             }
         };
 
         Task parseStatsTask = new Task<Void>() {
             @Override
             public Void call() {
-                HashMap<String, String> statsMap = studentParser.parseStudentStats();
+                HashMap<String, String> statsMap = studentParser.parseStudentStats(student.getStudentUniversity(), cookierJar);
                 serializeService.serializeStats(statsMap);
                 return null;
             }
         };
 
-
         Task parseRegTask = new Task<Void>() {
             @Override
             public Void call() {
-                HashMap<String, String> regMap = studentParser.parseStudentRegistration();
+                HashMap<String, String> regMap = studentParser.parseStudentRegistration(student.getStudentUniversity(), cookierJar);
                 List<Course> regList = serializeService.fetchRegisterCourseList(regMap);
                 serializeService.serializeRegister(regList);
                 return null;

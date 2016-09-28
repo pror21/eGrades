@@ -8,12 +8,9 @@
 package gr.roropoulos.egrades.parser.Impl;
 
 import gr.roropoulos.egrades.model.Course;
-import gr.roropoulos.egrades.model.Student;
+import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.parser.DocumentParser;
 import gr.roropoulos.egrades.parser.StudentParser;
-import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
-import gr.roropoulos.egrades.service.SerializeService;
-import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -26,12 +23,9 @@ import java.util.Map;
 public class CardisoftStudentParserImpl implements StudentParser {
 
     private final DocumentParser documentParser = new CardisoftDocumentParserImpl();
-    private SerializeService serializeService = new SerializeServiceImpl();
 
-    public HashMap<String, String> parseStudentInfo(Student student) {
-        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
-        Map<String, String> cookieJar = documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
-        Document doc = documentParser.getTreeStudentInfo(student.getStudentUniversity(), cookieJar);
+    public HashMap<String, String> parseStudentInfo(University studentUniversity, Map<String, String> cookieJar) {
+        Document doc = documentParser.getTreeStudentInfo(studentUniversity, cookieJar);
 
         String studentName = doc.select("#main > div:nth-child(4) > table > tbody > tr:nth-child(3) > td:nth-child(2)").text();
         String studentSurname = doc.select("#main > div:nth-child(4) > table > tbody > tr:nth-child(2) > td:nth-child(2)").text();
@@ -50,11 +44,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return studentInfoHashMap;
     }
 
-    public List<Course> parseStudentGrades() {
-        Student student = serializeService.deserializeStudent();
-        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
-        Map<String, String> cookieJar = documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
-        Document doc = documentParser.getTreeStudentGrades(student.getStudentUniversity(), cookieJar);
+    public List<Course> parseStudentGrades(University studentUniversity, Map<String, String> cookieJar) {
+        Document doc = documentParser.getTreeStudentGrades(studentUniversity, cookieJar);
 
         // Select all SIMPLE and COMP courses (they have the same attributes so we'r selecting both of them for now)
         Elements simpleAndCompCourses = doc.select("tr[height=25][bgcolor=#fafafa]");
@@ -173,16 +164,12 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return courseList;
     }
 
-    public HashMap<String, String> parseStudentRegistration() {
-        Student student = serializeService.deserializeStudent();
-        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
-        Map<String, String> cookieJar = documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
-        Document doc = documentParser.getTreeStudentRegistration(student.getStudentUniversity(), cookieJar);
+    public HashMap<String, String> parseStudentRegistration(University studentUniversity, Map<String, String> cookieJar) {
+        Document doc = documentParser.getTreeStudentRegistration(studentUniversity, cookieJar);
 
         Element element = doc.select("tr[bgcolor=#FFFAF0").first();
-        //String regDate;
         HashMap<String, String> regCourseMap = new HashMap<>();
-        //regDate = element.select("span:eq(1)").text();
+        //String regDate = regDate = element.select("span:eq(1)").text();
         // Remove junk chars
         //regDate = regDate.replaceAll(" [^ ]+$", "").trim();
         Elements courses = element.select("tr[height=25]");
@@ -196,11 +183,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return regCourseMap;
     }
 
-    public HashMap<String, String> parseStudentStats() {
-        Student student = serializeService.deserializeStudent();
-        Connection.Response res = documentParser.getConnection(student.getStudentUniversity());
-        Map<String, String> cookieJar = documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
-        Document doc = documentParser.getTreeStudentStats(student.getStudentUniversity(), cookieJar);
+    public HashMap<String, String> parseStudentStats(University studentUniversity, Map<String, String> cookieJar) {
+        Document doc = documentParser.getTreeStudentStats(studentUniversity, cookieJar);
 
         Element overallStats = doc.select("tr[height=20][class=subHeaderBack]").last();
         HashMap<String, String> studentStats = new HashMap<>();
