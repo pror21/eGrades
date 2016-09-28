@@ -26,6 +26,7 @@ import javafx.stage.StageStyle;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -35,8 +36,16 @@ public class eGrades extends Application {
     private BorderPane rootLayout;
     private ExceptionService exceptionService = new ExceptionService();
     private Properties properties = new Properties();
+    private static ServerSocket SERVER_SOCKET;
 
     public static void main(String[] args) throws Exception {
+        try {
+            SERVER_SOCKET = new ServerSocket(43430);
+        } catch (IOException x) {
+            System.out.println("Another instance already running... exit.");
+            System.exit(1);
+        }
+
         List<String> argsList = new ArrayList<>(Arrays.asList(args));
         Collections.addAll(argsList, args);
         launch(args);
@@ -99,7 +108,7 @@ public class eGrades extends Application {
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initStyle(StageStyle.DECORATED);
             dialogStage.initOwner(primaryStage);
-            dialogStage.setTitle(properties.getProperty("artifactId") + " " + properties.getProperty("version") + " - Είσοδος χρήστη");
+            dialogStage.setTitle("Είσοδος χρήστη");
             dialogStage.setWidth(450);
             dialogStage.setHeight(220);
             dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
@@ -126,7 +135,7 @@ public class eGrades extends Application {
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.initStyle(StageStyle.DECORATED);
             dialogStage.initOwner(primaryStage);
-            dialogStage.setTitle(properties.getProperty("artifactId") + " " + properties.getProperty("version") + " - Προτιμήσεις");
+            dialogStage.setTitle("Προτιμήσεις");
             dialogStage.setWidth(420);
             dialogStage.setHeight(260);
             dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
