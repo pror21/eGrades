@@ -4,3 +4,8 @@ jdk:
 sudo: false
 email: false
 script: mvn clean verify
+
+addons:
+apt:
+packages:
+  - oracle-java8-installer
