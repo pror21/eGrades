@@ -56,7 +56,7 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
             exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
 
-        Element errorElement = responseDoc.select("div.error").first();
+        Element errorElement = responseDoc != null ? responseDoc.select("div.error").first() : null;
         if (errorElement != null) {
             return null;
         }
