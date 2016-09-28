@@ -49,8 +49,6 @@ public interface SerializeService {
 
     Boolean checkIfSerializedFileExist();
 
-    Boolean studentCheckAuthentication(Student student);
-
     void deleteSerializedFile();
 
     void clearRecentCourses();
