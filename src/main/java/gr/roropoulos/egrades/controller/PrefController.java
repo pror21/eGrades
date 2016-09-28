@@ -173,11 +173,6 @@ public class PrefController implements Initializable {
         preferenceService.setPreferences(pref);
     }
 
-    @FXML
-    private void resetButtonActionHandler() {
-
-    }
-
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
