@@ -8,7 +8,6 @@
 package gr.roropoulos.egrades.parser.Impl;
 
 import gr.roropoulos.egrades.model.Course;
-import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.parser.DocumentParser;
 import gr.roropoulos.egrades.parser.StudentParser;
 import org.jsoup.nodes.Document;
@@ -24,8 +23,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
 
     private final DocumentParser documentParser = new CardisoftDocumentParserImpl();
 
-    public HashMap<String, String> parseStudentInfo(University studentUniversity, Map<String, String> cookieJar) {
-        Document doc = documentParser.getTreeStudentInfo(studentUniversity, cookieJar);
+    public HashMap<String, String> parseStudentInfo(String URL, Map<String, String> cookieJar) {
+        Document doc = documentParser.getStudentInfoDocument(URL, cookieJar);
 
         String studentName = doc.select("#main > div:nth-child(4) > table > tbody > tr:nth-child(3) > td:nth-child(2)").text();
         String studentSurname = doc.select("#main > div:nth-child(4) > table > tbody > tr:nth-child(2) > td:nth-child(2)").text();
@@ -44,8 +43,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return studentInfoHashMap;
     }
 
-    public List<Course> parseStudentGrades(University studentUniversity, Map<String, String> cookieJar) {
-        Document doc = documentParser.getTreeStudentGrades(studentUniversity, cookieJar);
+    public List<Course> parseStudentGrades(String URL, Map<String, String> cookieJar) {
+        Document doc = documentParser.getStudentCoursesDocument(URL, cookieJar);
 
         // Select all SIMPLE and COMP courses (they have the same attributes so we'r selecting both of them for now)
         Elements simpleAndCompCourses = doc.select("tr[height=25][bgcolor=#fafafa]");
@@ -164,8 +163,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return courseList;
     }
 
-    public HashMap<String, String> parseStudentRegistration(University studentUniversity, Map<String, String> cookieJar) {
-        Document doc = documentParser.getTreeStudentRegistration(studentUniversity, cookieJar);
+    public HashMap<String, String> parseStudentRegistration(String URL, Map<String, String> cookieJar) {
+        Document doc = documentParser.getStudentRegistrationDocument(URL, cookieJar);
 
         Element element = doc.select("tr[bgcolor=#FFFAF0").first();
         HashMap<String, String> regCourseMap = new HashMap<>();
@@ -183,8 +182,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return regCourseMap;
     }
 
-    public HashMap<String, String> parseStudentStats(University studentUniversity, Map<String, String> cookieJar) {
-        Document doc = documentParser.getTreeStudentStats(studentUniversity, cookieJar);
+    public HashMap<String, String> parseStudentStats(String URL, Map<String, String> cookieJar) {
+        Document doc = documentParser.getStudentStatsDocument(URL, cookieJar);
 
         Element overallStats = doc.select("tr[height=20][class=subHeaderBack]").last();
         HashMap<String, String> studentStats = new HashMap<>();

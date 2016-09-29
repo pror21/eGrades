@@ -8,7 +8,6 @@
 
 package gr.roropoulos.egrades.parser.Impl;
 
-import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.parser.DocumentParser;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
@@ -19,6 +18,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CardisoftDocumentParserImpl implements DocumentParser {
@@ -27,10 +27,10 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
     private PreferenceService preferenceService = new PreferenceServiceImpl();
     private Integer timeout = preferenceService.getPreferences().getPrefAdvancedTimeout();
 
-    public Connection.Response getConnection(University uniConn) {
+    public Connection.Response getConnection(String URL) {
         Connection.Response res = null;
         try {
-            res = Jsoup.connect(uniConn.getUniversityURL())
+            res = Jsoup.connect(URL)
                     .method(Connection.Method.GET)
                     .timeout(timeout)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
@@ -41,11 +41,12 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         return res;
     }
 
-    public Map<String, String> getCookies(Connection.Response res, University uniConn, String username, String password) {
+    public Map<String, String> getCookies(Connection.Response res, String URL, HashMap<String, String> formData) {
         Document responseDoc = null;
+
         try {
-            responseDoc = Jsoup.connect(uniConn.getUniversityURL() + "login.asp")
-                    .data(uniConn.getUniversityData()[0], username, uniConn.getUniversityData()[1], password, uniConn.getUniversityData()[2], uniConn.getUniversityData()[3], uniConn.getUniversityData()[4], uniConn.getUniversityData()[5])
+            responseDoc = Jsoup.connect(URL + "login.asp")
+                    .data(formData)
                     .cookies(res.cookies())
                     .method(Connection.Method.POST)
                     .timeout(timeout)
@@ -63,10 +64,10 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         return res.cookies();
     }
 
-    public Document getTreeStudentInfo(University uniConn, Map<String, String> cookieJar) {
+    public Document getStudentInfoDocument(String URL, Map<String, String> cookieJar) {
         Document doc = null;
         try {
-            doc = Jsoup.connect(uniConn.getUniversityURL() + "studentMain.asp")
+            doc = Jsoup.connect(URL + "studentMain.asp")
                     .cookies(cookieJar)
                     .method(Connection.Method.GET)
                     .timeout(timeout)
@@ -78,10 +79,10 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         return doc;
     }
 
-    public Document getTreeStudentGrades(University uniConn, Map<String, String> cookieJar) {
+    public Document getStudentCoursesDocument(String URL, Map<String, String> cookieJar) {
         Document doc = null;
         try {
-            doc = Jsoup.connect(uniConn.getUniversityURL() + "stud_CResults.asp?studPg=1&mnuid=mnu3&")
+            doc = Jsoup.connect(URL + "stud_CResults.asp?studPg=1&mnuid=mnu3&")
                     .data("sortBy", "ctypeID")
                     .cookies(cookieJar)
                     .method(Connection.Method.POST)
@@ -94,10 +95,10 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         return doc;
     }
 
-    public Document getTreeStudentRegistration(University uniConn, Map<String, String> cookieJar) {
+    public Document getStudentRegistrationDocument(String URL, Map<String, String> cookieJar) {
         Document doc = null;
         try {
-            doc = Jsoup.connect(uniConn.getUniversityURL() + "stud_vClasses.asp?studPg=1&mnuid=diloseis;showDil&")
+            doc = Jsoup.connect(URL + "stud_vClasses.asp?studPg=1&mnuid=diloseis;showDil&")
                     .cookies(cookieJar)
                     .method(Connection.Method.GET)
                     .timeout(timeout)
@@ -109,10 +110,10 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         return doc;
     }
 
-    public Document getTreeStudentStats(University uniConn, Map<String, String> cookieJar) {
+    public Document getStudentStatsDocument(String URL, Map<String, String> cookieJar) {
         Document doc = null;
         try {
-            doc = Jsoup.connect(uniConn.getUniversityURL() + "stud_CResults.asp?studPg=1&mnuid=mnu3&")
+            doc = Jsoup.connect(URL + "stud_CResults.asp?studPg=1&mnuid=mnu3&")
                     .cookies(cookieJar)
                     .method(Connection.Method.GET)
                     .timeout(timeout)
