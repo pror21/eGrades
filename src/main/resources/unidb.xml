@@ -6,96 +6,1176 @@
   ~ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
   -->
 
-<universities ver="2">
+<universities>
     <university>
         <universityName>Πανεπιστήμιο Πειραιώς</universityName>
         <universityURL>https://students.unipi.gr/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>Δημοκρίτειο Πανεπιστήμιο Θράκης</universityName>
         <universityURL>https://unistudent.duth.gr/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>Ιόνιο Πανεπιστήμιο</universityName>
         <universityURL>http://gram-web.ionio.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>Πανεπιστήμιο Αιγαίου</universityName>
         <universityURL>https://studentweb.aegean.gr/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>Πανεπιστήμιο Μακεδονίας</universityName>
         <universityURL>https://services.uom.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
+    </university>
+    <university>
+        <universityName>Πανεπιστήμιο Δυτικής Μακεδονίας</universityName>
+        <universityURL>http://students.koz.uowm.gr/</universityURL>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
+    </university>
+    <university>
+        <universityName>Πανεπιστήμιο Ιωαννίνων</universityName>
+        <universityURL>http://students.koz.uowm.gr/</universityURL>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
+    </university>
+    <university>
+        <universityName>Πανεπιστήμιο Θεσσαλίας</universityName>
+        <universityURL>http://euniversity.uth.gr/unistudent/</universityURL>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>Πανεπιστήμιο Πελοποννήσου</universityName>
         <universityURL>https://e-secretary.uop.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>Πολυτεχνείο Κρήτης</universityName>
         <universityURL>https://websrv.stdnet.tuc.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
+    </university>
+    <university>
+        <universityName>Πανεπιστήμιο Κρήτης - Προπτυχιακά Τμήματα</universityName>
+        <universityURL>https://student.cc.uoc.gr/</universityURL>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+            <data>
+                <key>rdStudiesLevel2</key>
+                <value>1</value>
+            </data>
+            <data>
+                <key>userdepname</key>
+                <value/>
+            </data>
+            <data>
+                <key>userdep2</key>
+                <value>0</value>
+            </data>
+        </universityData>
+        <universityDepartment>
+            <universityDepartmentName>Παιδαγωγικό Τμήμα Δημοτικής Εκπαίδευσης</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>191</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>191</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Παιδαγωγικό Τμήμα Προσχολικής Εκπαίδευσης</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>192</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>192</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Πειραματικό Τμήμα</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>3000</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>3000</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Σχολή Θετικών και Τεχνολογικών Επιστημών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>176</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>176</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Βιολογίας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>185</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>185</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Επιστήμης και Τεχνολογίας Υλικών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>188</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>188</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Επιστήμης Υπολογιστών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>187</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>187</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Ιατρικής</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>189</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>189</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Ιστορίας και Αρχαιολογίας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>178</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>178</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Κοινωνιολογίας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>181</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>181</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Μαθηματικών και Εφαρμοσμένων Μαθηματικών (Κατεύθυνση: Εφαρμοσμένων
+                Μαθηματικών)
+            </universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>182</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>182</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Μαθηματικών και Εφαρμοσμένων Μαθηματικών (Κατεύθυνση: Μαθηματικών)
+            </universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>186</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>186</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Οικονομικών Επιστημών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>193</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>193</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Πολιτικής Επιστήμης</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>190</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>190</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Φιλολογίας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>177</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>177</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Φιλοσοφικών και Κοινωνικών Σπουδών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>179</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>179</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Φυσικής</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>183</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>183</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Χημείας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>184</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>184</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Χημείας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>180</value>
+                </data>
+                <data>
+                    <key>userdep1</key>
+                    <value>180</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+    </university>
+    <university>
+        <universityName>Πανεπιστήμιο Κρήτης - Μεταπτυχιακά Τμήματα</universityName>
+        <universityURL>https://student.cc.uoc.gr/</universityURL>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+            <data>
+                <key>rdStudiesLevel2</key>
+                <value>2</value>
+            </data>
+            <data>
+                <key>userdepname</key>
+                <value/>
+            </data>
+            <data>
+                <key>userdep1</key>
+                <value>0</value>
+            </data>
+        </universityData>
+        <universityDepartment>
+            <universityDepartmentName>TimeMBE</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1104</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1104</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Διατμηματικό Πρόγραμμα Μεταπτυχιακών Σπουδών "Οπτική και Όραση"
+            </universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1120</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1120</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Διδακτορικό Ιατρικής</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1123</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1123</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Μεταπτυχιακό Πρόγραμμα του Τμήματος Φυσικής</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1104</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1104</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Παιδαγωγικό Τμήμα Δημοτικής Εκπαίδευσης</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1112</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1112</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>ΠΜΣ Δημόσια Υγεία - Διοίκηση Υπηρεσιών Υγείας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1121</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1121</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>ΠΜΣ Κυτταρική και Γενετική Αιτιολογία, Διαγνωστική και Θεραπευτική των Ασθενειών
+                του Ανθρώπου
+            </universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1122</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1122</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>ΠΜΣ Βιοηθικής</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1116</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1116</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>ΠΜΣ Εγκέφαλος και Νους</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1117</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1117</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>ΠΜΣ Ιατρικής Φυσικής - Ακτινοφυσικής</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1115</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1115</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>ΠΜΣ Νευροεπιστημών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1119</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1119</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>ΠΜΣ στις Επιστήμες της Αγωγής</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1127</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1127</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>ΠΜΣ στις Επιστήμες της Αγωγής-εξ αποστάσεως - Εκπαίδευση με τη χρήση των ΤΠΕ
+            </universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1126</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1126</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Βιολογίας (1)</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1102</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1102</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Βιολογίας (2)</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1118</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1118</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Επιστήμης και Τεχνολογίας Υλικών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1103</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1103</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Επιστήμης Υπολογιστών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1105</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1105</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Εφαρμοσμένων Μαθηματικών - Μεταπτυχιακό</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1124</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1124</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Ιστορίας και Αρχαιολογίας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1107</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1107</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Κοινωνιολογίας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1110</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1110</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Μαθηματικού/ΤΕΜ - Μεταπτυχιακό</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1101</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1101</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Οικονομικών Επιστημών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1109</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1109</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Πολιτικής Επιστήμης</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1113</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1113</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Προσχολικής Εκπαίδευσης</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1111</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1111</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Φιλολογίας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1108</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1108</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Φιλοσοφικών και Κοινωνικών Σπουδών - Μεταπτυχιακά</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1106</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1106</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Χημείας</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1100</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1100</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
+        <universityDepartment>
+            <universityDepartmentName>Τμήμα Ψυχολογίας Μεταπτυχιακό Πρόγραμμα Σπουδών</universityDepartmentName>
+            <universityDepartmentData>
+                <data>
+                    <key>userdep</key>
+                    <value>1114</value>
+                </data>
+                <data>
+                    <key>userdep2</key>
+                    <value>1114</value>
+                </data>
+            </universityDepartmentData>
+        </universityDepartment>
     </university>
     <university>
         <universityName>ΤΕΙ Κεντρικής Μακεδονίας</universityName>
         <universityURL>http://egram.teicm.gr/unistudent/</universityURL>
-        <universityData>userName1 pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName1</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Αθήνας</universityName>
         <universityURL>https://estudy.teiath.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Ανατολικής Μακεδονίας και Θράκης</universityName>
         <universityURL>https://e-secretariat.teiemt.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Δυτικής Ελλάδας</universityName>
         <universityURL>https://studentsweb.teimes.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Δυτικής Μακεδονίας - Παράρτημα Καστοριάς</universityName>
         <universityURL>http://195.130.87.7/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Θεσσαλίας</universityName>
         <universityURL>https://dionysos.teilar.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Ιονίων Νήσων</universityName>
         <universityURL>http://omiros.teiion.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Θεσσαλονίκης</universityName>
         <universityURL>http://pithia.teithe.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Καλαμάτας</universityName>
         <universityURL>http://pithia.teithe.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Κρήτης</universityName>
         <universityURL>https://student.teicrete.gr/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
     <university>
         <universityName>ΤΕΙ Στερεάς Ελλάδας</universityName>
         <universityURL>https://e-gram.teilam.gr/unistudent/</universityURL>
-        <universityData>userName pwd submit1 %C5%DF%F3%EF%E4%EF%F2 loginTrue login</universityData>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
+    </university>
+    <university>
+        <universityName>ΤΕΙ Ηπείρου</universityName>
+        <universityURL>https://gmweb.teiep.gr/unistudent/</universityURL>
+        <universityData>
+            <data id="username">
+                <key>username</key>
+                <value>userName</value>
+            </data>
+            <data id="password">
+                <key>password</key>
+                <value>pwd</value>
+            </data>
+            <data>
+                <key>submit1</key>
+                <value>%C5%DF%F3%EF%E4%EF%F2</value>
+            </data>
+            <data>
+                <key>loginTrue</key>
+                <value>login</value>
+            </data>
+        </universityData>
     </university>
 </universities>
 		
