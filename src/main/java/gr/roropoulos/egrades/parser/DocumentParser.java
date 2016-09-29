@@ -7,24 +7,24 @@
 
 package gr.roropoulos.egrades.parser;
 
-import gr.roropoulos.egrades.model.University;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public interface DocumentParser {
 
-    Connection.Response getConnection(University uniConn);
+    Connection.Response getConnection(String URL);
 
-    Map<String, String> getCookies(Connection.Response res, University uniConn, String username, String password);
+    Map<String, String> getCookies(Connection.Response res, String URL, HashMap<String, String> formData);
 
-    Document getTreeStudentInfo(University uniConn, Map<String, String> cookieJar);
+    Document getStudentInfoDocument(String URL, Map<String, String> cookieJar);
 
-    Document getTreeStudentGrades(University uniConn, Map<String, String> cookieJar);
+    Document getStudentCoursesDocument(String URL, Map<String, String> cookieJar);
 
-    Document getTreeStudentRegistration(University uniConn, Map<String, String> cookieJar);
+    Document getStudentRegistrationDocument(String URL, Map<String, String> cookieJar);
 
-    Document getTreeStudentStats(University uniConn, Map<String, String> cookieJar);
+    Document getStudentStatsDocument(String URL, Map<String, String> cookieJar);
 
 }
