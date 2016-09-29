@@ -319,10 +319,23 @@ public class MainController implements Initializable {
             Task<Map<String, String>> getCookieTask = new Task<Map<String, String>>() {
                 @Override
                 public Map<String, String> call() {
-                    Connection.Response res;
                     Student student = serializeService.deserializeStudent();
-                    res = documentParser.getConnection(student.getStudentUniversity());
-                    return documentParser.getCookies(res, student.getStudentUniversity(), student.getStudentUsername(), student.getStudentPassword());
+                    Connection.Response res = documentParser.getConnection(student.getStudentUniversity().getUniversityURL());
+                    HashMap<String, String> formData = new HashMap<>();
+                    formData.putAll(student.getStudentUniversity().getUniversityData());
+
+                    if (student.getStudentUniversityDepartment() != null)
+                        formData.putAll(student.getStudentUniversityDepartment().getDepartmentData());
+
+                    String usernameKey = formData.get("username");
+                    formData.remove("username");
+                    formData.put(usernameKey, student.getStudentUsername());
+                    String passwordKey = formData.get("password");
+                    formData.remove("password");
+                    formData.put(passwordKey, student.getStudentPassword());
+
+                    return documentParser.getCookies(res, student.getStudentUniversity().getUniversityURL(), formData);
+
                 }
             };
 
@@ -443,18 +456,19 @@ public class MainController implements Initializable {
 
     private void syncCourses(Map<String, String> cookierJar) {
         Student student = serializeService.deserializeStudent();
+        String URL = student.getStudentUniversity().getUniversityURL();
 
         Task<List<Course>> parseGradesTask = new Task<List<Course>>() {
             @Override
             public List<Course> call() {
-                return studentParser.parseStudentGrades(student.getStudentUniversity(), cookierJar);
+                return studentParser.parseStudentGrades(URL, cookierJar);
             }
         };
 
         Task parseStatsTask = new Task<Void>() {
             @Override
             public Void call() {
-                HashMap<String, String> statsMap = studentParser.parseStudentStats(student.getStudentUniversity(), cookierJar);
+                HashMap<String, String> statsMap = studentParser.parseStudentStats(URL, cookierJar);
                 serializeService.serializeStats(statsMap);
                 return null;
             }
@@ -463,7 +477,7 @@ public class MainController implements Initializable {
         Task parseRegTask = new Task<Void>() {
             @Override
             public Void call() {
-                HashMap<String, String> regMap = studentParser.parseStudentRegistration(student.getStudentUniversity(), cookierJar);
+                HashMap<String, String> regMap = studentParser.parseStudentRegistration(URL, cookierJar);
                 List<Course> regList = serializeService.fetchRegisterCourseList(regMap);
                 serializeService.serializeRegister(regList);
                 return null;

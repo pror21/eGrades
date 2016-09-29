@@ -8,6 +8,7 @@
 package gr.roropoulos.egrades.controller;
 
 import gr.roropoulos.egrades.model.Course;
+import gr.roropoulos.egrades.model.Department;
 import gr.roropoulos.egrades.model.Student;
 import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.parser.DocumentParser;
@@ -43,6 +44,8 @@ public class AuthController implements Initializable {
 
     @FXML
     private ChoiceBox<University> uniChoiceBox;
+    @FXML
+    private ChoiceBox<Department> departmentChoiceBox;
     @FXML
     private Button okButton;
     @FXML
@@ -93,14 +96,28 @@ public class AuthController implements Initializable {
         student.setStudentUsername(usernameField.getText());
         student.setStudentPassword(passwordField.getText());
         SyncScheduler.getInstance().stopScheduler();
+        MainController.getInstance().clearCourseData();
         showLoadingScreen(true);
         progressLabel.setText("Γίνεται ταυτοποίηση...");
 
         Task<Map<String, String>> getCookieTask = new Task<Map<String, String>>() {
             @Override
             public Map<String, String> call() {
-                res = documentParser.getConnection(student.getStudentUniversity());
-                return documentParser.getCookies(res, student.getStudentUniversity(), usernameField.getText(), passwordField.getText());
+                res = documentParser.getConnection(student.getStudentUniversity().getUniversityURL());
+                HashMap<String, String> formData = new HashMap<>();
+                formData.putAll(student.getStudentUniversity().getUniversityData());
+
+                if (student.getStudentUniversityDepartment() != null)
+                    formData.putAll(student.getStudentUniversityDepartment().getDepartmentData());
+
+                String usernameKey = formData.get("username");
+                formData.remove("username");
+                formData.put(usernameKey, usernameField.getText());
+                String passwordKey = formData.get("password");
+                formData.remove("password");
+                formData.put(passwordKey, passwordField.getText());
+
+                return documentParser.getCookies(res, student.getStudentUniversity().getUniversityURL(), formData);
             }
         };
 
@@ -108,6 +125,8 @@ public class AuthController implements Initializable {
             if (getCookieTask.getValue() != null) {
                 progressIndicator.setProgress(0.2);
                 progressLabel.setText("Γίνεται συγχρονισμός των στοιχείων...");
+                MainController.getInstance().clearCourseData();
+                serializeService.serializeStudent(student);
                 syncStudent(getCookieTask.getValue());
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -126,13 +145,10 @@ public class AuthController implements Initializable {
     }
 
     private void syncStudent(Map<String, String> cookierJar) {
-        MainController.getInstance().clearCourseData();
-        serializeService.serializeStudent(student);
-
         Task parseInfoTask = new Task<Void>() {
             @Override
             public Void call() {
-                HashMap<String, String> infoMap = studentParser.parseStudentInfo(student.getStudentUniversity(), cookierJar);
+                HashMap<String, String> infoMap = studentParser.parseStudentInfo(student.getStudentUniversity().getUniversityURL(), cookierJar);
                 serializeService.serializeInfo(infoMap);
                 return null;
             }
@@ -141,7 +157,7 @@ public class AuthController implements Initializable {
         Task parseGradesTask = new Task<Void>() {
             @Override
             public Void call() {
-                List<Course> courseList = studentParser.parseStudentGrades(student.getStudentUniversity(), cookierJar);
+                List<Course> courseList = studentParser.parseStudentGrades(student.getStudentUniversity().getUniversityURL(), cookierJar);
                 serializeService.serializeCourses(courseList);
                 return null;
             }
@@ -150,7 +166,7 @@ public class AuthController implements Initializable {
         Task parseStatsTask = new Task<Void>() {
             @Override
             public Void call() {
-                HashMap<String, String> statsMap = studentParser.parseStudentStats(student.getStudentUniversity(), cookierJar);
+                HashMap<String, String> statsMap = studentParser.parseStudentStats(student.getStudentUniversity().getUniversityURL(), cookierJar);
                 serializeService.serializeStats(statsMap);
                 return null;
             }
@@ -159,7 +175,7 @@ public class AuthController implements Initializable {
         Task parseRegTask = new Task<Void>() {
             @Override
             public Void call() {
-                HashMap<String, String> regMap = studentParser.parseStudentRegistration(student.getStudentUniversity(), cookierJar);
+                HashMap<String, String> regMap = studentParser.parseStudentRegistration(student.getStudentUniversity().getUniversityURL(), cookierJar);
                 List<Course> regList = serializeService.fetchRegisterCourseList(regMap);
                 serializeService.serializeRegister(regList);
                 return null;
@@ -216,7 +232,31 @@ public class AuthController implements Initializable {
 
     private void initializeHandlers() {
         // Set Student university selection
-        uniChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> student.setStudentUniversity(newValue));
+        uniChoiceBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    student.setStudentUniversity(newValue);
+                    if (newValue.getUniversityDepartment() != null && !newValue.getUniversityDepartment().isEmpty()) {
+                        departmentChoiceBox.getItems().setAll(newValue.getUniversityDepartment());
+                        departmentChoiceBox.getSelectionModel().select(0);
+                        departmentChoiceBox.setDisable(false);
+                    } else {
+                        departmentChoiceBox.getItems().clear();
+                        departmentChoiceBox.setDisable(true);
+                    }
+                }
+
+        );
+
+        // Set student department selection
+        departmentChoiceBox.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue != null)
+                        student.setStudentUniversityDepartment(newValue);
+
+                    else
+                        student.setStudentUniversityDepartment(null);
+                }
+        );
 
         // Require Username and Password for enabling OK Button
         BooleanBinding okButtonBooleanBind = usernameField.textProperty().isEmpty().or(passwordField.textProperty().isEmpty());
@@ -224,11 +264,20 @@ public class AuthController implements Initializable {
     }
 
     private void loadStudentData() {
+        // Pre-select saved university
         if (serializeService.checkIfSerializedFileExist()) {
             University selectedUni = uniList.stream()
                     .filter(item -> item.getUniversityName().equals(serializeService.deserializeStudent().getStudentUniversity().getUniversityName()))
                     .findFirst().get();
             uniChoiceBox.getSelectionModel().select(selectedUni);
+            // Pre-select saved department
+            if (serializeService.deserializeStudent().getStudentUniversityDepartment() != null) {
+                List<Department> departmentList = selectedUni.getUniversityDepartment();
+                Department selectedDepartment = departmentList.stream()
+                        .filter(item -> item.getDepartmentName().equals(serializeService.deserializeStudent().getStudentUniversityDepartment().getDepartmentName()))
+                        .findFirst().get();
+                departmentChoiceBox.getSelectionModel().select(selectedDepartment);
+            }
             usernameField.setText(serializeService.deserializeStudent().getStudentUsername());
             passwordField.setText(serializeService.deserializeStudent().getStudentPassword());
         }
