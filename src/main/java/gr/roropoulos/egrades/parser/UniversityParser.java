@@ -8,6 +8,7 @@
 package gr.roropoulos.egrades.parser;
 
 import gr.roropoulos.egrades.eGrades;
+import gr.roropoulos.egrades.model.Department;
 import gr.roropoulos.egrades.model.University;
 import gr.roropoulos.egrades.service.ExceptionService;
 import org.w3c.dom.Document;
@@ -19,8 +20,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@SuppressWarnings("Duplicates")
 public class UniversityParser {
 
     private ExceptionService exceptionService = new ExceptionService();
@@ -35,27 +39,72 @@ public class UniversityParser {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xml);
             doc.getDocumentElement().normalize();
-            NodeList nList = doc.getElementsByTagName("university");
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-                Node nNode = nList.item(temp);
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
+
+            NodeList universityNodeList = doc.getElementsByTagName("university");
+            for (int temp = 0; temp < universityNodeList.getLength(); temp++) {
+                Node universityNode = universityNodeList.item(temp);
+                if (universityNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element universityElement = (Element) universityNode;
+                    Map<String, String> universityDataMap = new HashMap<>();
                     University uni = new University();
-                    uni.setUniversityName(eElement.getElementsByTagName("universityName").item(0).getTextContent());
-                    uni.setUniversityURL(eElement.getElementsByTagName("universityURL").item(0).getTextContent());
-                    String dataString = eElement.getElementsByTagName("universityData").item(0).getTextContent();
-                    String[] dataArray = dataString.split("\\s+");
-                    for (int i = 0; i < dataArray.length; i++) {
-                        dataArray[i] = dataArray[i].replaceAll("[^\\w]", "");
+
+                    uni.setUniversityName(universityElement.getElementsByTagName("universityName").item(0).getTextContent());
+                    uni.setUniversityURL(universityElement.getElementsByTagName("universityURL").item(0).getTextContent());
+
+                    // parse university form data
+                    NodeList universityDataNodeList = ((Element) universityNode).getElementsByTagName("data");
+                    for (int tempDataNode = 0; tempDataNode < universityDataNodeList.getLength(); tempDataNode++) {
+                        Node dataNode = universityDataNodeList.item(tempDataNode);
+                        if (dataNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element dataNodeElement = (Element) dataNode;
+                            universityDataMap.put(
+                                    dataNodeElement.getElementsByTagName("key").item(0).getTextContent(),
+                                    dataNodeElement.getElementsByTagName("value").item(0).getTextContent()
+                            );
+                        }
                     }
-                    uni.setUniversityData(dataArray);
+                    uni.setUniversityData(universityDataMap);
+
+                    // parse any addition department form data
+                    NodeList departmentNodeList = universityElement.getElementsByTagName("universityDepartment");
+                    if (departmentNodeList.getLength() > 0) {
+                        List<Department> departmentList = new ArrayList<>();
+                        for (int tempDepNode = 0; tempDepNode < departmentNodeList.getLength(); tempDepNode++) {
+                            Node departNode = departmentNodeList.item(tempDepNode);
+                            if (departNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element depNodeElement = (Element) departNode;
+                                Department department = new Department();
+                                department.setDepartmentUniversity(uni);
+                                HashMap<String, String> departmentDataMap = new HashMap<>();
+
+                                String departmentName = depNodeElement.getElementsByTagName("universityDepartmentName").item(0).getTextContent();
+
+                                department.setDepartmentName(departmentName);
+
+                                NodeList departmentDataNodeList = depNodeElement.getElementsByTagName("data");
+                                for (int tempDepartDataNode = 0; tempDepartDataNode < departmentDataNodeList.getLength(); tempDepartDataNode++) {
+                                    Node departDataNode = departmentDataNodeList.item(tempDepartDataNode);
+                                    if (departDataNode.getNodeType() == Node.ELEMENT_NODE) {
+                                        Element depDataNodeElement = (Element) departDataNode;
+                                        departmentDataMap.put(
+                                                depDataNodeElement.getElementsByTagName("key").item(0).getTextContent(),
+                                                depDataNodeElement.getElementsByTagName("value").item(0).getTextContent()
+                                        );
+                                    }
+                                }
+                                department.setDepartmentData(departmentDataMap);
+                                departmentList.add(department);
+                            }
+                        }
+                        uni.setUniversityDepartment(departmentList);
+                    }
                     universitiesList.add(uni);
                 }
             }
+
         } catch (Exception e) {
             exceptionService.showException(e, "Συνέβη κάποιο σφάλμα κατά την φόρτωση των πανεπιστημίων.");
         }
         return universitiesList;
     }
-
 }
