@@ -9,8 +9,6 @@ package gr.roropoulos.egrades.service.Impl;
 
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Student;
-import gr.roropoulos.egrades.parser.DocumentParser;
-import gr.roropoulos.egrades.parser.Impl.CardisoftDocumentParserImpl;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.SerializeService;
 
@@ -20,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class SerializeServiceImpl implements SerializeService {
 
-    private DocumentParser documentParser = new CardisoftDocumentParserImpl();
     private ExceptionService exceptionService = new ExceptionService();
     private String path = System.getProperty("user.home") + File.separator + "eGrades" + File.separator + "stud.ser";
 

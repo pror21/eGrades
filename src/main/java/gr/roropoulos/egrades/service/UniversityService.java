@@ -13,7 +13,6 @@ import gr.roropoulos.egrades.parser.UniversityParser;
 import java.util.List;
 
 public class UniversityService {
-
     public List<University> getUniversitiesList() {
         UniversityParser uniParser = new UniversityParser();
         return uniParser.parseUniDB();
