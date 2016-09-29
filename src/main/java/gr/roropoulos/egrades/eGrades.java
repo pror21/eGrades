@@ -68,7 +68,6 @@ public class eGrades extends Application {
         initRootLayout();
         showMainView();
         setTray();
-
     }
 
     private void initRootLayout() {
@@ -110,7 +109,7 @@ public class eGrades extends Application {
             dialogStage.initOwner(primaryStage);
             dialogStage.setTitle("Είσοδος χρήστη");
             dialogStage.setWidth(450);
-            dialogStage.setHeight(220);
+            dialogStage.setHeight(255);
             dialogStage.getIcons().add(new Image("/images/icons/Icon_32x32.png"));
             dialogStage.setResizable(false);
             Scene scene = new Scene(page);
