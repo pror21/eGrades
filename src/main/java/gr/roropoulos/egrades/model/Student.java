@@ -21,6 +21,7 @@ public class Student implements Serializable {
     private String studentDepartment;
     private String studentSemester;
     private University studentUniversity;
+    private Department studentUniversityDepartment;
     private List<Course> studentCourses;
     private List<Course> studentRecentCourses;
     private List<Course> studentRegister;
@@ -120,5 +121,13 @@ public class Student implements Serializable {
 
     public void setStudentRecentCourses(List<Course> studentRecentCourses) {
         this.studentRecentCourses = studentRecentCourses;
+    }
+
+    public Department getStudentUniversityDepartment() {
+        return studentUniversityDepartment;
+    }
+
+    public void setStudentUniversityDepartment(Department studentUniversityDepartment) {
+        this.studentUniversityDepartment = studentUniversityDepartment;
     }
 }

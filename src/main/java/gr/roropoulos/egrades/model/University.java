@@ -8,12 +8,15 @@
 package gr.roropoulos.egrades.model;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 public class University implements Serializable {
 
     private String universityName;
     private String universityURL;
-    private String[] universityData;
+    private Map<String, String> universityData;
+    private List<Department> universityDepartment;
 
     public String getUniversityName() {
         return universityName;
@@ -31,12 +34,20 @@ public class University implements Serializable {
         this.universityURL = universityURL;
     }
 
-    public String[] getUniversityData() {
+    public Map<String, String> getUniversityData() {
         return universityData;
     }
 
-    public void setUniversityData(String[] universityData) {
+    public void setUniversityData(Map<String, String> universityData) {
         this.universityData = universityData;
+    }
+
+    public List<Department> getUniversityDepartment() {
+        return universityDepartment;
+    }
+
+    public void setUniversityDepartment(List<Department> universityDepartment) {
+        this.universityDepartment = universityDepartment;
     }
 
     @Override
