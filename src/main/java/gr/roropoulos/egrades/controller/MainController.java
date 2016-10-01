@@ -13,10 +13,7 @@ import gr.roropoulos.egrades.eGrades;
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.model.Student;
-import gr.roropoulos.egrades.parser.DocumentParser;
-import gr.roropoulos.egrades.parser.Impl.CardisoftDocumentParserImpl;
-import gr.roropoulos.egrades.parser.Impl.CardisoftStudentParserImpl;
-import gr.roropoulos.egrades.parser.StudentParser;
+import gr.roropoulos.egrades.repository.TaskRepository;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
 import gr.roropoulos.egrades.service.ExceptionService;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
@@ -44,7 +41,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.controlsfx.control.StatusBar;
-import org.jsoup.Connection;
 
 import java.awt.*;
 import java.io.IOException;
@@ -53,6 +49,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -80,8 +77,6 @@ public class MainController implements Initializable {
     private RotateTransition rt;
     private SerializeService serializeService = new SerializeServiceImpl();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
-    private DocumentParser documentParser = new CardisoftDocumentParserImpl();
-    private StudentParser studentParser = new CardisoftStudentParserImpl();
     private ExceptionService exceptionService = new ExceptionService();
 
     public MainController() {
@@ -310,36 +305,13 @@ public class MainController implements Initializable {
     public void syncToolBarButtonAction() {
         if (serializeService.checkIfSerializedFileExist()) {
             syncButton.setDisable(true);
-            rt = new RotateTransition(Duration.millis(3000), syncImageView);
-            rt.setByAngle(360);
-            rt.setCycleCount(Animation.INDEFINITE);
-            rt.setInterpolator(Interpolator.LINEAR);
-            rt.play();
-
-            Task<Map<String, String>> getCookieTask = new Task<Map<String, String>>() {
-                @Override
-                public Map<String, String> call() {
-                    Student student = serializeService.deserializeStudent();
-                    Connection.Response res = documentParser.getConnection(student.getStudentUniversity().getUniversityURL());
-                    HashMap<String, String> formData = new HashMap<>();
-                    formData.putAll(student.getStudentUniversity().getUniversityData());
-
-                    if (student.getStudentUniversityDepartment() != null)
-                        formData.putAll(student.getStudentUniversityDepartment().getDepartmentData());
-
-                    String usernameKey = formData.get("username");
-                    formData.remove("username");
-                    formData.put(usernameKey, student.getStudentUsername());
-                    String passwordKey = formData.get("password");
-                    formData.remove("password");
-                    formData.put(passwordKey, student.getStudentPassword());
-
-                    return documentParser.getCookies(res, student.getStudentUniversity().getUniversityURL(), formData);
-
-                }
-            };
+            startSyncButtonAnimation();
+            Student student = serializeService.deserializeStudent();
+            TaskRepository taskRepository = new TaskRepository(student);
+            Task<Map<String, String>> getCookieTask = taskRepository.getCookiesTask;
 
             getCookieTask.setOnSucceeded(e -> syncCourses(getCookieTask.getValue()));
+            getCookieTask.setOnFailed(e -> stopSyncButtonAnimation());
 
             Thread t = new Thread(getCookieTask);
             t.setDaemon(true);
@@ -454,61 +426,68 @@ public class MainController implements Initializable {
         }
     }
 
-    private void syncCourses(Map<String, String> cookierJar) {
+    private void syncCourses(Map<String, String> cookieJar) {
         Student student = serializeService.deserializeStudent();
-        String URL = student.getStudentUniversity().getUniversityURL();
 
-        Task<List<Course>> parseGradesTask = new Task<List<Course>>() {
+        TaskRepository taskRepository = new TaskRepository(student, cookieJar);
+        Task<List<Course>> parseGradesTask = taskRepository.parseCoursesTask;
+        Task parseStatsTask = taskRepository.parseAndSerializeStatsTask;
+        Task parseRegTask = taskRepository.parseAndSerializeRegisterTask;
+
+        Task<List<Course>> fetchNewGradesTask = new Task<List<Course>>() {
             @Override
             public List<Course> call() {
-                return studentParser.parseStudentGrades(URL, cookierJar);
+                List<Course> newList = null;
+                try {
+                    newList = parseGradesTask.get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return serializeService.getNewlyListedCourses(newList);
             }
         };
 
-        Task parseStatsTask = new Task<Void>() {
-            @Override
-            public Void call() {
-                HashMap<String, String> statsMap = studentParser.parseStudentStats(URL, cookierJar);
-                serializeService.serializeStats(statsMap);
-                return null;
-            }
-        };
-
-        Task parseRegTask = new Task<Void>() {
-            @Override
-            public Void call() {
-                HashMap<String, String> regMap = studentParser.parseStudentRegistration(URL, cookierJar);
-                List<Course> regList = serializeService.fetchRegisterCourseList(regMap);
-                serializeService.serializeRegister(regList);
-                return null;
-            }
-        };
-
-        parseGradesTask.setOnSucceeded(e -> {
-            List<Course> newlyListedGradeList = serializeService.getNewlyListedCourses(parseGradesTask.getValue());
+        fetchNewGradesTask.setOnSucceeded(e -> {
+            List<Course> newlyListedGradeList = fetchNewGradesTask.getValue();
             if (!newlyListedGradeList.isEmpty()) {
                 notifyGrade(newlyListedGradeList);
                 serializeService.serializeRecentCourses(newlyListedGradeList);
             }
             serializeService.serializeCourses(parseGradesTask.getValue());
+
+            stopSyncButtonAnimation();
+            updateAllViewComponents();
         });
 
-        parseRegTask.setOnSucceeded(e -> {
-            if (rt != null) {
-                if (rt.getStatus() == Animation.Status.RUNNING) {
-                    rt.stop();
-                    syncImageView.setRotate(0);
-                    syncButton.setDisable(false);
-                }
-            }
-            updateAllViewComponents();
+        fetchNewGradesTask.setOnFailed(e -> {
+            stopSyncButtonAnimation();
         });
 
         ExecutorService es = Executors.newSingleThreadExecutor();
         es.submit(parseGradesTask);
         es.submit(parseStatsTask);
         es.submit(parseRegTask);
+        es.submit(fetchNewGradesTask);
         es.shutdown();
+
+    }
+
+    private void startSyncButtonAnimation() {
+        rt = new RotateTransition(Duration.millis(3000), syncImageView);
+        rt.setByAngle(360);
+        rt.setCycleCount(Animation.INDEFINITE);
+        rt.setInterpolator(Interpolator.LINEAR);
+        rt.play();
+    }
+
+    private void stopSyncButtonAnimation() {
+        if (rt != null) {
+            if (rt.getStatus() == Animation.Status.RUNNING) {
+                rt.stop();
+                syncImageView.setRotate(0);
+                syncButton.setDisable(false);
+            }
+        }
     }
 
     public void setCountdownTimeLabel(int hours, int minutes, int seconds) {
