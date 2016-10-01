@@ -7,14 +7,10 @@
 
 package gr.roropoulos.egrades.controller;
 
-import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Department;
 import gr.roropoulos.egrades.model.Student;
 import gr.roropoulos.egrades.model.University;
-import gr.roropoulos.egrades.parser.DocumentParser;
-import gr.roropoulos.egrades.parser.Impl.CardisoftDocumentParserImpl;
-import gr.roropoulos.egrades.parser.Impl.CardisoftStudentParserImpl;
-import gr.roropoulos.egrades.parser.StudentParser;
+import gr.roropoulos.egrades.repository.TaskRepository;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
 import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
@@ -29,10 +25,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import org.jsoup.Connection;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -64,12 +58,9 @@ public class AuthController implements Initializable {
     private Student student = new Student();
     private UniversityService universityService = new UniversityService();
     private SerializeService serializeService = new SerializeServiceImpl();
-    private StudentParser studentParser = new CardisoftStudentParserImpl();
     private PreferenceService preferenceService = new PreferenceServiceImpl();
-    private DocumentParser documentParser = new CardisoftDocumentParserImpl();
 
     private List<University> uniList = universityService.getUniversitiesList();
-    private Connection.Response res;
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         initializeHandlers();
@@ -88,7 +79,6 @@ public class AuthController implements Initializable {
             loadingPane.setVisible(false);
             loginPane.setVisible(true);
         }
-
     }
 
     @FXML
@@ -100,26 +90,8 @@ public class AuthController implements Initializable {
         showLoadingScreen(true);
         progressLabel.setText("Γίνεται ταυτοποίηση...");
 
-        Task<Map<String, String>> getCookieTask = new Task<Map<String, String>>() {
-            @Override
-            public Map<String, String> call() {
-                res = documentParser.getConnection(student.getStudentUniversity().getUniversityURL());
-                HashMap<String, String> formData = new HashMap<>();
-                formData.putAll(student.getStudentUniversity().getUniversityData());
-
-                if (student.getStudentUniversityDepartment() != null)
-                    formData.putAll(student.getStudentUniversityDepartment().getDepartmentData());
-
-                String usernameKey = formData.get("username");
-                formData.remove("username");
-                formData.put(usernameKey, usernameField.getText());
-                String passwordKey = formData.get("password");
-                formData.remove("password");
-                formData.put(passwordKey, passwordField.getText());
-
-                return documentParser.getCookies(res, student.getStudentUniversity().getUniversityURL(), formData);
-            }
-        };
+        TaskRepository taskRepository = new TaskRepository(student);
+        Task<Map<String, String>> getCookieTask = taskRepository.getCookiesTask;
 
         getCookieTask.setOnSucceeded(e -> {
             if (getCookieTask.getValue() != null) {
@@ -144,43 +116,12 @@ public class AuthController implements Initializable {
         t.start();
     }
 
-    private void syncStudent(Map<String, String> cookierJar) {
-        Task parseInfoTask = new Task<Void>() {
-            @Override
-            public Void call() {
-                HashMap<String, String> infoMap = studentParser.parseStudentInfo(student.getStudentUniversity().getUniversityURL(), cookierJar);
-                serializeService.serializeInfo(infoMap);
-                return null;
-            }
-        };
-
-        Task parseGradesTask = new Task<Void>() {
-            @Override
-            public Void call() {
-                List<Course> courseList = studentParser.parseStudentGrades(student.getStudentUniversity().getUniversityURL(), cookierJar);
-                serializeService.serializeCourses(courseList);
-                return null;
-            }
-        };
-
-        Task parseStatsTask = new Task<Void>() {
-            @Override
-            public Void call() {
-                HashMap<String, String> statsMap = studentParser.parseStudentStats(student.getStudentUniversity().getUniversityURL(), cookierJar);
-                serializeService.serializeStats(statsMap);
-                return null;
-            }
-        };
-
-        Task parseRegTask = new Task<Void>() {
-            @Override
-            public Void call() {
-                HashMap<String, String> regMap = studentParser.parseStudentRegistration(student.getStudentUniversity().getUniversityURL(), cookierJar);
-                List<Course> regList = serializeService.fetchRegisterCourseList(regMap);
-                serializeService.serializeRegister(regList);
-                return null;
-            }
-        };
+    private void syncStudent(Map<String, String> cookieJar) {
+        TaskRepository taskRepository = new TaskRepository(student, cookieJar);
+        Task parseInfoTask = taskRepository.parseAndSerializeInfoTask;
+        Task parseGradesTask = taskRepository.parseAndSerializeCoursesTask;
+        Task parseStatsTask = taskRepository.parseAndSerializeStatsTask;
+        Task parseRegTask = taskRepository.parseAndSerializeRegisterTask;
 
         parseInfoTask.setOnSucceeded(e -> {
             progressIndicator.setProgress(0.4);
