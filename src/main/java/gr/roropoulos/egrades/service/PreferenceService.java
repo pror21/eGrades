@@ -7,12 +7,47 @@
 
 package gr.roropoulos.egrades.service;
 
+import gr.roropoulos.egrades.dao.Impl.PreferenceDAOImpl;
+import gr.roropoulos.egrades.dao.PreferenceDAO;
 import gr.roropoulos.egrades.model.Preference;
 
-public interface PreferenceService {
+import java.util.prefs.Preferences;
 
-    Preference getPreferences();
+public class PreferenceService {
 
-    void setPreferences(Preference pref);
+    private final PreferenceDAO preferenceDAO = new PreferenceDAOImpl();
 
+    public Preference getUserPreferences() {
+        Preferences prefs = preferenceDAO.getPreferences();
+        Preference userPreferences = new Preference();
+
+        userPreferences.setPrefSyncEnabled(prefs.getBoolean("prefSyncEnabled", true));
+        userPreferences.setPrefSyncTime(prefs.getInt("prefSyncTime", 30));
+
+        userPreferences.setPrefNotificationPopupEnabled(prefs.getBoolean("prefNotificationPopupEnabled", true));
+        userPreferences.setPrefNotificationPopupAnimation(prefs.get("prefNotificationPopupAnimation", "popup"));
+        userPreferences.setPrefNotificationSoundEnabled(prefs.getBoolean("prefNotificationSoundEnabled", true));
+        userPreferences.setPrefNotificationSound(prefs.get("prefNotificationSound", "arpeggio"));
+
+        userPreferences.setPrefMailerEnabled(prefs.getBoolean("prefMailerEnabled", false));
+        userPreferences.setPrefMailerHostname(prefs.get("prefMailerHostname", "smtp.gmail.com"));
+        userPreferences.setPrefMailerPort(prefs.getInt("prefMailerPort", 465));
+        userPreferences.setPrefMailerUsername(prefs.get("prefMailerUsername", ""));
+        userPreferences.setPrefMailerPassword(prefs.get("prefMailerPassword", ""));
+        userPreferences.setPrefMailerSSL(prefs.getBoolean("prefMailerSsl", true));
+        userPreferences.setPrefMailerFrom(prefs.get("prefMailerFrom", ""));
+        userPreferences.setPrefMailerTo(prefs.get("prefMailerTo", ""));
+
+        userPreferences.setPrefShowCloseAlert(prefs.getBoolean("prefShowCloseAlert", true));
+
+        userPreferences.setPrefAdvancedTimeout(prefs.getInt("prefTimeout", 20000));
+        userPreferences.setPrefAdvancedShowErrors(prefs.getBoolean("prefShowBugAlerts", false));
+        userPreferences.setPrefAdvancedLogErrors(prefs.getBoolean("prefLogDebug", true));
+
+        return userPreferences;
+    }
+
+    public void saveUserPreferences(Preference userPreferences) {
+        preferenceDAO.savePreferences(userPreferences);
+    }
 }

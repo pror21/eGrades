@@ -14,210 +14,162 @@
             fx:controller="gr.roropoulos.egrades.controller.MainController">
     <center>
         <VBox prefHeight="640.0" prefWidth="940.0">
-            <children>
-                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-                    <children>
-                        <TabPane layoutX="220.0" layoutY="88.0" prefHeight="375.0" prefWidth="640.0"
-                                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
-                                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <tabs>
-                                <Tab text="Μαθήματα">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                            <children>
-                                                <TableView fx:id="coursesTableView" prefHeight="466.0" prefWidth="640.0"
-                                                           tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
-                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                           AnchorPane.topAnchor="0.0">
-                                                    <columns>
-                                                        <TableColumn fx:id="idCoursesTableColumn" prefWidth="70.0"
-                                                                     text="Κωδ."/>
-                                                        <TableColumn fx:id="titleCoursesTableColumn"
-                                                                     prefWidth="381.99998474121094" text="Τίτλος"/>
-                                                        <TableColumn fx:id="gradeCoursesTableColumn" minWidth="0.0"
-                                                                     prefWidth="73.0"
-                                                                     style="-fx-alignment: center; -fx-font-weight: bold;"
-                                                                     text="Βαθμός"/>
-                                                        <TableColumn fx:id="semesterCoursesTableColumn" prefWidth="67.0"
-                                                                     style="-fx-alignment: center;" text="Εξάμηνο"/>
-                                                        <TableColumn fx:id="creditsCoursesTableColumn" prefWidth="37.0"
-                                                                     style="-fx-alignment: center;" text="ΔΜ"/>
-                                                        <TableColumn fx:id="hoursCoursesTableColumn" prefWidth="51.0"
-                                                                     style="-fx-alignment: center;" text="Ώρες"/>
-                                                        <TableColumn fx:id="ectsCoursesTableColumn" prefWidth="61.0"
-                                                                     style="-fx-alignment: center;" text="ECTS"/>
-                                                        <TableColumn fx:id="examDateCoursesTableColumn"
-                                                                     prefWidth="139.0" style="-fx-alignment: center;"
-                                                                     text="Εξεταστική"/>
-                                                    </columns>
-                                                </TableView>
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Τελευταία Δήλωση">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                            <children>
-                                                <TableView fx:id="lastRegTableView" prefHeight="466.0" prefWidth="640.0"
-                                                           tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
-                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                           AnchorPane.topAnchor="0.0">
-                                                    <columns>
-                                                        <TableColumn fx:id="regCourseIdTableColumn" prefWidth="70.0"
-                                                                     text="Κωδ."/>
-                                                        <TableColumn fx:id="regCourseTitleTableColumn" prefWidth="450.0"
-                                                                     text="Τίτλος"/>
-                                                        <TableColumn fx:id="regCourseGradeTableColumn" minWidth="0.0"
-                                                                     style="-fx-font-weight: bold; -fx-alignment: center;"
-                                                                     text="Βαθμός"/>
-                                                        <TableColumn fx:id="regCourseSemesterTableColumn"
-                                                                     prefWidth="78.0" style="-fx-alignment: center;"
-                                                                     text="Εξάμηνο"/>
-                                                        <TableColumn fx:id="regCourseCreditsTableColumn"
-                                                                     prefWidth="75.0" text="ΔΜ"/>
-                                                        <TableColumn fx:id="regCourseHoursTableColumn" prefWidth="75.0"
-                                                                     text="Ώρες"/>
-                                                    </columns>
-                                                </TableView>
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                                <Tab text="Πρόσφατες Βαθμολογίες">
-                                    <content>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                            <children>
-                                                <TableView fx:id="recentTableView" layoutX="220.0" layoutY="73.0"
-                                                           prefHeight="346.0" prefWidth="640.0"
-                                                           tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
-                                                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                           AnchorPane.topAnchor="0.0">
-                                                    <columns>
-                                                        <TableColumn fx:id="recentCourseIdTableColumn" prefWidth="70.0"
-                                                                     text="Κωδ."/>
-                                                        <TableColumn fx:id="recentCourseTitleTableColumn"
-                                                                     prefWidth="413.0" text="Τίτλος"/>
-                                                        <TableColumn fx:id="recentCourseGradeTableColumn" minWidth="0.0"
-                                                                     prefWidth="72.0" text="Βαθμός"/>
-                                                        <TableColumn fx:id="recentCourseCreditsTableColumn"
-                                                                     prefWidth="75.0" text="ΔΜ" visible="false"/>
-                                                        <TableColumn fx:id="recentCourseHoursTableColumn"
-                                                                     prefWidth="75.0" text="Ώρες" visible="false"/>
-                                                        <TableColumn fx:id="recentCourseEctsTableColumn"
-                                                                     prefWidth="75.0" text="ECTS" visible="false"/>
-                                                        <TableColumn fx:id="recentCourseExamDateTableColumn"
-                                                                     prefWidth="75.0" text="Εξεταστική"
-                                                                     visible="false"/>
-                                                        <TableColumn fx:id="recentCourseSemesterTableColumn"
-                                                                     prefWidth="57.0" text="Εξάμηνο"/>
-                                                    </columns>
-                                                </TableView>
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
-                            </tabs>
-                        </TabPane>
-                    </children>
-                </AnchorPane>
-            </children>
+            <AnchorPane VBox.vgrow="ALWAYS">
+                <TabPane layoutX="220.0" layoutY="88.0" prefHeight="375.0" prefWidth="640.0"
+                         tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <Tab text="Μαθήματα">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <TableView fx:id="coursesTableView" prefHeight="466.0" prefWidth="640.0"
+                                       tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
+                                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                       AnchorPane.topAnchor="0.0">
+                                <columns>
+                                    <TableColumn fx:id="idCoursesTableColumn" prefWidth="70.0" text="Κωδ."/>
+                                    <TableColumn fx:id="titleCoursesTableColumn" prefWidth="381.99998474121094"
+                                                 text="Τίτλος"/>
+                                    <TableColumn fx:id="gradeCoursesTableColumn" minWidth="0.0" prefWidth="73.0"
+                                                 style="-fx-alignment: center; -fx-font-weight: bold;" text="Βαθμός"/>
+                                    <TableColumn fx:id="semesterCoursesTableColumn" prefWidth="67.0"
+                                                 style="-fx-alignment: center;" text="Εξάμηνο"/>
+                                    <TableColumn fx:id="creditsCoursesTableColumn" prefWidth="37.0"
+                                                 style="-fx-alignment: center;" text="ΔΜ"/>
+                                    <TableColumn fx:id="hoursCoursesTableColumn" prefWidth="51.0"
+                                                 style="-fx-alignment: center;" text="Ώρες"/>
+                                    <TableColumn fx:id="ectsCoursesTableColumn" prefWidth="61.0"
+                                                 style="-fx-alignment: center;" text="ECTS"/>
+                                    <TableColumn fx:id="examDateCoursesTableColumn" prefWidth="139.0"
+                                                 style="-fx-alignment: center;" text="Εξεταστική"/>
+                                </columns>
+                            </TableView>
+                        </AnchorPane>
+                    </Tab>
+                    <Tab text="Τελευταία Δήλωση">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <TableView fx:id="lastRegTableView" prefHeight="466.0" prefWidth="640.0"
+                                       tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
+                                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                       AnchorPane.topAnchor="0.0">
+                                <columns>
+                                    <TableColumn fx:id="regCourseIdTableColumn" prefWidth="70.0" text="Κωδ."/>
+                                    <TableColumn fx:id="regCourseTitleTableColumn" prefWidth="450.0" text="Τίτλος"/>
+                                    <TableColumn fx:id="regCourseGradeTableColumn" minWidth="0.0"
+                                                 style="-fx-font-weight: bold; -fx-alignment: center;" text="Βαθμός"/>
+                                    <TableColumn fx:id="regCourseSemesterTableColumn" prefWidth="78.0"
+                                                 style="-fx-alignment: center;" text="Εξάμηνο"/>
+                                    <TableColumn fx:id="regCourseCreditsTableColumn" prefWidth="75.0" text="ΔΜ"/>
+                                    <TableColumn fx:id="regCourseHoursTableColumn" prefWidth="75.0" text="Ώρες"/>
+                                </columns>
+                            </TableView>
+                        </AnchorPane>
+                    </Tab>
+                    <Tab text="Πρόσφατες Βαθμολογίες">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <TableView fx:id="recentTableView" layoutX="220.0" layoutY="73.0" prefHeight="346.0"
+                                       prefWidth="640.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0"
+                                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                       AnchorPane.topAnchor="0.0">
+                                <columns>
+                                    <TableColumn fx:id="recentCourseIdTableColumn" prefWidth="70.0" text="Κωδ."/>
+                                    <TableColumn fx:id="recentCourseTitleTableColumn" prefWidth="413.0" text="Τίτλος"/>
+                                    <TableColumn fx:id="recentCourseGradeTableColumn" minWidth="0.0" prefWidth="72.0"
+                                                 text="Βαθμός"/>
+                                    <TableColumn fx:id="recentCourseCreditsTableColumn" prefWidth="75.0" text="ΔΜ"
+                                                 visible="false"/>
+                                    <TableColumn fx:id="recentCourseHoursTableColumn" prefWidth="75.0" text="Ώρες"
+                                                 visible="false"/>
+                                    <TableColumn fx:id="recentCourseEctsTableColumn" prefWidth="75.0" text="ECTS"
+                                                 visible="false"/>
+                                    <TableColumn fx:id="recentCourseExamDateTableColumn" prefWidth="75.0"
+                                                 text="Εξεταστική" visible="false"/>
+                                    <TableColumn fx:id="recentCourseSemesterTableColumn" prefWidth="57.0"
+                                                 text="Εξάμηνο"/>
+                                </columns>
+                            </TableView>
+                        </AnchorPane>
+                    </Tab>
+                </TabPane>
+            </AnchorPane>
         </VBox>
     </center>
     <top>
         <BorderPane BorderPane.alignment="CENTER">
             <center>
                 <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                    <items>
-                        <Button fx:id="syncButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0"
-                                mnemonicParsing="false" onAction="#syncToolBarButtonAction" text="Synchronize"
-                                textAlignment="CENTER">
-                            <graphic>
-                                <ImageView fx:id="syncImageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                                           preserveRatio="true">
-                                    <image>
-                                        <Image url="@/images/sync.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <tooltip>
-                                <Tooltip text="Συγχρονισμός Βαθμολογιών"/>
-                            </tooltip>
-                        </Button>
-                        <Separator orientation="VERTICAL"/>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                                onAction="#changeStudentToolBarButton" text="User" textAlignment="CENTER">
-                            <graphic>
-                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@/images/user.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <tooltip>
-                                <Tooltip text="Είσοδος Χρήστη"/>
-                            </tooltip>
-                        </Button>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                                onAction="#preferencesToolBarButton" text="Settings" textAlignment="CENTER">
-                            <graphic>
-                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@/images/settings.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <tooltip>
-                                <Tooltip text="Ρυθμίσεις"/>
-                            </tooltip>
-                        </Button>
-                        <Separator orientation="VERTICAL"/>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                                onAction="#deleteRecentToolBarButton" text="Delete" textAlignment="CENTER">
-                            <graphic>
-                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@/images/delete.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <tooltip>
-                                <Tooltip text="Διαγραφή πρόσφατων βαθμολογιών"/>
-                            </tooltip>
-                        </Button>
-                    </items>
+                    <Button fx:id="syncButton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0"
+                            mnemonicParsing="false" onAction="#syncToolBarButtonAction" text="Synchronize"
+                            textAlignment="CENTER">
+                        <graphic>
+                            <ImageView fx:id="syncImageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
+                                       preserveRatio="true">
+                                <Image url="@/images/sync.png"/>
+                            </ImageView>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Συγχρονισμός Βαθμολογιών"/>
+                        </tooltip>
+                    </Button>
+                    <Separator orientation="VERTICAL"/>
+                    <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                            onAction="#changeStudentToolBarButton" text="User" textAlignment="CENTER">
+                        <graphic>
+                            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@/images/user.png"/>
+                            </ImageView>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Είσοδος Χρήστη"/>
+                        </tooltip>
+                    </Button>
+                    <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                            onAction="#preferencesToolBarButton" text="Settings" textAlignment="CENTER">
+                        <graphic>
+                            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@/images/settings.png"/>
+                            </ImageView>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Ρυθμίσεις"/>
+                        </tooltip>
+                    </Button>
+                    <Separator orientation="VERTICAL"/>
+                    <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                            onAction="#deleteRecentToolBarButton" text="Delete" textAlignment="CENTER">
+                        <graphic>
+                            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@/images/delete.png"/>
+                            </ImageView>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Διαγραφή πρόσφατων βαθμολογιών"/>
+                        </tooltip>
+                    </Button>
                 </ToolBar>
             </center>
             <right>
                 <ToolBar BorderPane.alignment="CENTER">
-                    <items>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                                onAction="#githubToolBarButton" text="Github" textAlignment="CENTER">
-                            <graphic>
-                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@/images/love.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <tooltip>
-                                <Tooltip text="Υποστηρίξτε το eGrades!"/>
-                            </tooltip>
-                        </Button>
-                        <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
-                                onAction="#exitToolBarButton" text="Exit" textAlignment="CENTER">
-                            <graphic>
-                                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@/images/exitToolBar.png"/>
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                            <tooltip>
-                                <Tooltip text="Έξοδος Εφαρμογής"/>
-                            </tooltip>
-                        </Button>
-                    </items>
+                    <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                            onAction="#githubToolBarButton" text="Github" textAlignment="CENTER">
+                        <graphic>
+                            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@/images/love.png"/>
+                            </ImageView>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Υποστηρίξτε το eGrades!"/>
+                        </tooltip>
+                    </Button>
+                    <Button contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" mnemonicParsing="false"
+                            onAction="#exitToolBarButton" text="Exit" textAlignment="CENTER">
+                        <graphic>
+                            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                <Image url="@/images/exitToolBar.png"/>
+                            </ImageView>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Έξοδος Εφαρμογής"/>
+                        </tooltip>
+                    </Button>
                 </ToolBar>
             </right>
         </BorderPane>

@@ -15,12 +15,12 @@ import java.util.Map;
 
 public interface StudentParser {
 
-    HashMap<String, String> parseStudentInfo(String URL, Map<String, String> cookieJar);
+    HashMap<String, String> parseStudentInfo(String URL, Map<String, String> cookieJar, Integer timeout);
 
-    List<Course> parseStudentGrades(String URL, Map<String, String> cookieJar);
+    List<Course> parseStudentGrades(String URL, Map<String, String> cookieJar, Integer timeout);
 
-    HashMap<String, String> parseStudentStats(String URL, Map<String, String> cookieJar);
+    HashMap<String, String> parseStudentStats(String URL, Map<String, String> cookieJar, Integer timeout);
 
-    HashMap<String, String> parseStudentRegistration(String URL, Map<String, String> cookieJar);
+    HashMap<String, String> parseStudentRegistration(String URL, Map<String, String> cookieJar, Integer timeout);
 
 }

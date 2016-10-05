@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ Copyright (c) 2016.
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -11,11 +12,11 @@
         <universityName>Πανεπιστήμιο Πειραιώς</universityName>
         <universityURL>https://students.unipi.gr/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -33,11 +34,11 @@
         <universityName>Δημοκρίτειο Πανεπιστήμιο Θράκης</universityName>
         <universityURL>https://unistudent.duth.gr/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -55,11 +56,11 @@
         <universityName>Ιόνιο Πανεπιστήμιο</universityName>
         <universityURL>http://gram-web.ionio.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -77,11 +78,11 @@
         <universityName>Πανεπιστήμιο Αιγαίου</universityName>
         <universityURL>https://studentweb.aegean.gr/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -99,11 +100,11 @@
         <universityName>Πανεπιστήμιο Μακεδονίας</universityName>
         <universityURL>https://services.uom.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -121,11 +122,11 @@
         <universityName>Πανεπιστήμιο Δυτικής Μακεδονίας</universityName>
         <universityURL>http://students.koz.uowm.gr/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -143,11 +144,11 @@
         <universityName>Πανεπιστήμιο Ιωαννίνων</universityName>
         <universityURL>http://students.koz.uowm.gr/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -165,11 +166,11 @@
         <universityName>Πανεπιστήμιο Θεσσαλίας</universityName>
         <universityURL>http://euniversity.uth.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -187,11 +188,11 @@
         <universityName>Πανεπιστήμιο Πελοποννήσου</universityName>
         <universityURL>https://e-secretary.uop.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -209,11 +210,11 @@
         <universityName>Πολυτεχνείο Κρήτης</universityName>
         <universityURL>https://websrv.stdnet.tuc.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -231,11 +232,11 @@
         <universityName>Πανεπιστήμιο Κρήτης - Προπτυχιακά Τμήματα</universityName>
         <universityURL>https://student.cc.uoc.gr/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -515,11 +516,11 @@
         <universityName>Πανεπιστήμιο Κρήτης - Μεταπτυχιακά Τμήματα</universityName>
         <universityURL>https://student.cc.uoc.gr/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -917,11 +918,11 @@
         <universityName>ΤΕΙ Κεντρικής Μακεδονίας</universityName>
         <universityURL>http://egram.teicm.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName1</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -939,11 +940,11 @@
         <universityName>ΤΕΙ Αθήνας</universityName>
         <universityURL>https://estudy.teiath.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -961,11 +962,11 @@
         <universityName>ΤΕΙ Ανατολικής Μακεδονίας και Θράκης</universityName>
         <universityURL>https://e-secretariat.teiemt.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -983,11 +984,11 @@
         <universityName>ΤΕΙ Δυτικής Ελλάδας</universityName>
         <universityURL>https://studentsweb.teimes.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -1005,11 +1006,11 @@
         <universityName>ΤΕΙ Δυτικής Μακεδονίας - Παράρτημα Καστοριάς</universityName>
         <universityURL>http://195.130.87.7/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -1027,11 +1028,11 @@
         <universityName>ΤΕΙ Θεσσαλίας</universityName>
         <universityURL>https://dionysos.teilar.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -1049,11 +1050,11 @@
         <universityName>ΤΕΙ Ιονίων Νήσων</universityName>
         <universityURL>http://omiros.teiion.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -1071,11 +1072,11 @@
         <universityName>ΤΕΙ Θεσσαλονίκης</universityName>
         <universityURL>http://pithia.teithe.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -1093,11 +1094,11 @@
         <universityName>ΤΕΙ Καλαμάτας</universityName>
         <universityURL>http://pithia.teithe.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -1115,11 +1116,11 @@
         <universityName>ΤΕΙ Κρήτης</universityName>
         <universityURL>https://student.teicrete.gr/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -1137,11 +1138,11 @@
         <universityName>ΤΕΙ Στερεάς Ελλάδας</universityName>
         <universityURL>https://e-gram.teilam.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>
@@ -1159,11 +1160,11 @@
         <universityName>ΤΕΙ Ηπείρου</universityName>
         <universityURL>https://gmweb.teiep.gr/unistudent/</universityURL>
         <universityData>
-            <data id="username">
+            <data>
                 <key>username</key>
                 <value>userName</value>
             </data>
-            <data id="password">
+            <data>
                 <key>password</key>
                 <value>pwd</value>
             </data>

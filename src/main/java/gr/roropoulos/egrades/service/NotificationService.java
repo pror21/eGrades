@@ -12,17 +12,13 @@ import com.github.plushaze.traynotification.notification.Notifications;
 import com.github.plushaze.traynotification.notification.TrayNotification;
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Preference;
-import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import org.apache.commons.mail.*;
 
 import java.net.URL;
 
-public class NotifyService {
-
-    private ExceptionService exceptionService = new ExceptionService();
-
+public class NotificationService {
     public void showNotification(String title, String message, Notifications notification, Animations animation) {
         TrayNotification tray = new TrayNotification();
         tray.setTitle(title);
@@ -49,9 +45,8 @@ public class NotifyService {
     }
 
     public void sendMail(Course course) {
-        Preference pref;
-        PreferenceService preferenceService = new PreferenceServiceImpl();
-        pref = preferenceService.getPreferences();
+        PreferenceService preferenceService = new PreferenceService();
+        Preference pref = preferenceService.getUserPreferences();
 
         try {
             Email email = new SimpleEmail();
@@ -66,7 +61,7 @@ public class NotifyService {
             email.addTo(pref.getPrefMailerTo());
             email.send();
         } catch (EmailException e) {
-            exceptionService.showException(e, "Αποτυχία αποστολής βαθμολογίας με Email.");
+            ExceptionService.showException(e, "Αποτυχία αποστολής βαθμολογίας με Email.");
         }
     }
 
@@ -84,7 +79,7 @@ public class NotifyService {
             email.addTo(toMail);
             email.send();
         } catch (EmailException e) {
-            exceptionService.showException(e, "Αποτυχία αποστολής δοκιμαστικού email.");
+            ExceptionService.showException(e, "Αποτυχία αποστολής δοκιμαστικού email.");
         }
     }
 }

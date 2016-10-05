@@ -7,7 +7,6 @@
 
 package gr.roropoulos.egrades.service;
 
-import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -17,11 +16,10 @@ import javafx.scene.layout.Priority;
 import java.io.*;
 
 public class ExceptionService {
+    public static void showException(Exception e, String errorMessage) {
+        PreferenceService preferenceService = new PreferenceService();
 
-    private PreferenceService preferenceService = new PreferenceServiceImpl();
-
-    public void showException(Exception e, String errorMessage) {
-        if (preferenceService.getPreferences().getPrefAdvancedLogErrors()) {
+        if (preferenceService.getUserPreferences().getPrefAdvancedLogErrors()) {
             try {
                 FileOutputStream fos = new FileOutputStream(new File(System.getProperty("user.home") + File.separator + "eGrades" + File.separator + "logs.txt"), true);
                 PrintStream ps = new PrintStream(fos);
@@ -31,7 +29,7 @@ public class ExceptionService {
             }
         }
 
-        if (preferenceService.getPreferences().getPrefAdvancedShowErrors()) {
+        if (preferenceService.getUserPreferences().getPrefAdvancedShowErrors()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Σφάλμα");
             alert.setHeaderText("Συνέβει κάποιο σφάλμα (exception).");

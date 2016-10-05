@@ -5,49 +5,20 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  */
 
-package gr.roropoulos.egrades.service.Impl;
+package gr.roropoulos.egrades.dao.Impl;
 
+import gr.roropoulos.egrades.dao.PreferenceDAO;
 import gr.roropoulos.egrades.model.Preference;
-import gr.roropoulos.egrades.service.PreferenceService;
 
 import java.util.prefs.Preferences;
 
-public class PreferenceServiceImpl implements PreferenceService {
-
-    private Preferences prefs;
-
-    public Preference getPreferences() {
-        Preference pref = new Preference();
-        prefs = Preferences.userRoot().node("egrades/preferences");
-
-        pref.setPrefSyncEnabled(prefs.getBoolean("prefSyncEnabled", true));
-        pref.setPrefSyncTime(prefs.getInt("prefSyncTime", 30));
-
-        pref.setPrefNotificationPopupEnabled(prefs.getBoolean("prefNotificationPopupEnabled", true));
-        pref.setPrefNotificationPopupAnimation(prefs.get("prefNotificationPopupAnimation", "popup"));
-        pref.setPrefNotificationSoundEnabled(prefs.getBoolean("prefNotificationSoundEnabled", true));
-        pref.setPrefNotificationSound(prefs.get("prefNotificationSound", "arpeggio"));
-
-        pref.setPrefMailerEnabled(prefs.getBoolean("prefMailerEnabled", false));
-        pref.setPrefMailerHostname(prefs.get("prefMailerHostname", "smtp.gmail.com"));
-        pref.setPrefMailerPort(prefs.getInt("prefMailerPort", 465));
-        pref.setPrefMailerUsername(prefs.get("prefMailerUsername", ""));
-        pref.setPrefMailerPassword(prefs.get("prefMailerPassword", ""));
-        pref.setPrefMailerSSL(prefs.getBoolean("prefMailerSsl", true));
-        pref.setPrefMailerFrom(prefs.get("prefMailerFrom", ""));
-        pref.setPrefMailerTo(prefs.get("prefMailerTo", ""));
-
-        pref.setPrefShowCloseAlert(prefs.getBoolean("prefShowCloseAlert", true));
-
-        pref.setPrefAdvancedTimeout(prefs.getInt("prefTimeout", 20000));
-        pref.setPrefAdvancedShowErrors(prefs.getBoolean("prefShowBugAlerts", false));
-        pref.setPrefAdvancedLogErrors(prefs.getBoolean("prefLogDebug", true));
-
-        return pref;
+public class PreferenceDAOImpl implements PreferenceDAO {
+    public Preferences getPreferences() {
+        return Preferences.userRoot().node("egrades/preferences");
     }
 
-    public void setPreferences(Preference pref) {
-        prefs = Preferences.userRoot().node("egrades/preferences");
+    public void savePreferences(Preference pref) {
+        Preferences prefs = Preferences.userRoot().node("egrades/preferences");
 
         prefs.putBoolean("prefSyncEnabled", pref.getPrefSyncEnabled());
         prefs.putInt("prefSyncTime", pref.getPrefSyncTime());
@@ -72,5 +43,4 @@ public class PreferenceServiceImpl implements PreferenceService {
         prefs.putBoolean("prefShowBugAlerts", pref.getPrefAdvancedShowErrors());
         prefs.putBoolean("prefLogDebug", pref.getPrefAdvancedLogErrors());
     }
-
 }

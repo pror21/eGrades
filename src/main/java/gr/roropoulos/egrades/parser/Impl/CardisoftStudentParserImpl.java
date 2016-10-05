@@ -23,8 +23,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
 
     private final DocumentParser documentParser = new CardisoftDocumentParserImpl();
 
-    public HashMap<String, String> parseStudentInfo(String URL, Map<String, String> cookieJar) {
-        Document doc = documentParser.getStudentInfoDocument(URL, cookieJar);
+    public HashMap<String, String> parseStudentInfo(String URL, Map<String, String> cookieJar, Integer timeout) {
+        Document doc = documentParser.getStudentInfoDocument(URL, cookieJar, timeout);
 
         String studentName = doc.select("#main > div:nth-child(4) > table > tbody > tr:nth-child(3) > td:nth-child(2)").text();
         String studentSurname = doc.select("#main > div:nth-child(4) > table > tbody > tr:nth-child(2) > td:nth-child(2)").text();
@@ -43,8 +43,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return studentInfoHashMap;
     }
 
-    public List<Course> parseStudentGrades(String URL, Map<String, String> cookieJar) {
-        Document doc = documentParser.getStudentCoursesDocument(URL, cookieJar);
+    public List<Course> parseStudentGrades(String URL, Map<String, String> cookieJar, Integer timeout) {
+        Document doc = documentParser.getStudentCoursesDocument(URL, cookieJar, timeout);
 
         // Select all SIMPLE and COMP courses (they have the same attributes so we'r selecting both of them for now)
         Elements simpleAndCompCourses = doc.select("tr[height=25][bgcolor=#fafafa]");
@@ -163,8 +163,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return courseList;
     }
 
-    public HashMap<String, String> parseStudentRegistration(String URL, Map<String, String> cookieJar) {
-        Document doc = documentParser.getStudentRegistrationDocument(URL, cookieJar);
+    public HashMap<String, String> parseStudentRegistration(String URL, Map<String, String> cookieJar, Integer timeout) {
+        Document doc = documentParser.getStudentRegistrationDocument(URL, cookieJar, timeout);
 
         Element element = doc.select("tr[bgcolor=#FFFAF0").first();
         HashMap<String, String> regCourseMap = new HashMap<>();
@@ -182,8 +182,8 @@ public class CardisoftStudentParserImpl implements StudentParser {
         return regCourseMap;
     }
 
-    public HashMap<String, String> parseStudentStats(String URL, Map<String, String> cookieJar) {
-        Document doc = documentParser.getStudentStatsDocument(URL, cookieJar);
+    public HashMap<String, String> parseStudentStats(String URL, Map<String, String> cookieJar, Integer timeout) {
+        Document doc = documentParser.getStudentStatsDocument(URL, cookieJar, timeout);
 
         Element overallStats = doc.select("tr[height=20][class=subHeaderBack]").last();
         HashMap<String, String> studentStats = new HashMap<>();

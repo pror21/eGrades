@@ -8,15 +8,14 @@
 package gr.roropoulos.egrades.controller;
 
 import gr.roropoulos.egrades.model.Department;
+import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.model.Student;
 import gr.roropoulos.egrades.model.University;
-import gr.roropoulos.egrades.repository.TaskRepository;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
-import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
-import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
 import gr.roropoulos.egrades.service.PreferenceService;
-import gr.roropoulos.egrades.service.SerializeService;
+import gr.roropoulos.egrades.service.StudentService;
 import gr.roropoulos.egrades.service.UniversityService;
+import gr.roropoulos.egrades.task.StudentTasks;
 import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -55,20 +54,20 @@ public class AuthController implements Initializable {
     @FXML
     private GridPane loginPane;
 
-    private Student student = new Student();
-    private UniversityService universityService = new UniversityService();
-    private SerializeService serializeService = new SerializeServiceImpl();
-    private PreferenceService preferenceService = new PreferenceServiceImpl();
-
-    private List<University> uniList = universityService.getUniversitiesList();
+    private final Student student = new Student();
+    private final StudentService studentService = new StudentService();
+    private final UniversityService universityService = new UniversityService();
+    private final PreferenceService preferenceService = new PreferenceService();
+    private final List<University> uniList = universityService.getUniversitiesList();
+    private Preference userPref;
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         initializeHandlers();
         uniList.sort((uni1, uni2) -> uni1.getUniversityName().compareTo(uni2.getUniversityName()));
         uniChoiceBox.getItems().setAll(uniList);
         uniChoiceBox.getSelectionModel().select(0);
-
         loadStudentData();
+        userPref = preferenceService.getUserPreferences();
     }
 
     private void showLoadingScreen(Boolean show) {
@@ -85,30 +84,40 @@ public class AuthController implements Initializable {
     protected void handleOkButtonAction() {
         student.setStudentUsername(usernameField.getText());
         student.setStudentPassword(passwordField.getText());
+
         SyncScheduler.getInstance().stopScheduler();
         MainController.getInstance().clearCourseData();
+
         showLoadingScreen(true);
         progressLabel.setText("Γίνεται ταυτοποίηση...");
 
-        TaskRepository taskRepository = new TaskRepository(student);
-        Task<Map<String, String>> getCookieTask = taskRepository.getCookiesTask;
+        StudentTasks studentTasks = new StudentTasks(student, userPref.getPrefAdvancedTimeout());
+        Task<Map<String, String>> getCookieTask = studentTasks.getCookiesTask;
 
         getCookieTask.setOnSucceeded(e -> {
             if (getCookieTask.getValue() != null) {
                 progressIndicator.setProgress(0.2);
                 progressLabel.setText("Γίνεται συγχρονισμός των στοιχείων...");
                 MainController.getInstance().clearCourseData();
-                serializeService.serializeStudent(student);
                 syncStudent(getCookieTask.getValue());
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Αποτυχία ταυτοποίησης");
                 alert.setHeaderText("Λάθος όνομα χρήστη ή κωδικός");
                 alert.setContentText("Παρακαλώ ελέγξτε τα στοιχεία και δοκιμάστε ξανά.");
-                serializeService.deleteSerializedFile();
                 alert.showAndWait();
                 showLoadingScreen(false);
             }
+        });
+
+        getCookieTask.setOnFailed(e -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Αποτυχία σύνδεσης");
+            alert.setHeaderText("Η σύνδεση με τη γραμματεία απέτυχε.");
+            alert.setContentText("Υπήρξε πρόβλημα κατά τη σύνδεση με την υπηρεσία της γραμματείας σας.\r\n" +
+                    "Δοκιμάστε αργότερα εάν η υπηρεσία είναι εκτός λειτουργίας αυτή τη στιγμή.");
+            alert.showAndWait();
+            showLoadingScreen(false);
         });
 
         Thread t = new Thread(getCookieTask);
@@ -117,11 +126,12 @@ public class AuthController implements Initializable {
     }
 
     private void syncStudent(Map<String, String> cookieJar) {
-        TaskRepository taskRepository = new TaskRepository(student, cookieJar);
-        Task parseInfoTask = taskRepository.parseAndSerializeInfoTask;
-        Task parseGradesTask = taskRepository.parseAndSerializeCoursesTask;
-        Task parseStatsTask = taskRepository.parseAndSerializeStatsTask;
-        Task parseRegTask = taskRepository.parseAndSerializeRegisterTask;
+        studentService.setStudent(student);
+        StudentTasks studentTasks = new StudentTasks(student, cookieJar, userPref.getPrefAdvancedTimeout());
+        Task parseInfoTask = studentTasks.parseAndSerializeInfoTask;
+        Task parseGradesTask = studentTasks.parseAndSerializeCoursesTask;
+        Task parseStatsTask = studentTasks.parseAndSerializeStatsTask;
+        Task parseRegTask = studentTasks.parseAndSerializeRegisterTask;
 
         parseInfoTask.setOnSucceeded(e -> {
             progressIndicator.setProgress(0.4);
@@ -153,15 +163,14 @@ public class AuthController implements Initializable {
         es.submit(parseStatsTask);
         es.submit(parseRegTask);
         es.shutdown();
-
     }
 
     private void updateMainComponents() {
         MainController.getInstance().updateAllViewComponents();
 
-        if (preferenceService.getPreferences().getPrefSyncEnabled()) {
+        if (userPref.getPrefSyncEnabled()) {
             SyncScheduler.getInstance().stopScheduler();
-            SyncScheduler.getInstance().startSyncScheduler(preferenceService.getPreferences().getPrefSyncTime());
+            SyncScheduler.getInstance().startSyncScheduler(userPref.getPrefSyncTime());
         }
         dialogStage.close();
     }
@@ -185,7 +194,6 @@ public class AuthController implements Initializable {
                         departmentChoiceBox.setDisable(true);
                     }
                 }
-
         );
 
         // Set student department selection
@@ -193,7 +201,6 @@ public class AuthController implements Initializable {
                 (observable, oldValue, newValue) -> {
                     if (newValue != null)
                         student.setStudentUniversityDepartment(newValue);
-
                     else
                         student.setStudentUniversityDepartment(null);
                 }
@@ -206,21 +213,22 @@ public class AuthController implements Initializable {
 
     private void loadStudentData() {
         // Pre-select saved university
-        if (serializeService.checkIfSerializedFileExist()) {
+        if (studentService.checkIfStudentExists()) {
+            Student student = studentService.getStudent();
             University selectedUni = uniList.stream()
-                    .filter(item -> item.getUniversityName().equals(serializeService.deserializeStudent().getStudentUniversity().getUniversityName()))
+                    .filter(item -> item.getUniversityName().equals(student.getStudentUniversity().getUniversityName()))
                     .findFirst().get();
             uniChoiceBox.getSelectionModel().select(selectedUni);
             // Pre-select saved department
-            if (serializeService.deserializeStudent().getStudentUniversityDepartment() != null) {
+            if (student.getStudentUniversityDepartment() != null) {
                 List<Department> departmentList = selectedUni.getUniversityDepartment();
                 Department selectedDepartment = departmentList.stream()
-                        .filter(item -> item.getDepartmentName().equals(serializeService.deserializeStudent().getStudentUniversityDepartment().getDepartmentName()))
+                        .filter(item -> item.getDepartmentName().equals(student.getStudentUniversityDepartment().getDepartmentName()))
                         .findFirst().get();
                 departmentChoiceBox.getSelectionModel().select(selectedDepartment);
             }
-            usernameField.setText(serializeService.deserializeStudent().getStudentUsername());
-            passwordField.setText(serializeService.deserializeStudent().getStudentPassword());
+            usernameField.setText(student.getStudentUsername());
+            passwordField.setText(student.getStudentPassword());
         }
     }
 

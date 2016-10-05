@@ -10,8 +10,6 @@ package gr.roropoulos.egrades.parser.Impl;
 
 import gr.roropoulos.egrades.parser.DocumentParser;
 import gr.roropoulos.egrades.service.ExceptionService;
-import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
-import gr.roropoulos.egrades.service.PreferenceService;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,11 +21,7 @@ import java.util.Map;
 
 public class CardisoftDocumentParserImpl implements DocumentParser {
 
-    private ExceptionService exceptionService = new ExceptionService();
-    private PreferenceService preferenceService = new PreferenceServiceImpl();
-    private Integer timeout = preferenceService.getPreferences().getPrefAdvancedTimeout();
-
-    public Connection.Response getConnection(String URL) {
+    public Connection.Response getConnection(String URL, Integer timeout) {
         Connection.Response res = null;
         try {
             res = Jsoup.connect(URL)
@@ -36,12 +30,12 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
                     .execute();
         } catch (IOException e) {
-            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
+            ExceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
         return res;
     }
 
-    public Map<String, String> getCookies(Connection.Response res, String URL, HashMap<String, String> formData) {
+    public Map<String, String> getCookies(Connection.Response res, String URL, HashMap<String, String> formData, Integer timeout) {
         Document responseDoc = null;
 
         try {
@@ -54,7 +48,7 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
                     .followRedirects(true)
                     .post();
         } catch (IOException e) {
-            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
+            ExceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
 
         Element errorElement = responseDoc != null ? responseDoc.select("div.error").first() : null;
@@ -64,7 +58,7 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
         return res.cookies();
     }
 
-    public Document getStudentInfoDocument(String URL, Map<String, String> cookieJar) {
+    public Document getStudentInfoDocument(String URL, Map<String, String> cookieJar, Integer timeout) {
         Document doc = null;
         try {
             doc = Jsoup.connect(URL + "studentMain.asp")
@@ -74,12 +68,12 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
                     .get();
         } catch (IOException e) {
-            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
+            ExceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
         return doc;
     }
 
-    public Document getStudentCoursesDocument(String URL, Map<String, String> cookieJar) {
+    public Document getStudentCoursesDocument(String URL, Map<String, String> cookieJar, Integer timeout) {
         Document doc = null;
         try {
             doc = Jsoup.connect(URL + "stud_CResults.asp?studPg=1&mnuid=mnu3&")
@@ -90,12 +84,12 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
                     .post();
         } catch (IOException e) {
-            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
+            ExceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
         return doc;
     }
 
-    public Document getStudentRegistrationDocument(String URL, Map<String, String> cookieJar) {
+    public Document getStudentRegistrationDocument(String URL, Map<String, String> cookieJar, Integer timeout) {
         Document doc = null;
         try {
             doc = Jsoup.connect(URL + "stud_vClasses.asp?studPg=1&mnuid=diloseis;showDil&")
@@ -105,12 +99,12 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
                     .get();
         } catch (IOException e) {
-            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
+            ExceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
         return doc;
     }
 
-    public Document getStudentStatsDocument(String URL, Map<String, String> cookieJar) {
+    public Document getStudentStatsDocument(String URL, Map<String, String> cookieJar, Integer timeout) {
         Document doc = null;
         try {
             doc = Jsoup.connect(URL + "stud_CResults.asp?studPg=1&mnuid=mnu3&")
@@ -120,7 +114,7 @@ public class CardisoftDocumentParserImpl implements DocumentParser {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
                     .get();
         } catch (IOException e) {
-            exceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
+            ExceptionService.showException(e, "Η σύνδεση με την γραμματεία απέτυχε.");
         }
         return doc;
     }

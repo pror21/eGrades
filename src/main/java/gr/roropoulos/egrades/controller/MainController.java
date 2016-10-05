@@ -13,14 +13,13 @@ import gr.roropoulos.egrades.eGrades;
 import gr.roropoulos.egrades.model.Course;
 import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.model.Student;
-import gr.roropoulos.egrades.repository.TaskRepository;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
 import gr.roropoulos.egrades.service.ExceptionService;
-import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
-import gr.roropoulos.egrades.service.Impl.SerializeServiceImpl;
-import gr.roropoulos.egrades.service.NotifyService;
+import gr.roropoulos.egrades.service.NotificationService;
 import gr.roropoulos.egrades.service.PreferenceService;
-import gr.roropoulos.egrades.service.SerializeService;
+import gr.roropoulos.egrades.service.StudentService;
+import gr.roropoulos.egrades.task.StudentTasks;
+import gr.roropoulos.egrades.util.CourseListHelper;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -74,10 +73,10 @@ public class MainController implements Initializable {
     private ImageView syncImageView;
     private eGrades mainApp;
     private static MainController instance;
-    private RotateTransition rt;
-    private SerializeService serializeService = new SerializeServiceImpl();
-    private PreferenceService preferenceService = new PreferenceServiceImpl();
-    private ExceptionService exceptionService = new ExceptionService();
+    private RotateTransition syncButtonRotateTransition;
+
+    private final PreferenceService preferenceService = new PreferenceService();
+    private final StudentService studentService = new StudentService();
 
     public MainController() {
         instance = this;
@@ -89,11 +88,11 @@ public class MainController implements Initializable {
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         Platform.setImplicitExit(false);
-        Preference prefs = preferenceService.getPreferences();
+        Preference prefs = preferenceService.getUserPreferences();
         createStatusBar();
         setColorOnAllGradeCells();
 
-        if (serializeService.checkIfSerializedFileExist()) {
+        if (studentService.checkIfStudentExists()) {
             updateAllViewComponents();
             autoSync(prefs);
         } else {
@@ -221,8 +220,8 @@ public class MainController implements Initializable {
     }
 
     private void updateStatusBar() {
-        HashMap<String, String> studentInfo = serializeService.deserializeInfo();
-        HashMap<String, String> studentStats = serializeService.deserializeStats();
+        HashMap<String, String> studentInfo = studentService.getStudentInfo();
+        HashMap<String, String> studentStats = studentService.getStudentOverallStats();
         if (studentInfo != null && studentStats != null) {
             studentNameStatusLabel.setText(studentInfo.get("studentName") + " " + studentInfo.get("studentSurname"));
             studentAEMStatusLabel.setText(" " + "(" + studentInfo.get("studentAEM") + ")");
@@ -236,21 +235,21 @@ public class MainController implements Initializable {
     }
 
     private ObservableList<Course> getInitialCourseTableData() {
-        List<Course> courseList = serializeService.deserializeCourses();
+        List<Course> courseList = studentService.getStudentCourses();
         if (courseList == null) {
             return FXCollections.observableList(new ArrayList<>());
         } else return FXCollections.observableList(courseList);
     }
 
     private ObservableList<Course> getInitialRegTableData() {
-        List<Course> regList = serializeService.deserializeRegister();
+        List<Course> regList = studentService.getStudentRegister();
         if (regList == null) {
             return FXCollections.observableList(new ArrayList<>());
         } else return FXCollections.observableList(regList);
     }
 
     private ObservableList<Course> getInitialRecentTableData() {
-        List<Course> recentList = serializeService.deserializeRecentCourses();
+        List<Course> recentList = studentService.getStudentRecentCourses();
         if (recentList == null) {
             return FXCollections.observableList(new ArrayList<>());
         } else return FXCollections.observableList(recentList);
@@ -303,21 +302,21 @@ public class MainController implements Initializable {
 
     @FXML
     public void syncToolBarButtonAction() {
-        if (serializeService.checkIfSerializedFileExist()) {
+        if (studentService.checkIfStudentExists()) {
             syncButton.setDisable(true);
             startSyncButtonAnimation();
-            Student student = serializeService.deserializeStudent();
-            TaskRepository taskRepository = new TaskRepository(student);
-            Task<Map<String, String>> getCookieTask = taskRepository.getCookiesTask;
+            Student student = studentService.getStudent();
+            Integer timeout = preferenceService.getUserPreferences().getPrefAdvancedTimeout();
+            StudentTasks studentTasks = new StudentTasks(student, timeout);
+            Task<Map<String, String>> getCookieTask = studentTasks.getCookiesTask;
 
-            getCookieTask.setOnSucceeded(e -> syncCourses(getCookieTask.getValue()));
+            getCookieTask.setOnSucceeded(e -> syncCourses(getCookieTask.getValue(), timeout));
             getCookieTask.setOnFailed(e -> stopSyncButtonAnimation());
 
             Thread t = new Thread(getCookieTask);
             t.setDaemon(true);
             t.start();
         }
-
     }
 
     @FXML
@@ -335,15 +334,15 @@ public class MainController implements Initializable {
         try {
             Desktop.getDesktop().browse(new URI("https://github.com/pror21/eGrades"));
         } catch (IOException e) {
-            exceptionService.showException(e, "Δημιουργήθηκε IO exception.");
+            ExceptionService.showException(e, "Δημιουργήθηκε IO exception.");
         } catch (URISyntaxException e) {
-            exceptionService.showException(e, "Λάθος σύνταξη URI.");
+            ExceptionService.showException(e, "Λάθος σύνταξη URI.");
         }
     }
 
     @FXML
     private void exitToolBarButton() {
-        if (preferenceService.getPreferences().getPrefShowCloseAlert())
+        if (preferenceService.getUserPreferences().getPrefShowCloseAlert())
             showCloseAlert();
         else
             mainApp.getPrimaryStage().hide();
@@ -361,7 +360,7 @@ public class MainController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             recentTableView.getItems().clear();
-            serializeService.clearRecentCourses();
+            studentService.deleteStudentRecentCourses();
         }
     }
 
@@ -384,12 +383,12 @@ public class MainController implements Initializable {
     }
 
     private void notifyGrade(List<Course> newCourses) {
-        NotifyService notifyService = new NotifyService();
-        Preference pref = preferenceService.getPreferences();
+        NotificationService notificationService = new NotificationService();
+        Preference pref = preferenceService.getUserPreferences();
 
         // Play notification sound if enabled
         if (pref.getPrefNotificationSoundEnabled())
-            notifyService.playSoundNotification(pref.getPrefNotificationSound());
+            notificationService.playSoundNotification(pref.getPrefNotificationSound());
 
         // Show notification if enabled
         if (pref.getPrefNotificationPopupEnabled()) {
@@ -411,10 +410,10 @@ public class MainController implements Initializable {
             for (Course course : newCourses) {
                 float val = Float.parseFloat(course.getCourseGrade().replace(',', '.'));
                 if (val >= 5) {
-                    notifyService.showNotification(course.getCourseTitle(),
+                    notificationService.showNotification(course.getCourseTitle(),
                             "Πέρασες το μάθημα με βαθμό " + course.getCourseGrade(), Notifications.SUCCESS, animation);
                 } else {
-                    notifyService.showNotification(course.getCourseTitle(),
+                    notificationService.showNotification(course.getCourseTitle(),
                             "Κόπηκες με βαθμό " + course.getCourseGrade(), Notifications.ERROR, animation);
                 }
             }
@@ -422,17 +421,17 @@ public class MainController implements Initializable {
 
         // Send email if enabled
         if (pref.getPrefMailerEnabled()) {
-            newCourses.forEach(notifyService::sendMail);
+            newCourses.forEach(notificationService::sendMail);
         }
     }
 
-    private void syncCourses(Map<String, String> cookieJar) {
-        Student student = serializeService.deserializeStudent();
+    private void syncCourses(Map<String, String> cookieJar, Integer timeout) {
+        Student student = studentService.getStudent();
 
-        TaskRepository taskRepository = new TaskRepository(student, cookieJar);
-        Task<List<Course>> parseGradesTask = taskRepository.parseCoursesTask;
-        Task parseStatsTask = taskRepository.parseAndSerializeStatsTask;
-        Task parseRegTask = taskRepository.parseAndSerializeRegisterTask;
+        StudentTasks studentTasks = new StudentTasks(student, cookieJar, timeout);
+        Task<List<Course>> parseGradesTask = studentTasks.parseCoursesTask;
+        Task parseStatsTask = studentTasks.parseAndSerializeStatsTask;
+        Task parseRegTask = studentTasks.parseAndSerializeRegisterTask;
 
         Task<List<Course>> fetchNewGradesTask = new Task<List<Course>>() {
             @Override
@@ -443,7 +442,7 @@ public class MainController implements Initializable {
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
-                return serializeService.getNewlyListedCourses(newList);
+                return CourseListHelper.compareCourseListsAndGetNewlyAnnouncementCourses(newList, student.getStudentCourses());
             }
         };
 
@@ -451,17 +450,15 @@ public class MainController implements Initializable {
             List<Course> newlyListedGradeList = fetchNewGradesTask.getValue();
             if (!newlyListedGradeList.isEmpty()) {
                 notifyGrade(newlyListedGradeList);
-                serializeService.serializeRecentCourses(newlyListedGradeList);
+                studentService.insertStudentRecentCourses(newlyListedGradeList);
             }
-            serializeService.serializeCourses(parseGradesTask.getValue());
+            studentService.setStudentCourses(parseGradesTask.getValue());
 
             stopSyncButtonAnimation();
             updateAllViewComponents();
         });
 
-        fetchNewGradesTask.setOnFailed(e -> {
-            stopSyncButtonAnimation();
-        });
+        fetchNewGradesTask.setOnFailed(e -> stopSyncButtonAnimation());
 
         ExecutorService es = Executors.newSingleThreadExecutor();
         es.submit(parseGradesTask);
@@ -473,17 +470,17 @@ public class MainController implements Initializable {
     }
 
     private void startSyncButtonAnimation() {
-        rt = new RotateTransition(Duration.millis(3000), syncImageView);
-        rt.setByAngle(360);
-        rt.setCycleCount(Animation.INDEFINITE);
-        rt.setInterpolator(Interpolator.LINEAR);
-        rt.play();
+        syncButtonRotateTransition = new RotateTransition(Duration.millis(3000), syncImageView);
+        syncButtonRotateTransition.setByAngle(360);
+        syncButtonRotateTransition.setCycleCount(Animation.INDEFINITE);
+        syncButtonRotateTransition.setInterpolator(Interpolator.LINEAR);
+        syncButtonRotateTransition.play();
     }
 
     private void stopSyncButtonAnimation() {
-        if (rt != null) {
-            if (rt.getStatus() == Animation.Status.RUNNING) {
-                rt.stop();
+        if (syncButtonRotateTransition != null) {
+            if (syncButtonRotateTransition.getStatus() == Animation.Status.RUNNING) {
+                syncButtonRotateTransition.stop();
                 syncImageView.setRotate(0);
                 syncButton.setDisable(false);
             }

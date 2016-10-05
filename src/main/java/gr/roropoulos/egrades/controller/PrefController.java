@@ -10,8 +10,7 @@ package gr.roropoulos.egrades.controller;
 import com.github.plushaze.traynotification.animations.Animations;
 import gr.roropoulos.egrades.model.Preference;
 import gr.roropoulos.egrades.scheduler.SyncScheduler;
-import gr.roropoulos.egrades.service.Impl.PreferenceServiceImpl;
-import gr.roropoulos.egrades.service.NotifyService;
+import gr.roropoulos.egrades.service.NotificationService;
 import gr.roropoulos.egrades.service.PreferenceService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -38,13 +37,13 @@ public class PrefController implements Initializable {
     @FXML
     private ChoiceBox<String> popupEffectChoiceBox, soundChoiceBox;
 
+    private final PreferenceService preferenceService = new PreferenceService();
+    private final NotificationService notificationService = new NotificationService();
 
-    private Preference pref = new Preference();
-    private PreferenceService preferenceService = new PreferenceServiceImpl();
-    private NotifyService notifyService = new NotifyService();
+    private Preference userPreferences = new Preference();
 
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        pref = preferenceService.getPreferences();
+        userPreferences = preferenceService.getUserPreferences();
 
         TextFormatter<Integer> syncTimeFormatter = new TextFormatter<>(change -> {
             change.setText(change.getText().replaceAll("[^0-9]", ""));
@@ -59,7 +58,7 @@ public class PrefController implements Initializable {
         syncRateTextField.setTextFormatter(syncTimeFormatter);
         timeoutTextField.setTextFormatter(timeoutFormatter);
 
-        setUIPreferences(pref);
+        setUIPreferences(userPreferences);
     }
 
     private void setUIPreferences(Preference pref) {
@@ -85,11 +84,11 @@ public class PrefController implements Initializable {
         popupEffectChoiceBox.valueProperty().addListener((ov, t, t1) -> {
             if (t != null) {
                 if (Objects.equals(t1, "popup"))
-                    notifyService.showSampleNotification(Animations.POPUP);
+                    notificationService.showSampleNotification(Animations.POPUP);
                 else if (Objects.equals(t1, "slide"))
-                    notifyService.showSampleNotification(Animations.SLIDE);
+                    notificationService.showSampleNotification(Animations.SLIDE);
                 else if (Objects.equals(t1, "fade"))
-                    notifyService.showSampleNotification(Animations.FADE);
+                    notificationService.showSampleNotification(Animations.FADE);
             }
         });
 
@@ -98,13 +97,13 @@ public class PrefController implements Initializable {
         soundChoiceBox.valueProperty().addListener((ov, t, t1) -> {
             if (t != null) {
                 if (Objects.equals(t1, "arpeggio"))
-                    notifyService.playSoundNotification("arpeggio");
+                    notificationService.playSoundNotification("arpeggio");
                 else if (Objects.equals(t1, "attention"))
-                    notifyService.playSoundNotification("attention");
+                    notificationService.playSoundNotification("attention");
                 else if (Objects.equals(t1, "ding"))
-                    notifyService.playSoundNotification("ding");
+                    notificationService.playSoundNotification("ding");
                 else if (Objects.equals(t1, "pluck"))
-                    notifyService.playSoundNotification("pluck");
+                    notificationService.playSoundNotification("pluck");
             }
         });
         soundChoiceBox.getSelectionModel().select(pref.getPrefNotificationSound());
@@ -112,34 +111,34 @@ public class PrefController implements Initializable {
 
     @FXML
     private void savePrefButtonAction() {
-        if (autoSyncCheckBox.isSelected()) pref.setPrefSyncEnabled(true);
-        else pref.setPrefSyncEnabled(false);
-        if (popupNotificationCheckBox.isSelected()) pref.setPrefNotificationPopupEnabled(true);
-        else pref.setPrefNotificationPopupEnabled(false);
-        if (soundNotificationCheckBox.isSelected()) pref.setPrefNotificationSoundEnabled(true);
-        else pref.setPrefNotificationSoundEnabled(false);
-        if (showCloseAlertCheckBox.isSelected()) pref.setPrefShowCloseAlert(true);
-        else pref.setPrefShowCloseAlert(false);
-        if (enableMailerCheckBox.isSelected()) pref.setPrefMailerEnabled(true);
-        else pref.setPrefMailerEnabled(false);
-        if (sslCheckBox.isSelected()) pref.setPrefMailerSSL(true);
-        else pref.setPrefMailerSSL(false);
-        if (showErrorsCheckBox.isSelected()) pref.setPrefAdvancedShowErrors(true);
-        else pref.setPrefAdvancedShowErrors(false);
-        if (logErrorsCheckBox.isSelected()) pref.setPrefAdvancedLogErrors(true);
-        else pref.setPrefAdvancedLogErrors(false);
+        if (autoSyncCheckBox.isSelected()) userPreferences.setPrefSyncEnabled(true);
+        else userPreferences.setPrefSyncEnabled(false);
+        if (popupNotificationCheckBox.isSelected()) userPreferences.setPrefNotificationPopupEnabled(true);
+        else userPreferences.setPrefNotificationPopupEnabled(false);
+        if (soundNotificationCheckBox.isSelected()) userPreferences.setPrefNotificationSoundEnabled(true);
+        else userPreferences.setPrefNotificationSoundEnabled(false);
+        if (showCloseAlertCheckBox.isSelected()) userPreferences.setPrefShowCloseAlert(true);
+        else userPreferences.setPrefShowCloseAlert(false);
+        if (enableMailerCheckBox.isSelected()) userPreferences.setPrefMailerEnabled(true);
+        else userPreferences.setPrefMailerEnabled(false);
+        if (sslCheckBox.isSelected()) userPreferences.setPrefMailerSSL(true);
+        else userPreferences.setPrefMailerSSL(false);
+        if (showErrorsCheckBox.isSelected()) userPreferences.setPrefAdvancedShowErrors(true);
+        else userPreferences.setPrefAdvancedShowErrors(false);
+        if (logErrorsCheckBox.isSelected()) userPreferences.setPrefAdvancedLogErrors(true);
+        else userPreferences.setPrefAdvancedLogErrors(false);
 
-        pref.setPrefSyncTime(Integer.parseInt(syncRateTextField.getText()));
-        pref.setPrefAdvancedTimeout(Integer.parseInt(timeoutTextField.getText()));
-        pref.setPrefMailerHostname(hostnameTextField.getText());
-        pref.setPrefMailerPort(Integer.parseInt(portTextField.getText()));
-        pref.setPrefMailerUsername(usernameTextField.getText());
-        pref.setPrefMailerPassword(passwordTextField.getText());
-        pref.setPrefMailerFrom(fromTextField.getText());
-        pref.setPrefMailerTo(toTextField.getText());
+        userPreferences.setPrefSyncTime(Integer.parseInt(syncRateTextField.getText()));
+        userPreferences.setPrefAdvancedTimeout(Integer.parseInt(timeoutTextField.getText()));
+        userPreferences.setPrefMailerHostname(hostnameTextField.getText());
+        userPreferences.setPrefMailerPort(Integer.parseInt(portTextField.getText()));
+        userPreferences.setPrefMailerUsername(usernameTextField.getText());
+        userPreferences.setPrefMailerPassword(passwordTextField.getText());
+        userPreferences.setPrefMailerFrom(fromTextField.getText());
+        userPreferences.setPrefMailerTo(toTextField.getText());
 
-        pref.setPrefNotificationPopupAnimation(popupEffectChoiceBox.getValue());
-        pref.setPrefNotificationSound(soundChoiceBox.getValue());
+        userPreferences.setPrefNotificationPopupAnimation(popupEffectChoiceBox.getValue());
+        userPreferences.setPrefNotificationSound(soundChoiceBox.getValue());
 
         savePreferences();
         dialogStage.close();
@@ -152,8 +151,7 @@ public class PrefController implements Initializable {
 
     @FXML
     private void sendSampleEmailButtonAction() {
-        NotifyService notifyService = new NotifyService();
-        notifyService.sendSampleMail(
+        notificationService.sendSampleMail(
                 hostnameTextField.getText(),
                 portTextField.getText(),
                 usernameTextField.getText(),
@@ -165,12 +163,12 @@ public class PrefController implements Initializable {
     }
 
     private void savePreferences() {
-        if (!Objects.equals(syncRateTextField.getText(), preferenceService.getPreferences().getPrefSyncTime().toString())) {
+        if (!Objects.equals(syncRateTextField.getText(), preferenceService.getUserPreferences().getPrefSyncTime().toString())) {
             SyncScheduler.getInstance().stopScheduler();
-            if (pref.getPrefSyncEnabled())
-                SyncScheduler.getInstance().startSyncScheduler(pref.getPrefSyncTime());
+            if (userPreferences.getPrefSyncEnabled())
+                SyncScheduler.getInstance().startSyncScheduler(userPreferences.getPrefSyncTime());
         }
-        preferenceService.setPreferences(pref);
+        preferenceService.saveUserPreferences(userPreferences);
     }
 
     public void setDialogStage(Stage dialogStage) {

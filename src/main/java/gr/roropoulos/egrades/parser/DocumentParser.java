@@ -15,16 +15,16 @@ import java.util.Map;
 
 public interface DocumentParser {
 
-    Connection.Response getConnection(String URL);
+    Connection.Response getConnection(String URL, Integer timeout);
 
-    Map<String, String> getCookies(Connection.Response res, String URL, HashMap<String, String> formData);
+    Map<String, String> getCookies(Connection.Response res, String URL, HashMap<String, String> formData, Integer timeout);
 
-    Document getStudentInfoDocument(String URL, Map<String, String> cookieJar);
+    Document getStudentInfoDocument(String URL, Map<String, String> cookieJar, Integer timeout);
 
-    Document getStudentCoursesDocument(String URL, Map<String, String> cookieJar);
+    Document getStudentCoursesDocument(String URL, Map<String, String> cookieJar, Integer timeout);
 
-    Document getStudentRegistrationDocument(String URL, Map<String, String> cookieJar);
+    Document getStudentRegistrationDocument(String URL, Map<String, String> cookieJar, Integer timeout);
 
-    Document getStudentStatsDocument(String URL, Map<String, String> cookieJar);
+    Document getStudentStatsDocument(String URL, Map<String, String> cookieJar, Integer timeout);
 
 }

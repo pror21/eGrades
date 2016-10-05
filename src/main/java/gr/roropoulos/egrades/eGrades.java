@@ -34,8 +34,6 @@ import java.util.List;
 public class eGrades extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private ExceptionService exceptionService = new ExceptionService();
-    private Properties properties = new Properties();
     private static ServerSocket SERVER_SOCKET;
 
     public static void main(String[] args) throws Exception {
@@ -52,6 +50,7 @@ public class eGrades extends Application {
     }
 
     public void start(Stage stage) throws Exception {
+        Properties properties = new Properties();
         properties.load(this.getClass().getClassLoader().getResourceAsStream("project.properties"));
 
         this.primaryStage = stage;
@@ -80,7 +79,7 @@ public class eGrades extends Application {
             primaryStage.setResizable(true);
             primaryStage.show();
         } catch (IOException e) {
-            exceptionService.showException(e, "Δεν βρέθηκε το Root Layout.");
+            ExceptionService.showException(e, "Δεν βρέθηκε το Root Layout.");
         }
     }
 
@@ -93,7 +92,7 @@ public class eGrades extends Application {
             MainController mainController = loader.getController();
             mainController.setMainApp(this);
         } catch (IOException e) {
-            exceptionService.showException(e, "Δεν βρέθηκε το FXML MainView.");
+            ExceptionService.showException(e, "Δεν βρέθηκε το FXML MainView.");
         }
     }
 
@@ -120,7 +119,7 @@ public class eGrades extends Application {
             dialogStage.showAndWait();
 
         } catch (IOException e) {
-            exceptionService.showException(e, "Δεν βρέθηκε το FXML AuthfView.");
+            ExceptionService.showException(e, "Δεν βρέθηκε το FXML AuthfView.");
         }
     }
 

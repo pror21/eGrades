@@ -27,8 +27,6 @@ import java.util.Map;
 @SuppressWarnings("Duplicates")
 public class UniversityParser {
 
-    private ExceptionService exceptionService = new ExceptionService();
-
     public List<University> parseUniDB() {
 
         List<University> universitiesList = new ArrayList<>();
@@ -103,7 +101,7 @@ public class UniversityParser {
             }
 
         } catch (Exception e) {
-            exceptionService.showException(e, "Συνέβη κάποιο σφάλμα κατά την φόρτωση των πανεπιστημίων.");
+            ExceptionService.showException(e, "Συνέβη κάποιο σφάλμα κατά την φόρτωση των πανεπιστημίων.");
         }
         return universitiesList;
     }
